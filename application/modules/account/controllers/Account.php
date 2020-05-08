@@ -73,6 +73,7 @@ class Account extends CI_Controller {
 
     public function dashboard()
     {
+<<<<<<< HEAD
         $data['judul'] = "Dashboard";
         $data['username'] = $this->session->userdata('username');
         $this->load->view('template/account_header', $data);
@@ -82,16 +83,60 @@ class Account extends CI_Controller {
         $this->load->view('template/account_footer');
     }
 
+=======
+        // if($this->session->userdata('status') == 1) {
+        //     $this->update();
+        // }
+        // } else if ($this->session->userdata('status') == 2){
+        //     $this->dashboard();
+        // } else {
+        //     $this->load->view('account/beranda');
+        // }
+        $data['judul'] = "Dashboard";
+        $data['username'] = $this->session->userdata('username');
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/renternav', $data);
+        $this->load->view('beranda/etalase');
+        $this->load->view('beranda/themes/foot');
+    }
+
+    public function renter()
+    {
+        if($this->session->userdata('status') == 1) {
+            $this->update();
+        }  else if ($this->session->userdata('status') == 2){
+            $this->read();
+        }
+    }
+
+    // public function renterProfile()
+    // {
+    //     $data['judul'] = "Dashboard";
+    //     $data['username'] = $this->session->userdata('username');
+    //     $this->load->view('beranda/themes/head');
+    //     $this->load->view('beranda/themes/renternav', $data);
+    //     $this->load->view('renterprofile');
+    //     $this->load->view('beranda/themes/foot');
+    // }
+
+>>>>>>> Penyesuaian Frontend
     public function update()
     {
         $data['judul'] = "Update Data Diri";
         $data['daftar'] = $this->M_account->getUserData();
         $data['username'] = $this->session->userdata('username');
+<<<<<<< HEAD
         $this->load->view('template/account_header', $data);
         $this->load->view('template/account_sidebar');
         $this->load->view('template/account_topbar', $data);
         $this->load->view('update', $data);
         $this->load->view('template/account_footer');
+=======
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/renternav', $data);
+        $this->load->view('renterprofile', $data);
+        $this->load->view('beranda/themes/foot');
+>>>>>>> Penyesuaian Frontend
     }
 
     public function verif()
@@ -143,11 +188,18 @@ class Account extends CI_Controller {
             $data['daftar'] = $this->M_account->getUserData();
             $data['judul'] = "Biodata Diri";
             $data['username'] = $this->session->userdata('username');
+<<<<<<< HEAD
             $this->load->view('template/account_header', $data);
             $this->load->view('template/account_sidebar');
             $this->load->view('template/account_topbar', $data);
             $this->load->view('read', $data);
             $this->load->view('template/account_footer');
+=======
+            $this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/renternav', $data);
+            $this->load->view('renterprofile', $data);
+            $this->load->view('beranda/themes/foot');
+>>>>>>> Penyesuaian Frontend
         }
     }
 
@@ -162,7 +214,11 @@ class Account extends CI_Controller {
         $this->form_validation->set_rules('password_conf','PASSWORD','required|matches[password] ');
         if($this->form_validation->run() == FALSE) { 
             if($this->session->userdata('username') == '') {
+<<<<<<< HEAD
                 $this->load->view('account/v_register');
+=======
+                $this->load->view('dashboard');
+>>>>>>> Penyesuaian Frontend
             } else {
                 redirect(site_url('dashboard'));
             }
