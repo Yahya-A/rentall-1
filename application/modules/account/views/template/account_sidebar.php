@@ -16,9 +16,9 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="<?= base_url('account/pesanan'); ?>">
+        <a class="nav-link" href="<?= base_url('account/transaksi'); ?>">
             <i class="fas fa-folder"></i>
-            <span>Daftar Pesanan</span></a>
+            <span>Daftar Transaksi</span></a>
     </li>
 
     <?php if($this->session->userdata('level') == '2'): ?>
@@ -29,14 +29,14 @@
                 <span>Vendor</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="<?= base_url(''); ?>">
+            <a class="nav-link" href="<?= base_url('products'); ?>">
                 <i class="fas fa-align-justify"></i>
                 <span>Daftar Produk</span></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="<?= base_url(''); ?>">
                 <i class="fas fa-align-justify"></i>
-                <span>Daftar Pesanan Masuk</span></a>
+                <span>Daftar Pesanan</span></a>
         </li>
     <? endif; ?>
 

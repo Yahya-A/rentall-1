@@ -29,6 +29,10 @@
                                         <input type="text" name="deskripsi" class="form-control form-control-user" placeholder="Deskripsi" value="<?= $p['deskripsi_vendor'] ?>">
                                         <?= form_error('deskripsi', '<small class="text-danger">', '<small>'); ?>
                                     </div>
+                                    <div class="form-group">
+                                        <input type="text" name="kota" class="form-control form-control-user" placeholder="Kota" value="<?= $p['kota'] ?>">
+                                        <?= form_error('kota', '<small class="text-danger">', '<small>'); ?>
+                                    </div>
                                 </div>
                                 <div class="col-sm-5">
                                     <div class="form-group">
@@ -51,6 +55,10 @@
                                 <div class="form-group">
                                     <input type="text" name="deskripsi" class="form-control form-control-user" placeholder="Deskripsi">
                                     <?= form_error('deskripsi', '<small class="text-danger">', '<small>'); ?>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="kota" class="form-control form-control-user" placeholder="Kota">
+                                    <?= form_error('kota', '<small class="text-danger">', '<small>'); ?>
                                 </div>
                             </div>
                             <div class="col-sm-5">

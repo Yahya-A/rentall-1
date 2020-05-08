@@ -7,50 +7,62 @@ class Products extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->simple_login->cek_admin();
-        $this->load->model('Barang');
+        $this->load->model('Items');
     }
 
     public function index()
     {
         $data['judul'] = "Daftar Produk";
-        $data['barang'] = $this->Barang->getAllBarang();
+        $data['items'] = $this->Items->getAllBarang();
+        $data['kategori'] = $this->Items->getAllKategori();
         $data['username'] = $this->session->userdata('username');
-        $this->load->view('dashboard/template/home_header', $data);
-        $this->load->view('dashboard/template/home_sidebar');
-        $this->load->view('dashboard/template/home_topbar', $data);
+        $this->load->view('account/template/account_header', $data);
+        $this->load->view('account/template/account_sidebar');
+        $this->load->view('account/template/account_topbar', $data);
         $this->load->view('index', $data);
-        $this->load->view('dashboard/template/home_footer');
+        $this->load->view('account/template/account_footer');
     }
 
-    public function add()
+    public function add($kategori)
     {
-        $data['kategori'] = $this->Barang->getAllKategori();
-        if (!$this->Barang->getAllKategori()) {
-            $this->session->set_flashdata('error', 'Kategori tidak ditemukan, silahkan tambahkan kategori terlebih dahulu');
-            redirect('products');
-        } else {
-            $data['judul'] = "Tambah Produk";
-            $data['username'] = $this->session->userdata('username');
-            $this->load->view('dashboard/template/home_header', $data);
-            $this->load->view('dashboard/template/home_sidebar');
-            $this->load->view('dashboard/template/home_topbar', $data);
-            $this->load->view('add', $data);
-            $this->load->view('dashboard/template/home_footer');
+        $data['judul'] = "Tambah Item";
+        $data['username'] = $this->session->userdata('username');
+        $data['kategori'] = $this->Items->getKategori($kategori);
+        $this->load->view('account/template/account_header', $data);
+        $this->load->view('account/template/account_sidebar');
+        $this->load->view('account/template/account_topbar', $data);
+        switch ($kategori) {
+            case 'Elektronik':
+                $this->load->view('elektronik', $data);
+            break;
+            case 'Games':
+                $this->load->view('games', $data);
+            break;
+            case 'Otomotif':
+                $this->load->view('otomotif', $data);
+            break;
+            case 'Photography':
+                $this->load->view('photography', $data);
+            break;
+            default:
+                redirect('products');
+            break;
         }
+        $this->load->view('account/template/account_footer');
+        
     }
 
     public function edit($id)
     {
         $data['judul'] = "Edit Produk";
-        $data['kategori'] = $this->Barang->getAllKategori();
-        $data['edit'] = $this->Barang->getBarang($id);
+        $data['kategori'] = $this->Items->getAllKategori();
+        $data['edit'] = $this->Items->getBarang($id);
         $data['username'] = $this->session->userdata('username');
-        $this->load->view('dashboard/template/home_header', $data);
-        $this->load->view('dashboard/template/home_sidebar');
-        $this->load->view('dashboard/template/home_topbar', $data);
+        $this->load->view('account/template/account_header', $data);
+        $this->load->view('account/template/account_sidebar');
+        $this->load->view('account/template/account_topbar', $data);
         $this->load->view('edit', $data);
-        $this->load->view('dashboard/template/home_footer');
+        $this->load->view('account/template/account_footer');
     }
 
     public function tambah_produk()
@@ -64,11 +76,11 @@ class Products extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $data['errors'] = null;
-            $this->load->view('dashboard/template/home_header', $data);
-            $this->load->view('dashboard/template/home_sidebar');
-            $this->load->view('dashboard/template/home_topbar');
+            $this->load->view('account/template/account_header', $data);
+            $this->load->view('account/template/account_sidebar');
+            $this->load->view('account/template/account_topbar');
             $this->load->view('add', $data);
-            $this->load->view('dashboard/template/home_footer');
+            $this->load->view('account/template/account_footer');
         } else {
             $this->_tambahproduk();
         }
@@ -178,11 +190,11 @@ class Products extends CI_Controller
             $data['post']   = print_r($_POST, true);
             if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
                 $data['username'] = $this->session->userdata('username');
-                $this->load->view('dashboard/template/home_header', $data);
-                $this->load->view('dashboard/template/home_sidebar');
-                $this->load->view('dashboard/template/home_topbar');
+                $this->load->view('account/template/account_header', $data);
+                $this->load->view('account/template/account_sidebar');
+                $this->load->view('account/template/account_topbar');
                 $this->load->view('add', $data);
-                $this->load->view('dashboard/template/home_footer');
+                $this->load->view('account/template/account_footer');
             } else {
                 $data = array(
                     'prod_id' => $final,

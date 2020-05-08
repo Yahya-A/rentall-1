@@ -204,6 +204,7 @@ class M_account extends CI_Model{
         $nama = $this->input->post('nama', true);
         $deskripsi = $this->input->post('deskripsi', true);
         $alamat = $this->input->post('alamat', true);
+        $kota = $this->input->post('kota', true);
         $image = $this->input->post('upload_image', true);
         $id_user = $this->session->userdata('id');
         $update = $this->input->post('id', true);
@@ -237,6 +238,7 @@ class M_account extends CI_Model{
                         'nama_vendor' => $nama,
                         'deskripsi_vendor' => $deskripsi,
                         'alamat' => $alamat,
+                        'kota' => $kota,
                         'foto' => $config['file_name']
                     );
                     $this->db->where('id_user', $id_user);
@@ -247,6 +249,7 @@ class M_account extends CI_Model{
                         'nama_vendor' => $nama,
                         'deskripsi_vendor' => $deskripsi,
                         'alamat' => $alamat,
+                        'kota' => $kota,
                         'foto' => $config['file_name']
                     );
     
@@ -258,6 +261,7 @@ class M_account extends CI_Model{
                 $data = array(
                     'nama_vendor' => $nama,
                     'deskripsi_vendor' => $deskripsi,
+                    'kota' => $kota,
                     'alamat' => $alamat
                 );
                 $this->db->where('id_user', $id_user);
@@ -267,6 +271,7 @@ class M_account extends CI_Model{
                     'id_user' => $id_user,
                     'nama_vendor' => $nama,
                     'deskripsi_vendor' => $deskripsi,
+                    'kota' => $kota,
                     'alamat' => $alamat
                 );
 
@@ -276,9 +281,9 @@ class M_account extends CI_Model{
         $this->session->set_userdata('level', '2');
         
         $data = array(
-            'level' => "2"
+            'level' => 2
         );
-        $this->db->where('id_user', $id);
+        $this->db->where('id_user', $id_user);
         $this->db->update('user', $data);
 
         redirect('account/vendor');
