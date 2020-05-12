@@ -28,7 +28,7 @@
                     <a href="#!" class="list-group-item list-group-item-action t_acc_setting">
                         <i class="fas fa-cogs mr-3"></i>Pengaturan Akun
                     </a>
-                    <a href="#!" class="list-group-item list-group-item-action"><i class="fas fa-user mr-3"></i>Profil</a>
+                    <a href="<?= base_url('account/renter')?>" class="list-group-item list-group-item-action"><i class="fas fa-user mr-3"></i>Profil</a>
                     <a href="#!" class="list-group-item list-group-item-action"><i class="fas fa-question-circle mr-3"></i>Ganti Password</a>
                     <a href="#!" class="list-group-item list-group-item-action active"><i class="fas fa-store-alt mr-3"></i>Vendor Profile</a>
                     <a href="#!" class="list-group-item list-group-item-action"><i class="fas fa-question-circle mr-3"></i>Informasi Bank</a>
@@ -40,7 +40,9 @@
                       <h4 class="p2">Detail Profil
                     </h4> 
                     </div>
-                    <form class="user" method="POST" action="<?= base_url("account/update_vendor/$id"); ?>" enctype="multipart/form-data">
+                    <?php foreach ($vendor as $p) :?>
+                    <form class="user" method="POST" action="<?= base_url("account/update_vendor/").$p['id_user']?>" enctype="multipart/form-data">
+                    <?php endforeach;?>
                         <div class="row">
                         <?php 
                         if ($vendor != null):

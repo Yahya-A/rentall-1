@@ -11,13 +11,210 @@ class Account extends CI_Controller {
     public function index()
     {
         if($this->session->userdata('status') == 1) {
-            $this->update();
+            $this->updateRenter();
         } else if ($this->session->userdata('status') == 2){
-            $this->dashboard();
+            $this->renterEtalase();
         } else {
             $this->load->view('account/beranda');
         }
     }
+
+    // Manajemen Renter Start
+
+    public function renterEtalase()
+    {
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect(site_url(''));
+        } else {
+            $data['active'] = array(
+                '1' => 'font-weight-bold',
+                '2' => '',
+                '3' => ''
+            );
+            $data['judul'] = "Dashboard";
+            $data['username'] = $this->session->userdata('username');
+            $this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/renternav', $data);
+            $this->load->view('beranda/etalase');
+            $this->load->view('beranda/themes/foot');
+        }
+    }
+
+    public function renter()
+    {
+        if($this->session->userdata('status') == 1) {
+            $this->updateRenter();
+        }  else if ($this->session->userdata('status') == 2){
+            $this->readRenter();
+        }
+    }
+
+    public function updateRenter()
+    {
+        $data['active'] = array(
+            '1' => '',
+            '2' => '',
+            '3' => ''
+        );
+        $data['judul'] = "Update Data Diri";
+        $data['daftar'] = $this->M_account->getUserData();
+        $data['username'] = $this->session->userdata('username');
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/renternav', $data);
+        $this->load->view('renterprofile', $data);
+        $this->load->view('beranda/themes/foot');
+    }
+
+    public function readRenter()
+    {
+        if($this->session->userdata('status') == 1) {
+            redirect('account/update');
+        } else if ($this->session->userdata('status') == 2){
+            $data['active'] = array(
+                '1' => '',
+                '2' => '',
+                '3' => ''
+            );
+            $id = $this->session->userdata('id');
+            $query = $this->db->query("select verif from user where id_user = $id");
+            $data['verif'] = $query->row()->verif;
+            $data['daftar'] = $this->M_account->getUserData();
+            $data['judul'] = "Biodata Diri";
+            $data['username'] = $this->session->userdata('username');
+            $this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/renternav', $data);
+            $this->load->view('renterprofile', $data);
+            $this->load->view('beranda/themes/foot');
+        }
+    }
+
+    public function penyewaanRenter()
+    {
+            $data['active'] = array(
+                '1' => '',
+                '2' => 'font-weight-bold',
+                '3' => ''
+            );
+            $data['judul'] = "Dashboard";
+            $data['username'] = $this->session->userdata('username');
+            $this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/renternav', $data);
+            $this->load->view('beranda/penyewaan');
+            $this->load->view('beranda/themes/foot');
+    }
+
+    // Manajemen Renter End
+
+    // Manajemen Vendor Start
+
+    public function vendorBoard()
+    {
+        $data['active'] = array(
+            '1' => '',
+            '2' => '',
+            '3' => ''
+        );
+        $data['judul'] = "Data Vendor";
+        $data['username'] = $this->session->userdata('username');
+        $id = $this->session->userdata('id');
+        if($this->session->userdata('level') == 1 ){
+            redirect("account/dataVendor/$id");
+        } else {
+            $data['active'] = array(
+                '1' => 'font-weight-bold',
+                '2' => '',
+                '3' => ''
+            );
+            $this->db->where('id_user', $id);
+            $data['vendor'] = $this->db->get('vendor_profile')->result_array();
+            $this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/vendornav', $data);
+            $this->load->view('vendor/index', $data);
+            $this->load->view('beranda/themes/foot');
+        }
+    }
+
+    public function dataVendor($id) 
+    {
+        $data['active'] = array(
+            '1' => 'font-weight-bold',
+            '2' => '',
+            '3' => ''
+        );
+        $data['judul'] = "Data Vendor";
+        $data['username'] = $this->session->userdata('username');
+        $data['id'] = $id;
+        $this->db->where('id_user', $id);
+        $data['vendor'] = $this->db->get('vendor_profile')->result_array();
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/vendornav', $data);
+        $this->load->view('vendor/update', $data);
+        $this->load->view('beranda/themes/foot');
+    }
+
+    public function update_vendor($id)
+    {
+        $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
+
+        if ($this->form_validation->run() == false) {
+            $data['errors'] = null;
+            $this->vendorBoard();
+        } else {
+            $this->M_account->updateVendor();
+        }
+    }
+
+    public function additem()
+    {
+        $data['active'] = array(
+            '1' => 'font-weight-bold',
+            '2' => '',
+            '3' => ''
+        );
+        $data['username'] = $this->session->userdata('username');
+        $data['vendor'] = $this->db->get('vendor_profile')->result_array();
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/vendornav', $data);
+        $this->load->view('vendor/additem', $data);
+        $this->load->view('beranda/themes/foot');
+    }
+
+    public function penyewaanVendor()
+    {
+        $data['active'] = array(
+            '1' => '',
+            '2' => 'font-weight-bold',
+            '3' => ''
+        );
+        $data['username'] = $this->session->userdata('username');
+        $data['vendor'] = $this->db->get('vendor_profile')->result_array();
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/vendornav', $data);
+        $this->load->view('vendor/penyewaan', $data);
+        $this->load->view('beranda/themes/foot');
+    }
+
+    public function vendorProfile()
+    {
+        $data['active'] = array(
+            '1' => '',
+            '2' => '',
+            '3' => ''
+        );
+        $data['judul'] = "Data Vendor";
+        $data['username'] = $this->session->userdata('username');
+        $id = $this->session->userdata('id');
+        $this->db->where('id_user', $id);
+        $data['vendor'] = $this->db->get('vendor_profile')->result_array();
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/vendornav', $data);
+        $this->load->view('vendor/vendorprofile', $data);
+        $this->load->view('beranda/themes/foot');
+    }
+
+    // Manajemen Vendor End
 
     public function logout(){
         $this->simple_login->logout(); 
@@ -36,7 +233,7 @@ class Account extends CI_Controller {
         }
 
         if($this->session->userdata('username') == '') {
-            $this->load->view('account/v_login');
+            redirect(site_url(''));
         } else {
             $this->dashboard();
         }
@@ -51,7 +248,7 @@ class Account extends CI_Controller {
 
         if ($this->form_validation->run() == false) {
             $data['errors'] = null;
-            $this->update();
+            $this->updateRenter();
         } else {
             $this->M_account->editbiodata();
         }
@@ -69,74 +266,6 @@ class Account extends CI_Controller {
         } else {
             $this->M_account->mverif_akun();
         }
-    }
-
-    public function dashboard()
-    {
-<<<<<<< HEAD
-        $data['judul'] = "Dashboard";
-        $data['username'] = $this->session->userdata('username');
-        $this->load->view('template/account_header', $data);
-        $this->load->view('template/account_sidebar');
-        $this->load->view('template/account_topbar', $data);
-        $this->load->view('index', $data);
-        $this->load->view('template/account_footer');
-    }
-
-=======
-        // if($this->session->userdata('status') == 1) {
-        //     $this->update();
-        // }
-        // } else if ($this->session->userdata('status') == 2){
-        //     $this->dashboard();
-        // } else {
-        //     $this->load->view('account/beranda');
-        // }
-        $data['judul'] = "Dashboard";
-        $data['username'] = $this->session->userdata('username');
-        $this->load->view('beranda/themes/head');
-        $this->load->view('beranda/themes/renternav', $data);
-        $this->load->view('beranda/etalase');
-        $this->load->view('beranda/themes/foot');
-    }
-
-    public function renter()
-    {
-        if($this->session->userdata('status') == 1) {
-            $this->update();
-        }  else if ($this->session->userdata('status') == 2){
-            $this->read();
-        }
-    }
-
-    // public function renterProfile()
-    // {
-    //     $data['judul'] = "Dashboard";
-    //     $data['username'] = $this->session->userdata('username');
-    //     $this->load->view('beranda/themes/head');
-    //     $this->load->view('beranda/themes/renternav', $data);
-    //     $this->load->view('renterprofile');
-    //     $this->load->view('beranda/themes/foot');
-    // }
-
->>>>>>> Penyesuaian Frontend
-    public function update()
-    {
-        $data['judul'] = "Update Data Diri";
-        $data['daftar'] = $this->M_account->getUserData();
-        $data['username'] = $this->session->userdata('username');
-<<<<<<< HEAD
-        $this->load->view('template/account_header', $data);
-        $this->load->view('template/account_sidebar');
-        $this->load->view('template/account_topbar', $data);
-        $this->load->view('update', $data);
-        $this->load->view('template/account_footer');
-=======
-        $this->load->view('beranda/themes/head');
-        $this->load->view('beranda/themes/renternav', $data);
-        $this->load->view('renterprofile', $data);
-        $this->load->view('beranda/themes/foot');
->>>>>>> Penyesuaian Frontend
     }
 
     public function verif()
@@ -177,32 +306,6 @@ class Account extends CI_Controller {
         $this->load->view('template/account_footer');
     }
 
-    public function read()
-    {
-        if($this->session->userdata('status') == 1) {
-            redirect('account/update');
-        } else if ($this->session->userdata('status') == 2){
-            $id = $this->session->userdata('id');
-            $query = $this->db->query("select verif from user where id_user = $id");
-            $data['verif'] = $query->row()->verif;
-            $data['daftar'] = $this->M_account->getUserData();
-            $data['judul'] = "Biodata Diri";
-            $data['username'] = $this->session->userdata('username');
-<<<<<<< HEAD
-            $this->load->view('template/account_header', $data);
-            $this->load->view('template/account_sidebar');
-            $this->load->view('template/account_topbar', $data);
-            $this->load->view('read', $data);
-            $this->load->view('template/account_footer');
-=======
-            $this->load->view('beranda/themes/head');
-            $this->load->view('beranda/themes/renternav', $data);
-            $this->load->view('renterprofile', $data);
-            $this->load->view('beranda/themes/foot');
->>>>>>> Penyesuaian Frontend
-        }
-    }
-
     public function register()
     {
         $this->load->library(array('form_validation')); 
@@ -214,11 +317,7 @@ class Account extends CI_Controller {
         $this->form_validation->set_rules('password_conf','PASSWORD','required|matches[password] ');
         if($this->form_validation->run() == FALSE) { 
             if($this->session->userdata('username') == '') {
-<<<<<<< HEAD
-                $this->load->view('account/v_register');
-=======
                 $this->load->view('dashboard');
->>>>>>> Penyesuaian Frontend
             } else {
                 redirect(site_url('dashboard'));
             }
@@ -301,51 +400,5 @@ class Account extends CI_Controller {
         $this->db->where('id', $id);
         $this->db->delete('bank_profile');
         redirect('account/bank');
-    }
-
-    public function vendor()
-    {
-        $data['judul'] = "Data Vendor";
-        $data['username'] = $this->session->userdata('username');
-        $id = $this->session->userdata('id');
-        if($this->session->userdata('level') == 1 ){
-            redirect("account/dataVendor/$id");
-        } else {
-            $this->db->where('id_user', $id);
-            $data['vendor'] = $this->db->get('vendor_profile')->result_array();
-            $this->load->view('template/account_header', $data);
-            $this->load->view('template/account_sidebar');
-            $this->load->view('template/account_topbar', $data);
-            $this->load->view('vendor/index', $data);
-            $this->load->view('template/account_footer');
-        }
-    }
-
-    public function dataVendor($id) 
-    {
-        $data['judul'] = "Data Vendor";
-        $data['username'] = $this->session->userdata('username');
-        $data['id'] = $id;
-        $this->db->where('id_user', $id);
-        $data['vendor'] = $this->db->get('vendor_profile')->result_array();
-        $this->load->view('template/account_header', $data);
-        $this->load->view('template/account_sidebar');
-        $this->load->view('template/account_topbar', $data);
-        $this->load->view('vendor/update', $data);
-        $this->load->view('template/account_footer');
-    }
-
-    public function update_vendor($id)
-    {
-        $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
-        $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
-        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
-
-        if ($this->form_validation->run() == false) {
-            $data['errors'] = null;
-            $this->vendor();
-        } else {
-            $this->M_account->updateVendor();
-        }
     }
 }
