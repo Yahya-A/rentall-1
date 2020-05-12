@@ -69,10 +69,9 @@ class Simple_login {
         //cek session username 
         if($this->CI->session->userdata('username') == '') {
             //set notifikasi 
-            $this->CI->session->set_flashdata('sukses','Anda belum login');
             //alihkan ke halaman login
-            redirect(site_url('login'));    
-        }
+            redirect(site_url(''));    
+        } 
     }
     
     // public function cek_admin() {

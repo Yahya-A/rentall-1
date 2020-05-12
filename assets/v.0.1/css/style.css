@@ -141,7 +141,7 @@ main{
 }
 .tabmenu-item-right{
     transform: translateX(100%);
-    width: 40%;
+    width: 50%;
 }
 .tabmenu-item a{
     border-top: transparent !important;
@@ -155,10 +155,25 @@ main{
     border-bottom: 2px solid #1d09c9 !important;
     font-weight: bolder;
 }
+.stepmenu-item{
+    font-weight: lighter !important;
+}
+.stepmenu-item span.circle{
+    background-color: #4285F4!important;
+}
+.stepmenu-item .active{
+    font-weight: bold;
+}
+.stepmenu-item .active span.circle{
+    background-color: #ffbb33!important;
+}
+.stepmenu-item .active span.label{
+    color: #000;
+}
+
 .renter-info{
     height: auto;
 }
-
 .p-photo{
     width: 150px;
     height: auto;
@@ -219,3 +234,38 @@ input[type=file]{
     width: 0;
     height: 0;
 }
+.highlight{
+    transform: translateX(5%);
+    width: 90%;
+    border-radius: 50px;
+}
+.nav-active{
+    font-weight: bold;
+}
+.active-amber-textarea.md-form label.active {
+    color: #ffa000;
+  }
+  .amber-textarea textarea.md-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #ffa000;
+    box-shadow: 0 1px 0 0 #ffa000;
+  }
+  .amber-textarea.md-form .prefix.active {
+    color: #ffa000;
+  }
+  .active-amber-textarea.md-form textarea.md-textarea:focus:not([readonly])+label {
+    color: #ffa000;
+  }
+
+  .active-amber-input.md-form label.active {
+    color: #ffa000 !important;
+  }
+  .amber-input input.md-input:focus:not([readonly]) {
+    border-bottom: 1px solid #ffa000 !important;
+    box-shadow: 0 1px 0 0 #ffa000 !important;
+  }
+  .amber-input.md-form .prefix.active {
+    color: #ffa000 !important; 
+  }
+  .active-amber-input.md-form input.md-input:focus:not([readonly])+label {
+    color: #ffa000 !important;
+  }

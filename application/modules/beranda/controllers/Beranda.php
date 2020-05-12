@@ -14,19 +14,16 @@ class Beranda extends CI_Controller {
      
      public function index()
      {
+          if ($this->session->userdata('username') != '') {
+               redirect(site_url('account'));
+          }
           $data['kategori'] = $this->data;
           $data['title'] = "RentALL";
           $data['product'] = $this->mBeranda->getAllProduct();
-<<<<<<< HEAD
-          $this->load->view('template/beranda_header', $data);
-          $this->load->view('index', $data);
-          $this->load->view('template/beranda_footer');
-=======
           $this->load->view('themes/head');
           $this->load->view('themes/mainnav');
           $this->load->view('etalase');
           $this->load->view('themes/foot');
->>>>>>> Penyesuaian Frontend
      }
      
      public function daftar($id)

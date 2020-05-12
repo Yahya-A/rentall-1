@@ -230,7 +230,7 @@ class M_account extends CI_Model{
             $data['post']   = print_r($_POST, true);
             if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
                 $this->session->set_flashdata('error', $this->upload->display_errors('<p>', '</p>'));
-                redirect('account/vendor');
+                redirect('account/vendorBoard');
             } else {
                 if($update == 1){
                     $data = array(
@@ -281,6 +281,6 @@ class M_account extends CI_Model{
         $this->db->where('id_user', $id);
         $this->db->update('user', $data);
 
-        redirect('account/vendor');
+        redirect('account/vendorBoard');
     }
 } 
