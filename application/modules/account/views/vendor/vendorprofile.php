@@ -40,7 +40,9 @@
                       <h4 class="p2">Detail Profil
                     </h4> 
                     </div>
-                    <form class="user" method="POST" action="<?= base_url("account/update_vendor/").$get_id?>" enctype="multipart/form-data">
+                    <?php foreach ($vendor as $p) :?>
+                    <form class="user" method="POST" action="<?= base_url("account/update_vendor/").$p['id_user']?>" enctype="multipart/form-data">
+                    <?php endforeach;?>
                         <div class="row">
                         <?php 
                         if ($vendor != null):

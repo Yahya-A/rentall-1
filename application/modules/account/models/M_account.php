@@ -124,7 +124,7 @@ class M_account extends CI_Model{
 
         $this->session->set_userdata('status', 2);
 
-        redirect('account/read');
+        redirect('account/readRenter');
     }
     
     public function mverif_akun()

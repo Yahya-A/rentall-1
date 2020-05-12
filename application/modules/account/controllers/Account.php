@@ -127,7 +127,6 @@ class Account extends CI_Controller {
             );
             $this->db->where('id_user', $id);
             $data['vendor'] = $this->db->get('vendor_profile')->result_array();
-            $data['get_id']= $id;
             $this->load->view('beranda/themes/head');
             $this->load->view('beranda/themes/vendornav', $data);
             $this->load->view('vendor/index', $data);
@@ -174,6 +173,7 @@ class Account extends CI_Controller {
             '2' => '',
             '3' => ''
         );
+        $data['username'] = $this->session->userdata('username');
         $data['vendor'] = $this->db->get('vendor_profile')->result_array();
         $this->load->view('beranda/themes/head');
         $this->load->view('beranda/themes/vendornav', $data);
@@ -188,6 +188,7 @@ class Account extends CI_Controller {
             '2' => 'font-weight-bold',
             '3' => ''
         );
+        $data['username'] = $this->session->userdata('username');
         $data['vendor'] = $this->db->get('vendor_profile')->result_array();
         $this->load->view('beranda/themes/head');
         $this->load->view('beranda/themes/vendornav', $data);
@@ -195,10 +196,10 @@ class Account extends CI_Controller {
         $this->load->view('beranda/themes/foot');
     }
 
-    public function vendorProfile($id)
+    public function vendorProfile()
     {
         $data['active'] = array(
-            '1' => 'font-weight-bold',
+            '1' => '',
             '2' => '',
             '3' => ''
         );
@@ -207,7 +208,6 @@ class Account extends CI_Controller {
         $id = $this->session->userdata('id');
         $this->db->where('id_user', $id);
         $data['vendor'] = $this->db->get('vendor_profile')->result_array();
-        $data['get_id']= $id;
         $this->load->view('beranda/themes/head');
         $this->load->view('beranda/themes/vendornav', $data);
         $this->load->view('vendor/vendorprofile', $data);
@@ -248,7 +248,7 @@ class Account extends CI_Controller {
 
         if ($this->form_validation->run() == false) {
             $data['errors'] = null;
-            $this->update();
+            $this->updateRenter();
         } else {
             $this->M_account->editbiodata();
         }
