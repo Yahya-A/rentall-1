@@ -71,19 +71,19 @@ class Simple_login {
             //set notifikasi 
             $this->CI->session->set_flashdata('sukses','Anda belum login');
             //alihkan ke halaman login
-            redirect(site_url('login'));    
+            redirect(site_url('account'));    
         }
     }
     
-    // public function cek_admin() {
-    //     //cek session username 
-    //     if($this->CI->session->userdata('level') == 0) {
-    //         //set notifikasi 
-    //         $this->CI->session->set_flashdata('sukses','Halaman hanya untuk admin');
-    //         //alihkan ke halaman login
-    //         redirect(site_url(''));
-    //     }
-    // }
+    public function cek_admin() {
+        //cek session username 
+        if($this->CI->session->userdata('level') == 1 || $this->CI->session->userdata('level') == '') {
+            //set notifikasi 
+            $this->CI->session->set_flashdata('sukses','Halaman hanya untuk admin');
+            //alihkan ke halaman login
+            redirect('account');
+        }
+    }
 
     /**
     * Hapus session, lalu set notifikasi kemudian di alihkan * ke halaman login

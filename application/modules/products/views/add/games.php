@@ -12,11 +12,8 @@
                 <div class="col-6">
                     <div class="form-group">
                         <input type="text" name="nama_produk" class="form-control form-control-user" placeholder="Nama Produk">
+                        <input type="text" name="id_kat" value="games" hidden>
                         <?= form_error('nama_produk', '<small class="text-danger">', '<small>'); ?>
-                    </div>
-                    <div class="form-group mt-4">
-                        <input type="text" name="merk" class="form-control form-control-user" placeholder="Merk Item">
-                        <?= form_error('merk', '<small class="text-danger">', '<small>'); ?>
                     </div>
                 </div>
                 <div class="col-6">
@@ -24,6 +21,21 @@
                         <input type="text" name="harga" class="form-control form-control-user" placeholder="Biaya perhari">
                         <?= form_error('harga', '<small class="text-danger">', '<small>'); ?>
                     </div>
+                </div>
+                
+                <div class="col-3">
+                    <div class="form-group mt-2">
+                        <input type="text" name="merk" class="form-control form-control-user" placeholder="Merk Item">
+                        <?= form_error('merk', '<small class="text-danger">', '<small>'); ?>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group mt-2">
+                        <input type="text" name="stock" class="form-control form-control-user" placeholder="Stock Item">
+                        <?= form_error('stock', '<small class="text-danger">', '<small>'); ?>
+                    </div>
+                </div>
+                <div class="col-6">
                     <div class="form-group">
                             <span class="h6 mr-2">Kategori Item</span>
                                 <select name="kategori_produk" class="form-control form-control-user">
@@ -36,48 +48,80 @@
                             <?= form_error('kategori_produk', '<small class="text-danger">', '<small>'); ?>
                     </div>
                 </div>
-                <div class="col-4 mt-2">
+
+                <div class="col-3 mt-2">
                     <div class="form-group">
-                        <input type="text" name="kondisi" class="form-control form-control-user" placeholder="Kondisi Item">
+                        <input type="text" name="deposit" class="form-control form-control-user" placeholder="Deposit">
+                        <?= form_error('deposit', '<small class="text-danger">', '<small>'); ?>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <span class="h6 mr-2">Kondisi Item</span>
+                            <select name="kondisi" class="form-control form-control-user">
+                                <option value='1'>Baru</option>
+                                <option value='2'>Sangat Bagus</option>
+                                <option value='3'>Bagus</option>
+                                <option value='4'>Layak</option>
+                                <option value='5'>Rapuh</option>
+                            </select>
                         <?= form_error('kondisi', '<small class="text-danger">', '<small>'); ?>
                     </div>
                 </div>
-                <div class="col-4 mt-2">
+                <div class="col-3">
                     <div class="form-group">
-                        <input type="text" name="antar" class="form-control form-control-user" placeholder="Antar Item">
+                        <span class="h6 mr-2">Antar Item</span>
+                            <select name="antar" class="form-control form-control-user">
+                                <option value='2'>Tidak</option>
+                                <option value='1'>Ya</option>
+                            </select>
                         <?= form_error('antar', '<small class="text-danger">', '<small>'); ?>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <div class="form-group">
                             <span class="h6">Gambar Item</span>
                             <input type="file" name="upload_image" id="upload_image" >
                             <?= form_error('upload_image', '<small class="text-danger">', '<small>'); ?>
                     </div>
                 </div>
-                <div class="col-4">
+
+                <!---- INPUT INDIVIDU -->
+                <div class="col-4 mt-2">
                     <div class="form-group">
-                        <input type="text" name="berat" class="form-control form-control-user" placeholder="Berat Item">
+                        <input type="text" name="berat" class="form-control form-control-user" placeholder="Berat">
                         <?= form_error('berat', '<small class="text-danger">', '<small>'); ?>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-4 mt-2">
                     <div class="form-group">
-                        <input type="text" name="material" class="form-control form-control-user" placeholder="Material Item">
-                        <?= form_error('material', '<small class="text-danger">', '<small>'); ?>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group">
-                        <input type="text" name="ukuran" class="form-control form-control-user" placeholder="Ukuran Item">
+                        <input type="text" name="ukuran" class="form-control form-control-user" placeholder="Ukuran">
                         <?= form_error('ukuran', '<small class="text-danger">', '<small>'); ?>
                     </div>
                 </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <span class="h6 mr-2">Gender</span>
+                            <select name="gender" class="form-control form-control-user">
+                                <option value='0'>Belum Memilih</option>
+                                <option value='1'>Semua</option>
+                                <option value='2'>Perempuan</option>
+                                <option value='3'>laki-Laki</option>
+                                <option value='4'>Anak-Anak</option>
+                            </select>
+                        <?= form_error('gender', '<small class="text-danger">', '<small>'); ?>
+                    </div>
+                </div>
+                <!---- END INPUT INDIVIDU -->
+
                 <div class="col-12">
                     <div class="form-group">
                         <input type="text" name="deskripsi" class="form-control form-control-user" placeholder="Deskripsi Item">
                         <?= form_error('deskripsi', '<small class="text-danger">', '<small>'); ?>
                     </div>
+                </div>
+
+                <div class="col-12">
                     <center>
                         <input class="btn btn-primary btn-user btn-block mt-4 w-50 center" type="submit" name="btnSubmit" value="Tambah Item" /> 
                     </center>

@@ -3,19 +3,12 @@
 
     <!-- Page Heading -->
     <div class="row">
-        <h1 class="h3 mb-4 text-gray-800 ml-3">Daftar Item</h1>
-        <?php if($this->session->flashdata('error') == TRUE): ?>
-        <div class="alert alert-danger alert-dismissible fade show ml-5" role="alert">
-            <?= $this->session->flashdata('error'); ?>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <?php endif; ?>
-        <a class="btn btn-primary text-white h3 mb-4 ml-auto mr-3" data-toggle="modal" data-target="#addItem">Tambah Item</a>
+        <h1 class="h3 mb-4 text-gray-800 ml-3"><?= $detail['0']['nama']; var_dump($detail) ?></h1>
+        <a class="btn btn-primary h3 mb-4 ml-auto mr-3" href="<?= base_url('products'); ?>">Daftar Item</a> 
         
     </div>
-    <!-- DataTales Example -->
+
+    <!-- INFO UMUM -->
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
@@ -31,12 +24,11 @@
                             <th>Kondisi</th>
                             <th>Deskripsi</th>
                             <th>Antar</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php 
-                        foreach ($items as $p) : 
+                        foreach ($detail as $p) : 
                             switch ($p['antar']) {
                                 case '1':
                                     $antar = "Ya";
@@ -80,13 +72,6 @@
                                 <td><?= $kondisi ?></td>
                                 <td><?= $p['deskripsi'] ?></td>
                                 <td><?= $antar ?></td>
-                                <td>
-                                    <center>
-                                        <a class="btn btn-primary" href="<?= base_url('products/read/'), $p['id_item'] ?>">Lihat</a>
-                                        <!-- <a class="btn btn-success" href="<?= base_url('products/edit/'), $p['id_item'] ?>">Edit</a>
-                                        <a class="btn btn-danger" href="<?= base_url('products/delete/'), $p['id_item'] ?>">Hapus</a> -->
-                                    <center>
-                                </td>
                             </tr>
                         <? endforeach; ?>
                     </tbody>
@@ -94,27 +79,53 @@
             </div>
         </div>
     </div>
+    <!-- END INFO UMUM -->
 
-</div>
-
-<div class="modal fade" id="addItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pilih Kategori</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <center>
-                    <?php foreach ($kategori as $p): 
-                    $myvalue = $p['kategori'];
-                    $kategori = explode(' ',trim($myvalue));?>
-                        <a class="btn btn-primary m-2" href="<?= base_url('products/add/'), $kategori[0] ?>"><?= $p['kategori'] ?></a>
-                    <? endforeach; ?>
-                </center>
+    <!-- INFO SPESIFIK-->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Berat</th>
+                            <th>Ukuran</th>
+                            <th>Gender</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($detail as $p) :
+                            
+                            switch ($p['gender']) {
+                                case '1':
+                                    $gender = "Semua";
+                                    break;
+                                case '2':
+                                    $gender = "Perempuan";
+                                    break;
+                                case '3':
+                                    $gender = "Laki-Laki";
+                                    break;
+                                case '4':
+                                    $gender = "Anak-Anak";
+                                    break;
+                                
+                                default:
+                                    $gender = "Belum Memilih";
+                                    break;
+                            }
+                            ?>
+                            <tr>
+                                <td><?= $p['berat'] ?></td>
+                                <td><?= $p['ukuran'] ?></td>
+                                <td><?= $gender ?></td>
+                            </tr>
+                        <? endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+    <!-- END INFO SPESIFIK-->
+
 </div>
