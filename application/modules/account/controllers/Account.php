@@ -340,6 +340,7 @@ class Account extends CI_Controller {
         $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
         $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
+        $this->form_validation->set_rules('kota', 'Kota', 'trim|required');
 
         if ($this->form_validation->run() == false) {
             $data['errors'] = null;

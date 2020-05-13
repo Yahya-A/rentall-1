@@ -13,6 +13,7 @@
                         <tr>
                             <th>Nama</th>
                             <th>Alamat</th>
+                            <th>Kota</th>
                             <th>Deskripsi</th>
                             <th>Foto</th>
                         </tr>
@@ -22,6 +23,7 @@
                             <tr>
                                 <td><?= $p['nama_vendor'] ?></td>
                                 <td><?= $p['alamat'] ?></td>
+                                <td><?= $p['kota'] ?></td>
                                 <td><?= $p['deskripsi_vendor'] ?></td>
                                 <td>
                                     <center>
