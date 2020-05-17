@@ -124,7 +124,7 @@ class M_account extends CI_Model{
 
         $this->session->set_userdata('status', 2);
 
-        redirect('account/read');
+        redirect('account/readRenter');
     }
     
     public function mverif_akun()
@@ -136,7 +136,7 @@ class M_account extends CI_Model{
         $image2 = $this->input->post('upload_image2', true);
         $update = $this->input->post('id', true);
         if( $update != ""){
-            $update = 1;
+            $update = 2;
         } else {
             $update = 0;
         }
@@ -231,7 +231,7 @@ class M_account extends CI_Model{
             $data['post']   = print_r($_POST, true);
             if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
                 $this->session->set_flashdata('error', $this->upload->display_errors('<p>', '</p>'));
-                redirect('account/vendor');
+                redirect('account/vendorBoard');
             } else {
                 if($update == 1){
                     $data = array(
@@ -286,6 +286,6 @@ class M_account extends CI_Model{
         $this->db->where('id_user', $id_user);
         $this->db->update('user', $data);
 
-        redirect('account/vendor');
+        redirect('account/vendorBoard');
     }
 } 

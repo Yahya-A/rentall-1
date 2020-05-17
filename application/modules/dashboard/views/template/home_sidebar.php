@@ -43,6 +43,11 @@
             <i class="fas fa-folder"></i>
             <span>Daftar Pesanan</span></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('dashboard/verifRequest'); ?>">
+            <i class="fas fa-folder"></i>
+            <span>Request Verifikasi</span></a>
+    </li>
 
 
     <?php if($this->session->userdata('role') == '1'): ?>

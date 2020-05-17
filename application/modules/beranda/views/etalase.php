@@ -1,3 +1,8 @@
+<!-- <?php
+if ($username=='') {
+  echo $showmodal;  
+}
+?> -->
 <main>
     <div class="container text-center">
 
