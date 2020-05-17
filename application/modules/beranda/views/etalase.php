@@ -357,3 +357,56 @@ if ($username=='') {
     <!--/.Content-->
   </div>
 </div>
+
+<!-- Modal Form Aktivasi -->
+<div class="modal fade" id="ModalAktivasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-info" role="document">
+    <!--Content-->
+    <div class="modal-content m-form">
+      <!--Header-->
+      <div class="modal-header text-center indigo accent-4">
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Aktivasi Ulang</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <?php echo form_open('account/aktivasi');?>
+          <div class="modal-body mx-3">
+            <div class="md-form mb-5">
+              <i class="fas fa-envelope prefix grey-text"></i>
+              <input type="text" id="defaultForm-email" class="form-control validate" name="username" value="<?php echo set_value('username'); ?>">
+              <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
+            </div>
+            <p> <?php echo form_error('username'); ?> </p> 
+            
+            <div class="md-form mb-5">
+              <i class="fas fa-envelope prefix grey-text"></i>
+              <input type="text" id="defaultForm-email" class="form-control validate" name="email" value="<?php echo set_value('email'); ?>">
+              <label data-error="wrong" data-success="right" for="defaultForm-email">Email</label>
+            </div>
+            <p> <?php echo form_error('email'); ?> </p> 
+
+            <div class="md-form mb-4">
+              <i class="fas fa-lock prefix grey-text"></i>
+              <input type="password" id="defaultForm-pass" class="form-control validate" name="password" value="<?php echo set_value('password'); ?>">
+              <label data-error="wrong" data-success="right" for="defaultForm-pass">Your password</label>
+            </div>
+            <p> <?php echo form_error('password'); ?> </p>
+
+          </div>
+
+          <!--Footer-->
+          <div class="modal-footer justify-content-center">
+            <button type="submit" class="btn btn-outline-warning waves-effect" name="btnSubmit" value="Login">Aktivasi<i class="fas fa-paper-plane-o ml-1"></i></button>
+          </div>
+        <?php echo form_close();?>
+  
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
