@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="<?php echo base_url('assets/v.0.1/css/bootstrap.min.css')?>">
   <!-- Material Design Bootstrap -->
   <link rel="stylesheet" href="<?php echo base_url('assets/v.0.1/css/mdb.min.css')?>">
+  <!-- MDBootstrap Datatables  -->
+  <link href="<?php echo base_url('assets/v.0.1/css/addons/datatables2.min.css')?>" rel="stylesheet">
   <!-- MDB eCommerce core CSS -->
   <link rel="stylesheet" href="<?php echo base_url('assets/v.0.1/css/mdb-ecommerce.min.css')?>">
   <!-- Your custom styles (optional) -->

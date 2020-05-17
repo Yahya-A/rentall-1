@@ -8,20 +8,24 @@ class Products extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Items');
-        $this->simple_login->cek_admin();
+        // $this->simple_login->cek_admin();
     }
 
     public function index()
     {
+        $data['active'] = array(
+            '1' => 'font-weight-bold',
+            '2' => '',
+            '3' => ''
+        );
         $data['judul'] = "Daftar Produk";
         $data['items'] = $this->Items->getAllBarang();
         $data['kategori'] = $this->Items->getAllKategori();
         $data['username'] = $this->session->userdata('username');
-        $this->load->view('account/template/account_header', $data);
-        $this->load->view('account/template/account_sidebar');
-        $this->load->view('account/template/account_topbar', $data);
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/vendornav', $data);
         $this->load->view('index', $data);
-        $this->load->view('account/template/account_footer');
+        $this->load->view('beranda/themes/foot');
     }
 
     public function read($id)
@@ -54,14 +58,19 @@ class Products extends CI_Controller
         
     }
 
+
     public function add($kategori)
     {
+        $data['active'] = array(
+            '1' => '',
+            '2' => '',
+            '3' => ''
+        );
         $data['judul'] = "Tambah Item";
         $data['username'] = $this->session->userdata('username');
         $data['kategori'] = $this->Items->getKategori($kategori);
-        $this->load->view('account/template/account_header', $data);
-        $this->load->view('account/template/account_sidebar');
-        $this->load->view('account/template/account_topbar', $data);
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/vendornav', $data);
         switch ($kategori) {
             case 'Elektronik':
                 $this->load->view('add/elektronik', $data);
@@ -79,7 +88,7 @@ class Products extends CI_Controller
                 redirect('products');
             break;
         }
-        $this->load->view('account/template/account_footer');
+        $this->load->view('beranda/themes/foot');
         
     }
 
@@ -110,7 +119,24 @@ class Products extends CI_Controller
         $this->form_validation->set_rules('antar', 'Kategori', 'trim|required');
 
         if ($this->form_validation->run() == false) {
-            redirect('products');
+            switch ($kategori) {
+                case 'Elektronik':
+                    redirect('products/add/elektronik');
+                break;
+                case 'Games':
+                    redirect('products/add/games');
+                break;
+                case 'Otomotif':
+                    redirect('products/add/otomotif');
+                break;
+                case 'Photography':
+                    redirect('products/add/photography');
+                break;
+                default:
+                    redirect('products');
+                break;
+            }
+            // redirect('products/add/');
         } else {
             $nama_produk = $this->input->post('nama_produk', true);
             $harga = $this->input->post('harga', true);
@@ -124,10 +150,10 @@ class Products extends CI_Controller
 
             $this->db->select_max('id_item');
             $query = $this->db->get('items')->row();
-            if ($query->id_item == null){
+            if ($query->id_item == ''){
                 $id_items = 1;
             } else {
-                $id_items = ($query->id_item) + 1;
+                $id_items = $query->id_item + 1;
             }
 
             $config = array(

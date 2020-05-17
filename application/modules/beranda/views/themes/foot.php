@@ -76,6 +76,8 @@
     <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/bootstrap.min.js')?>"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/mdb.min.js')?>"></script>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/addons/datatables2.min.js')?>"></script>
       <!-- MDB eCommerce core JavaScript -->
       <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/mdb-ecommerce.min.js')?>"></script>
     <!-- Your custom scripts (optional) -->
@@ -94,6 +96,23 @@
     
     $("#upload_image").change(function(){
         readURL(this);
+    });
+
+    $(document).ready(function () {
+      $('#dt-vertical-scroll').dataTable({
+        "paging": false,
+        "fnInitComplete": function () {
+          var myCustomScrollbar = document.querySelector('#dt-vertical-scroll_wrapper .dataTables_scrollBody');
+          var ps = new PerfectScrollbar(myCustomScrollbar);
+        },
+        "scrollY": 450,
+      });
+    });
+    $(document).ready(function () {
+      //Pagination First/Last Numbers
+      $('#paginationFirstLast').DataTable({
+        "pagingType": "first_last_numbers"
+      });
     });
         new WOW().init();
     </script>

@@ -34,12 +34,12 @@
             </span>
             <div class="container-login100-form-btn">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <a class="login100-form-btn" href="<?= base_url('account/login'); ?>">
                             Login
                         </a>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <a class="login100-form-btn" href="<?= base_url('account/register'); ?>">
                             Register
                         </a>
