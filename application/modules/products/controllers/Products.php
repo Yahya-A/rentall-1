@@ -8,7 +8,7 @@ class Products extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Items');
-        $this->simple_login->cek_admin();
+        $this->simple_login->cek_vendor();
     }
 
     public function index()
