@@ -136,7 +136,7 @@ class M_account extends CI_Model{
         $image2 = $this->input->post('upload_image2', true);
         $update = $this->input->post('id', true);
         if( $update != ""){
-            $update = 1;
+            $update = 2;
         } else {
             $update = 0;
         }

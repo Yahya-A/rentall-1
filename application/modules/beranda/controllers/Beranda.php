@@ -15,7 +15,12 @@ class Beranda extends CI_Controller {
      public function index()
      {
           if ($this->session->userdata('username') != '') {
-               redirect(site_url('account'));
+               $data['showmodal'] = "<script type='text/javascript'>
+                                   $(document).ready(function(){
+                                   $('#Modal').modal('show');
+                                   });
+                                   </script>";
+               
           }
           $data['kategori'] = $this->data;
           $data['title'] = "RentALL";

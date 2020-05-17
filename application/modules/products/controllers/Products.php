@@ -7,50 +7,101 @@ class Products extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->simple_login->cek_admin();
-        $this->load->model('Barang');
+        $this->load->model('Items');
+        // $this->simple_login->cek_admin();
     }
 
     public function index()
     {
+        $data['active'] = array(
+            '1' => 'font-weight-bold',
+            '2' => '',
+            '3' => ''
+        );
         $data['judul'] = "Daftar Produk";
-        $data['barang'] = $this->Barang->getAllBarang();
+        $data['items'] = $this->Items->getAllBarang();
+        $data['kategori'] = $this->Items->getAllKategori();
         $data['username'] = $this->session->userdata('username');
-        $this->load->view('dashboard/template/home_header', $data);
-        $this->load->view('dashboard/template/home_sidebar');
-        $this->load->view('dashboard/template/home_topbar', $data);
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/vendornav', $data);
         $this->load->view('index', $data);
-        $this->load->view('dashboard/template/home_footer');
+        $this->load->view('beranda/themes/foot');
     }
 
-    public function add()
+    public function read($id)
     {
-        $data['kategori'] = $this->Barang->getAllKategori();
-        if (!$this->Barang->getAllKategori()) {
-            $this->session->set_flashdata('error', 'Kategori tidak ditemukan, silahkan tambahkan kategori terlebih dahulu');
-            redirect('products');
-        } else {
-            $data['judul'] = "Tambah Produk";
-            $data['username'] = $this->session->userdata('username');
-            $this->load->view('dashboard/template/home_header', $data);
-            $this->load->view('dashboard/template/home_sidebar');
-            $this->load->view('dashboard/template/home_topbar', $data);
-            $this->load->view('add', $data);
-            $this->load->view('dashboard/template/home_footer');
+        $data['username'] = $this->session->userdata('username');
+        //digunakan untuk menampilkan data product
+
+        $data['judul'] = "Daftar Produk";
+        $data['detail'] = $this->Items->getDetail($id);
+        $this->load->view('account/template/account_header', $data);
+        $this->load->view('account/template/account_sidebar');
+        $this->load->view('account/template/account_topbar', $data);
+        switch ($data['detail']['0']['kategori']) {
+            case 'Elektronik & Gadgets':
+                $this->load->view('read/elektronik', $data);
+            break;
+            case 'Games & Toys':
+                $this->load->view('read/games', $data);
+            break;
+            case 'Otomotif':
+                $this->load->view('read/otomotif', $data);
+            break;
+            case 'Photography & Videography':
+                $this->load->view('read/photography', $data);
+            break;
+            default:
+            break;
         }
+        $this->load->view('account/template/account_footer');
+        
+    }
+
+    public function add($kategori)
+    {
+        $data['active'] = array(
+            '1' => '',
+            '2' => '',
+            '3' => ''
+        );
+        $data['judul'] = "Tambah Item";
+        $data['username'] = $this->session->userdata('username');
+        $data['kategori'] = $this->Items->getKategori($kategori);
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/vendornav', $data);
+        switch ($kategori) {
+            case 'Elektronik':
+                $this->load->view('add/elektronik', $data);
+            break;
+            case 'Games':
+                $this->load->view('add/games', $data);
+            break;
+            case 'Otomotif':
+                $this->load->view('add/otomotif', $data);
+            break;
+            case 'Photography':
+                $this->load->view('add/photography', $data);
+            break;
+            default:
+                redirect('products');
+            break;
+        }
+        $this->load->view('beranda/themes/foot');
+        
     }
 
     public function edit($id)
     {
         $data['judul'] = "Edit Produk";
-        $data['kategori'] = $this->Barang->getAllKategori();
-        $data['edit'] = $this->Barang->getBarang($id);
+        $data['kategori'] = $this->Items->getAllKategori();
+        $data['edit'] = $this->Items->getBarang($id);
         $data['username'] = $this->session->userdata('username');
-        $this->load->view('dashboard/template/home_header', $data);
-        $this->load->view('dashboard/template/home_sidebar');
-        $this->load->view('dashboard/template/home_topbar', $data);
+        $this->load->view('account/template/account_header', $data);
+        $this->load->view('account/template/account_sidebar');
+        $this->load->view('account/template/account_topbar', $data);
         $this->load->view('edit', $data);
-        $this->load->view('dashboard/template/home_footer');
+        $this->load->view('account/template/account_footer');
     }
 
     public function tambah_produk()
@@ -58,73 +109,89 @@ class Products extends CI_Controller
         $username = $this->session->userdata('username');
 
         $this->form_validation->set_rules('nama_produk', 'Nama', 'trim|required');
-        $this->form_validation->set_rules('harga_produk', 'Harga', 'trim|required');
-        $this->form_validation->set_rules('deskripsi_produk', 'Deskripsi', 'trim|required');
+        $this->form_validation->set_rules('harga', 'Harga', 'trim|required|numeric');
+        $this->form_validation->set_rules('stock', 'Stock', 'trim|required|numeric');
+        $this->form_validation->set_rules('deposit', 'Deposit', 'trim|numeric');
+        $this->form_validation->set_rules('merk', 'Deskripsi', 'trim|required');
         $this->form_validation->set_rules('kategori_produk', 'Kategori', 'trim|required');
+        $this->form_validation->set_rules('kondisi', 'Kondisi', 'trim|required');
+        $this->form_validation->set_rules('antar', 'Kategori', 'trim|required');
 
         if ($this->form_validation->run() == false) {
-            $data['errors'] = null;
-            $this->load->view('dashboard/template/home_header', $data);
-            $this->load->view('dashboard/template/home_sidebar');
-            $this->load->view('dashboard/template/home_topbar');
-            $this->load->view('add', $data);
-            $this->load->view('dashboard/template/home_footer');
+            switch ($kategori) {
+                case 'Elektronik':
+                    redirect('products/add/elektronik');
+                break;
+                case 'Games':
+                    redirect('products/add/games');
+                break;
+                case 'Otomotif':
+                    redirect('products/add/otomotif');
+                break;
+                case 'Photography':
+                    redirect('products/add/photography');
+                break;
+                default:
+                    redirect('products');
+                break;
+            }
+            // redirect('products/add/');
         } else {
-            $this->_tambahproduk();
-        }
-    }
+            $nama_produk = $this->input->post('nama_produk', true);
+            $harga = $this->input->post('harga', true);
+            $merk = $this->input->post('merk', true);
+            $kategori_produk = $this->input->post('kategori_produk', true);
+            $kondisi = $this->input->post('kondisi', true);
+            $antar = $this->input->post('antar', true);
+            $stock = $this->input->post('stock', true);
+            $deposit = $this->input->post('deposit', true);
+            $deskripsi = $this->input->post('deskripsi', true);
 
-    private function _tambahproduk()
-    {
-        $nama_produk = $this->input->post('nama_produk', true);
-        $harga_produk = $this->input->post('harga_produk', true);
-        $deskripsi_produk = $this->input->post('deskripsi_produk', true);
-        $kategori_produk = $this->input->post('kategori_produk', true);
-        $total_produk = $this->db->count_all_results('products');
-        $final = $total_produk + 1;
+            $this->db->select_max('id_item');
+            $query = $this->db->get('items')->row();
+            if ($query->id_item == ''){
+                $id_items = 1;
+            } else {
+                $id_items = $query->id_item + 1;
+            }
 
-        $config = array(
-            'upload_path' => "./assets/img/produk/",
-            'allowed_types' => "gif|jpg|png|jpeg",
-            'overwrite' => TRUE,
-            'file_name' => $final . ".jpeg"
-        );
-
-        $this->load->library('upload', $config);
-        $this->upload->initialize($config);
-        $this->upload->do_upload('upload_image');
-
-        $data['errors'] = $this->upload->display_errors('<p>', '</p>');
-        $data['result'] = print_r($this->upload->data(), true);
-        $data['files']  = print_r($_FILES, true);
-        $data['post']   = print_r($_POST, true);
-        if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
-            $this->session->set_flashdata('error', $this->upload->display_errors('<p>', '</p>'));
-            redirect('products');
-        } else {
-            $dataa = array(
-                'prod_id' => $final,
-                'vend_id' => $final,
-                'prod_name' => $nama_produk,
-                'prod_price' => $harga_produk,
-                'prod_desc' => $deskripsi_produk,
-                'prod_image' => $config['file_name'],
-                'cat_id' => $kategori_produk
+            $config = array(
+                'upload_path' => "./assets/img/produk/",
+                'allowed_types' => "gif|jpg|png|jpeg",
+                'overwrite' => TRUE,
+                'file_name' => $id_items . ".jpeg"
             );
-
-            $this->db->insert('products', $dataa);
-
-            $ip_address = $_SERVER['REMOTE_ADDR'];
-            $username = $this->session->userdata('username');
-            $keterangan = "Menambahkan produk $nama_produk";
-            $data = array(
-                'username' => $username,
-                'ip' => $ip_address,
-                'keterangan' => $keterangan
-            );
-            $this->db->insert('log', $data);
-
-            redirect('products');
+    
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+            $this->upload->do_upload('upload_image');
+    
+            $data['errors'] = $this->upload->display_errors('<p>', '</p>');
+            $data['result'] = print_r($this->upload->data(), true);
+            $data['files']  = print_r($_FILES, true);
+            $data['post']   = print_r($_POST, true);
+    
+            if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
+                $this->session->set_flashdata('error', $this->upload->display_errors('<p>', '</p>'));
+                redirect('products');
+            } else {
+                $items = array(
+                    'nama' => $nama_produk,
+                    'harga' => $harga,
+                    'merk' => $merk,
+                    'id_kategori' => $kategori_produk,
+                    'kondisi' => $kondisi,
+                    'antar' => $antar,
+                    'foto' => $config['file_name'], 
+                    'deskripsi' => $deskripsi,
+                    'stock' => $stock,
+                    'deposit' => $deposit,
+                    'status' => 1
+                );
+                $this->Items->insertBarang($items, $id_items);
+    
+                redirect('products');
+            }
         }
     }
 
@@ -178,11 +245,11 @@ class Products extends CI_Controller
             $data['post']   = print_r($_POST, true);
             if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
                 $data['username'] = $this->session->userdata('username');
-                $this->load->view('dashboard/template/home_header', $data);
-                $this->load->view('dashboard/template/home_sidebar');
-                $this->load->view('dashboard/template/home_topbar');
+                $this->load->view('account/template/account_header', $data);
+                $this->load->view('account/template/account_sidebar');
+                $this->load->view('account/template/account_topbar');
                 $this->load->view('add', $data);
-                $this->load->view('dashboard/template/home_footer');
+                $this->load->view('account/template/account_footer');
             } else {
                 $data = array(
                     'prod_id' => $final,

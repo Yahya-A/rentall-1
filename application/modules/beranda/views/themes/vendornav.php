@@ -17,7 +17,7 @@
       <!-- Right -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item mr-3">
-          <a class="nav-link <?= $active['1']?>" href="<?= base_url('account/vendorBoard')?>">Item Saya</a>
+          <a class="nav-link <?= $active['1']?>" href="<?= base_url('products')?>">Item Saya</a>
         </li>
         <li class="nav-item mr-2">
             <a class="nav-link <?= $active['2']?>" href="<?= base_url('account/penyewaanVendor')?>">Penyewaan</a>

@@ -15,7 +15,7 @@ class Account extends CI_Controller {
         } else if ($this->session->userdata('status') == 2){
             $this->renterEtalase();
         } else {
-            $this->load->view('account/beranda');
+            redirect(site_url());
         }
     }
 
@@ -109,28 +109,29 @@ class Account extends CI_Controller {
 
     public function vendorBoard()
     {
-        $data['active'] = array(
-            '1' => '',
-            '2' => '',
-            '3' => ''
-        );
+        // $data['active'] = array(
+        //     '1' => '',
+        //     '2' => '',
+        //     '3' => ''
+        // );
         $data['judul'] = "Data Vendor";
         $data['username'] = $this->session->userdata('username');
         $id = $this->session->userdata('id');
         if($this->session->userdata('level') == 1 ){
             redirect("account/dataVendor/$id");
         } else {
-            $data['active'] = array(
-                '1' => 'font-weight-bold',
-                '2' => '',
-                '3' => ''
-            );
-            $this->db->where('id_user', $id);
-            $data['vendor'] = $this->db->get('vendor_profile')->result_array();
-            $this->load->view('beranda/themes/head');
-            $this->load->view('beranda/themes/vendornav', $data);
-            $this->load->view('vendor/index', $data);
-            $this->load->view('beranda/themes/foot');
+            $this->vendorProfile();
+            // $data['active'] = array(
+            //     '1' => 'font-weight-bold',
+            //     '2' => '',
+            //     '3' => ''
+            // );
+            // $this->db->where('id_user', $id);
+            // $data['vendor'] = $this->db->get('vendor_profile')->result_array();
+            // $this->load->view('beranda/themes/head');
+            // $this->load->view('beranda/themes/vendornav', $data);
+            // $this->load->view('products/index', $data);
+            // $this->load->view('beranda/themes/foot');
         }
     }
 

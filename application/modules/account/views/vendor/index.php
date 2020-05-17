@@ -90,23 +90,13 @@
         <!--Body-->
         <div class="modal-body">
           <i class="fas fa-filter fa-3x animated rotateIn"></i>
-
-          <div class="md-form mt-4">
-            <select class="custom-select custom-select-sm">
-              <option selected>Pilih Kategori Utama</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-          </div>
-          <div class="md-form mt-4">
-            <select class="custom-select custom-select-sm">
-              <option selected>Pilih Sub Kategori</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-          </div>
+          <?php foreach ($kategori as $p): 
+            $myvalue = $p['kategori'];
+            $kategori = explode(' ',trim($myvalue));?>
+            <a role="button" class="btn btn-indigo" href="<?= base_url('products/add/'), $kategori[0] ?>"><?= $p['kategori'] ?></button>
+            <a class="btn btn-primary m-2" href="<?= base_url('products/add/'), $kategori[0] ?>"><?= $p['kategori'] ?></a>
+          <? endforeach; ?>
+          
           
         </div>
 
