@@ -111,7 +111,6 @@ class Simple_login {
         }
     }
 
-
     /**
     * Hapus session, lalu set notifikasi kemudian di alihkan * ke halaman login
     */
