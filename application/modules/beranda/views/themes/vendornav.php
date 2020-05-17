@@ -17,10 +17,10 @@
       <!-- Right -->
       <ul class="navbar-nav ml-auto">
         <li class="nav-item mr-3">
-          <a class="nav-link <?= $active['1']?>" href="<?= base_url('account/renterEtalase')?>">Etalase</a>
+          <a class="nav-link <?= $active['1']?>" href="<?= base_url('products')?>">Item Saya</a>
         </li>
         <li class="nav-item mr-2">
-            <a class="nav-link <?= $active['2']?>" href="<?= base_url('account/penyewaanRenter')?>">Penyewaan</a>
+            <a class="nav-link <?= $active['2']?>" href="<?= base_url('account/penyewaanVendor')?>">Penyewaan</a>
         </li>
         <li class="nav-item mr-2">
             <a class="nav-link <?= $active['3']?>" href="#">Aktivitas</a>
@@ -32,9 +32,10 @@
             </a>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-                <a href="<?= base_url('account/renter')?>" class="dropdown-item">Profile</a>
+              
+                <a href="<?= base_url('account/vendorProfile/')?>" class="dropdown-item">Profile</a>
                 <a href="#" class="dropdown-item">Transaksi</a>
-                <a href="<?= base_url('account/vendorBoard')?>" class="dropdown-item blue-gradient text-center text-white highlight">VendorBoard</a>
+                <a href="<?= base_url('account')?>" class="dropdown-item peach-gradient text-center text-white highlight">Etalase</a>
                 <div class="dropdown-divider"></div>
                 <a href="<?= base_url('account/logout')?>" class="dropdown-item">Logout</a>
               </div>

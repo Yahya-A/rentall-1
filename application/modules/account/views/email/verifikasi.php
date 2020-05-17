@@ -52,12 +52,12 @@ try {
 
     $mail->send();
     $this->session->set_flashdata('sukses', 'Link verifikasi sudah terkirim di email.');
-    redirect('account/renter');
+    redirect('account');
 
 } 
 catch(Exception $e) {
     $this->session->set_flashdata('error',"Pengiriman verifikasi email gagal.");
-    redirect("account/renter");
+    redirect("account");
 }
 
 ?>

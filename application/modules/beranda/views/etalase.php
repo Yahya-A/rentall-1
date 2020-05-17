@@ -1,3 +1,8 @@
+<!-- <?php
+if ($username=='') {
+  echo $showmodal;  
+}
+?> -->
 <main>
     <div class="container text-center">
 
@@ -352,7 +357,6 @@
     <!--/.Content-->
   </div>
 </div>
-
 
 <!-- Modal Form Aktivasi -->
 <div class="modal fade" id="ModalAktivasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
