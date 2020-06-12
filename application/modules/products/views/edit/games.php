@@ -1,6 +1,6 @@
 <main>
     <div class="container z-depth-1-half tabmenu">
-        <h4 class="text-center">Tambah Item</h4>
+        <h4 class="text-center pt-4"><?= $detail['0']['nama'];?></h4>
         <div class="row">
             <div class="col-md-12">
           
@@ -38,22 +38,23 @@
           </div>
           <div class="tab-content" id="myTabContent">
 
+            <!-- panel pertama -->
             <div class="tab-pane fade" id="waiting" role="tabpanel" aria-labelledby="home-tab">
-                <form method="POST" action="<?= base_url('products/tambah_produk'); ?>" enctype="multipart/form-data">
+                <form method="POST" action="<?= base_url('products/edit_produk/') . $detail['0']['id_item'] ?>" enctype="multipart/form-data">
                 <div class="card" style="box-shadow: none;">
                     <div class="card-body pt-0">
                         <!-- Form -->
                             <!-- Name -->
                             <div class="md-form m-4 mt-5">
-                                <input type="text" name="id_kat" value="elektronik" hidden>
-                                <input type="text" id="materialContactFormName" class="form-control" name="nama_produk">
+                                <input type="text" name="id_kat" value="games" hidden>
+                                <input type="text" id="materialContactFormName" class="form-control" name="nama_produk" value="<?= $detail['0']['nama']; ?>">
                                 <label for="materialContactFormName">Nama Item</label>
                             </div>
                             <?= form_error('nama_produk', '<small class="text-danger">', '<small>'); ?>
                 
                             <!--Message-->
                             <div class="md-form m-4 mt-5">
-                                <textarea id="materialContactFormMessage" class="form-control md-textarea" rows="3" name="deskripsi"></textarea>
+                                <textarea id="materialContactFormMessage" class="form-control md-textarea" rows="3" name="deskripsi"><?= $detail['0']['deskripsi']; ?></textarea>
                                 <label for="materialContactFormMessage">Deskripsi</label>
                             </div>
                             <?= form_error('deskripsi', '<small class="text-danger">', '<small>'); ?>
@@ -61,14 +62,14 @@
                             <div class="row">
                               <div class="col">
                                 <div class="md-form m-4 mt-5">
-                                  <input type="text" id="materialContactFormName" class="form-control" name="merk">
+                                  <input type="text" id="materialContactFormName" class="form-control" name="merk" value="<?= $detail['0']['merk']; ?>">
                                   <label for="materialContactFormName">Merk</label>
                                 </div>
                                 <?= form_error('merk', '<small class="text-danger">', '<small>'); ?>
                               </div>
                               <div class="col">
                                 <div class="md-form m-4 mt-5">
-                                  <input type="number" id="materialContactFormName" class="form-control" name="stock">
+                                  <input type="number" id="materialContactFormName" class="form-control" name="stock" value="<?= $detail['0']['stock']; ?>">
                                   <label for="materialContactFormName">Stok Item</label>
                                 </div>
                                 <?= form_error('stock', '<small class="text-danger">', '<small>'); ?>
@@ -92,6 +93,7 @@
                 </div>
 
             </div>
+            <!-- panel kedua -->
             <div class="tab-pane fade" id="onprocess" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="card" style="box-shadow: none;">
                     <h5 class="card-header info-color white-text text-center py-4">
@@ -105,64 +107,54 @@
                                   <option selected>Pilih Kategori</option>
                                   <?php 
                                     foreach($kategori as $p):
-                                        echo "<option value='".$p['id_kategori']."'>".$p['sub_kat']."</option>";
+                                        if ($detail['0']['id_kategori'] == $p['id_kategori']){
+                                          echo "<option value='".$p['id_kategori']."' selected>".$p['sub_kat']."</option>";
+                                        } else {
+                                          echo "<option value='".$p['id_kategori']."'>".$p['sub_kat']."</option>";
+                                        }
                                     endforeach; 
                                     ?>  
                                 </select>
                             </div>
-                            <?= form_error('kategori_produk', '<small class="text-danger">', '<small>'); ?>
                           </div>
                           <div class="col">
                             <div class="md-form m-4 mt-5">
                               <select class="custom-select custom-select-sm" id="subkat" name="kondisi">
-                                  <option selected>Kondisi Items</option>
-                                  <option value='1'>Baru</option>
-                                  <option value='2'>Sangat Bagus</option>
-                                  <option value='3'>Bagus</option>
-                                  <option value='4'>Layak</option>
-                                  <option value='5'>Rapuh</option>
-                                </select>
+                                  <option>Kondisi Items</option>
+                                  <option value='1' <?php if($detail['0']['kondisi'] == 1) {echo "selected";} ?>>Baru</option>
+                                  <option value='2' <?php if($detail['0']['kondisi'] == 2) {echo "selected";} ?>>Sangat Bagus</option>
+                                  <option value='3' <?php if($detail['0']['kondisi'] == 3) {echo "selected";} ?>>Bagus</option>
+                                  <option value='4' <?php if($detail['0']['kondisi'] == 4) {echo "selected";} ?>>Layak</option>
+                                  <option value='5' <?php if($detail['0']['kondisi'] == 5) {echo "selected";} ?>>Rapuh</option>
+                              </select>
                             </div>
-                            <?= form_error('kondisi', '<small class="text-danger">', '<small>'); ?>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col">
                             <div class="md-form m-4 mt-5">
-                              <input type="text" id="materialContactFormName" class="form-control" name="os">
-                              <label for="materialContactFormName">Sistem Operasi</label>
+                              <input type="text" id="materialContactFormName" class="form-control" name="berat" value="<?= $detail['0']['berat']; ?>">
+                              <label for="materialContactFormName">Berat</label>
                             </div>
-                            <?= form_error('os', '<small class="text-danger">', '<small>'); ?>
+                            <?= form_error('berat', '<small class="text-danger">', '<small>'); ?>
                           </div>
                           <div class="col">
                             <div class="md-form m-4 mt-5">
-                              <input type="text" id="materialContactFormName" class="form-control" name="layar">
-                              <label for="materialContactFormName">Layar</label>
+                              <input type="text" id="materialContactFormName" class="form-control" name="ukuran" value="<?= $detail['0']['ukuran']; ?>">
+                              <label for="materialContactFormName">Ukuran</label>
                             </div>
-                            <?= form_error('layar', '<small class="text-danger">', '<small>'); ?>
+                            <?= form_error('ukuran', '<small class="text-danger">', '<small>'); ?>
                           </div>
                           <div class="col">
                             <div class="md-form m-4 mt-5">
-                              <input type="text" id="materialContactFormName" class="form-control" name="resolusi">
-                              <label for="materialContactFormName">Resolusi</label>
-                            </div>
-                            <?= form_error('resolusi', '<small class="text-danger">', '<small>'); ?>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col">
-                            <div class="md-form m-4 mt-5">
-                              <input type="text" id="materialContactFormName" class="form-control" name="memori">
-                              <label for="materialContactFormName">Ram</label>
-                            </div>
-                            <?= form_error('memori', '<small class="text-danger">', '<small>'); ?>
-                          </div>
-                          <div class="col">
-                            <div class="md-form m-4 mt-5">
-                              <input type="text" id="materialContactFormName" class="form-control" name="harddisk">
-                              <label for="materialContactFormName">Penyimpanan</label>
-                            </div>
-                            <?= form_error('harddisk', '<small class="text-danger">', '<small>'); ?>
+                                <select class="custom-select custom-select-sm" id="subkat" name="gender">
+                                    <option>Gender</option>
+                                    <option value='1' <?php if($detail['0']['gender'] == 1) {echo "selected";} ?>>Semua</option>
+                                    <option value='2' <?php if($detail['0']['gender'] == 2) {echo "selected";} ?>>Perempuan</option>
+                                    <option value='3' <?php if($detail['0']['gender'] == 3) {echo "selected";} ?>>laki-Laki</option>
+                                    <option value='4' <?php if($detail['0']['gender'] == 4) {echo "selected";} ?>>Anak-Anak</option>
+                                  </select>
+                              </div>
                           </div>
                         </div>
                       </div>
@@ -175,21 +167,19 @@
                       <div class="row">
                         <div class="col">
                           <div class="md-form m-4 mt-5">
-                            <input type="text" id="materialContactFormName" class="form-control" name="harga">
+                            <input type="text" id="materialContactFormName" class="form-control" name="harga" value="<?= $detail['0']['harga']; ?>">
                             <label for="materialContactFormName">Biaya perhari</label>
                           </div>
                           <?= form_error('harga', '<small class="text-danger">', '<small>'); ?>
                         </div>
                         <div class="col">
                           <div class="md-form m-4 mt-5">
-                            <input type="text" id="materialContactFormName" class="form-control" name="deposit">
+                            <input type="text" id="materialContactFormName" class="form-control" name="deposit" value="<?= $detail['0']['deposit']; ?>">
                             <label for="materialContactFormName">Deposito</label>
                           </div>
                           <?= form_error('deposit', '<small class="text-danger">', '<small>'); ?>
                         </div>
                       </div>
-
-                            
                             <!-- Send button -->
                             <a class="btn btn-outline-info btn-rounded z-depth-0 my-4 waves-effect" data-toggle="tab" href="#waiting">Kembali</a>
                             <a class="btn btn-outline-info btn-rounded z-depth-0 my-4 waves-effect" data-toggle="tab" href="#history">Lanjut</a>
@@ -197,10 +187,11 @@
                 </div>
 
             </div>
+            <!-- panel ketiga -->
             <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="contact-tab">
                 <div class="card" style="box-shadow: none;">
                     <div class="card-body pt-0">
-                      <img id="blah" src="#" alt="your image" style="width: 300px; max-height: 500px;"/>
+                      <img id="blah" src="<?= base_url('assets/img/produk/'), $detail['0']['foto'] ?>" alt="your image" style="width: 300px; max-height: 500px;"/>
                         <div class="md-form m-4 mt-5">
                           <div class="input-group">
                             <div class="custom-file">
@@ -214,7 +205,6 @@
                 </div>
             </div>
           </div>
-        </div>
         </form>
     </div>
 

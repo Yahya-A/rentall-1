@@ -91,17 +91,23 @@ class Account extends CI_Controller {
 
     public function penyewaanRenter()
     {
-            $data['active'] = array(
-                '1' => '',
-                '2' => 'font-weight-bold',
-                '3' => ''
-            );
-            $data['judul'] = "Dashboard";
-            $data['username'] = $this->session->userdata('username');
-            $this->load->view('beranda/themes/head');
-            $this->load->view('beranda/themes/renternav', $data);
-            $this->load->view('beranda/penyewaan');
-            $this->load->view('beranda/themes/foot');
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect('');
+        }
+        $data['active'] = array(
+            '1' => '',
+            '2' => 'font-weight-bold',
+            '3' => ''
+        );
+        $data['judul'] = "Dashboard";
+        $data['product'] = $this->M_account->cart();
+        $data['price'] = $this->M_account->getTotal();
+        $data['username'] = $this->session->userdata('username');
+        $data['order'] = $this->M_account->getOrder();
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/renternav', $data);
+        $this->load->view('beranda/penyewaan', $data);
+        $this->load->view('beranda/themes/foot');
     }
 
     // Manajemen Renter End
@@ -389,16 +395,6 @@ class Account extends CI_Controller {
         $this->db->update('user', $data);
         
         redirect('account/logout');
-
-        // $ip_address = $_SERVER['REMOTE_ADDR'];
-        // $username = $this->session->userdata('username');
-        // $keterangan = "Menghapus akun $nama";
-        // $data = array(
-        //     'username' => $username,
-        //     'ip' => $ip_address,
-        //     'keterangan' => $keterangan
-        // );
-        // $this->db->insert('log', $data);
     }
 
     // digunakan untuk mengaktifkan sebuah akun

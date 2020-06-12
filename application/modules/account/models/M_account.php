@@ -1,9 +1,34 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_account extends CI_Model{
+class M_account extends CI_Model
+{
 
-    function daftar()
+    public function getOrder()
+    {
+        $id_user = $this->session->userdata('id');
+        
+        $this->db->where('id_user', $id_user);
+        return $this->db->get('order_item')->result_array();
+    }
+
+    public function getTotal()
+    {
+        $id_user = $this->session->userdata('id');
+        $rows = $this->db->query('select sum(harga * durasi) as total from items, cart where items.id_item = cart.id_item and cart.id_user = "' . $id_user . '"');
+        $price = $rows->row();
+        return $harga = $price->total;
+    }
+
+    public function cart()
+    {
+        $id_user = $this->session->userdata('id');
+
+        $this->db->where('id_user', $id_user);
+        return $this->db->get('cart')->result_array();
+    }
+
+    public function daftar()
     {
         $data['username'] = $this->input->post('username');
         $data['email'] = $this->input->post('email');
@@ -11,11 +36,11 @@ class M_account extends CI_Model{
         $data['level'] = "1";
         $data['status'] = "1";
         $data['verif'] = "0";
-        $this->db->insert('user', $data); 
+        $this->db->insert('user', $data);
     }
 
     public function getUserData()
-    {   
+    {
         $id = $this->session->userdata('id');
         $query = "SELECT * FROM user u, renter_profile r WHERE u.id_user = $id and r.id_user = $id";
         return $this->db->query($query)->result_array();
@@ -28,7 +53,6 @@ class M_account extends CI_Model{
         return $this->db->get('bank_profile')->result_array();
     }
 
-
     public function add_bank()
     {
         $nama = $this->input->post('nama', true);
@@ -40,7 +64,7 @@ class M_account extends CI_Model{
             'id_user' => $id,
             'bank' => $nama,
             'an' => $an,
-            'rekening' => $nomor
+            'rekening' => $nomor,
         );
 
         $this->db->insert('bank_profile', $data);
@@ -57,7 +81,7 @@ class M_account extends CI_Model{
         $data = array(
             'bank' => $nama,
             'an' => $an,
-            'rekening' => $nomor
+            'rekening' => $nomor,
         );
         $this->db->where('id', $id);
         $this->db->update('bank_profile', $data);
@@ -77,8 +101,8 @@ class M_account extends CI_Model{
         $config = array(
             'upload_path' => "./assets/img/foto_profile/",
             'allowed_types' => "gif|jpg|png|jpeg",
-            'overwrite' => TRUE,
-            'file_name' => $id_user . ".jpeg"
+            'overwrite' => true,
+            'file_name' => $id_user . ".jpeg",
         );
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
@@ -87,8 +111,8 @@ class M_account extends CI_Model{
         if ($image != null) {
             $data['errors'] = $this->upload->display_errors('<p>', '</p>');
             $data['result'] = print_r($this->upload->data(), true);
-            $data['files']  = print_r($_FILES, true);
-            $data['post']   = print_r($_POST, true);
+            $data['files'] = print_r($_FILES, true);
+            $data['post'] = print_r($_POST, true);
             if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
                 $this->update();
             } else {
@@ -97,7 +121,7 @@ class M_account extends CI_Model{
                     'no_hp' => $no_hp,
                     'alamat' => $alamat,
                     'email' => $email,
-                    'foto' => $config['file_name']
+                    'foto' => $config['file_name'],
                 );
 
                 $this->db->where('id_user', $id_user);
@@ -108,7 +132,7 @@ class M_account extends CI_Model{
                 'nama' => $nama,
                 'no_hp' => $no_hp,
                 'alamat' => $alamat,
-                'email' => $email
+                'email' => $email,
             );
 
             $this->db->where('id_user', $id_user);
@@ -116,7 +140,7 @@ class M_account extends CI_Model{
         }
 
         $data = array(
-            'status' => '2'
+            'status' => '2',
         );
 
         $this->db->where('id_user', $id_user);
@@ -126,7 +150,7 @@ class M_account extends CI_Model{
 
         redirect('account/readRenter');
     }
-    
+
     public function mverif_akun()
     {
         $id_user = $this->session->userdata('id');
@@ -135,7 +159,7 @@ class M_account extends CI_Model{
         $image = $this->input->post('upload_image', true);
         $image2 = $this->input->post('upload_image2', true);
         $update = $this->input->post('id', true);
-        if( $update != ""){
+        if ($update != "") {
             $update = 2;
         } else {
             $update = 0;
@@ -144,8 +168,8 @@ class M_account extends CI_Model{
         $config = array(
             'upload_path' => "./assets/img/verif/",
             'allowed_types' => "gif|jpg|png|jpeg",
-            'overwrite' => TRUE,
-            'file_name' => $id_user ."_1.jpeg"
+            'overwrite' => true,
+            'file_name' => $id_user . "_1.jpeg",
         );
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
@@ -154,8 +178,8 @@ class M_account extends CI_Model{
         $config2 = array(
             'upload_path' => "./assets/img/verif/",
             'allowed_types' => "gif|jpg|png|jpeg",
-            'overwrite' => TRUE,
-            'file_name' => $id_user ."_2.jpeg"
+            'overwrite' => true,
+            'file_name' => $id_user . "_2.jpeg",
         );
         $this->load->library('upload', $config2);
         $this->upload->initialize($config2);
@@ -164,18 +188,18 @@ class M_account extends CI_Model{
         if ($image != null || $image2 != null) {
             $data['errors'] = $this->upload->display_errors('<p>', '</p>');
             $data['result'] = print_r($this->upload->data(), true);
-            $data['files']  = print_r($_FILES, true);
-            $data['post']   = print_r($_POST, true);
+            $data['files'] = print_r($_FILES, true);
+            $data['post'] = print_r($_POST, true);
             if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
                 $this->session->set_flashdata('error', $this->upload->display_errors('<p>', '</p>'));
                 redirect('account/verif');
             } else {
-                if($update == 1){
+                if ($update == 1) {
                     $data = array(
                         'nama_identitas' => $nama_identitas,
                         'no_identitas' => $no_identitas,
                         'foto1' => $config['file_name'],
-                        'foto2' => $config2['file_name']
+                        'foto2' => $config2['file_name'],
                     );
                     $this->db->where('id_user', $id_user);
                     $this->db->update('verif_identity', $data);
@@ -185,9 +209,9 @@ class M_account extends CI_Model{
                         'nama_identitas' => $nama_identitas,
                         'no_identitas' => $no_identitas,
                         'foto1' => $config['file_name'],
-                        'foto2' => $config2['file_name']
+                        'foto2' => $config2['file_name'],
                     );
-    
+
                     $this->db->insert('verif_identity', $data);
                 }
             }
@@ -208,7 +232,7 @@ class M_account extends CI_Model{
         $image = $this->input->post('upload_image', true);
         $id_user = $this->session->userdata('id');
         $update = $this->input->post('id', true);
-        if( $update != ""){
+        if ($update != "") {
             $update = 1;
         } else {
             $update = 0;
@@ -217,8 +241,8 @@ class M_account extends CI_Model{
         $config = array(
             'upload_path' => "./assets/img/vendor_logo/",
             'allowed_types' => "gif|jpg|png|jpeg",
-            'overwrite' => TRUE,
-            'file_name' => $id_user . ".jpeg"
+            'overwrite' => true,
+            'file_name' => $id_user . ".jpeg",
         );
         $this->load->library('upload', $config);
         $this->upload->initialize($config);
@@ -227,19 +251,19 @@ class M_account extends CI_Model{
         if ($image != null) {
             $data['errors'] = $this->upload->display_errors('<p>', '</p>');
             $data['result'] = print_r($this->upload->data(), true);
-            $data['files']  = print_r($_FILES, true);
-            $data['post']   = print_r($_POST, true);
+            $data['files'] = print_r($_FILES, true);
+            $data['post'] = print_r($_POST, true);
             if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
                 $this->session->set_flashdata('error', $this->upload->display_errors('<p>', '</p>'));
                 redirect('account/vendorBoard');
             } else {
-                if($update == 1){
+                if ($update == 1) {
                     $data = array(
                         'nama_vendor' => $nama,
                         'deskripsi_vendor' => $deskripsi,
                         'alamat' => $alamat,
                         'kota' => $kota,
-                        'foto' => $config['file_name']
+                        'foto' => $config['file_name'],
                     );
                     $this->db->where('id_user', $id_user);
                     $this->db->update('vendor_profile', $data);
@@ -250,19 +274,19 @@ class M_account extends CI_Model{
                         'deskripsi_vendor' => $deskripsi,
                         'alamat' => $alamat,
                         'kota' => $kota,
-                        'foto' => $config['file_name']
+                        'foto' => $config['file_name'],
                     );
-    
+
                     $this->db->insert('vendor_profile', $data);
                 }
             }
         } else {
-            if($update == 1){
+            if ($update == 1) {
                 $data = array(
                     'nama_vendor' => $nama,
                     'deskripsi_vendor' => $deskripsi,
                     'kota' => $kota,
-                    'alamat' => $alamat
+                    'alamat' => $alamat,
                 );
                 $this->db->where('id_user', $id_user);
                 $this->db->update('vendor_profile', $data);
@@ -272,20 +296,20 @@ class M_account extends CI_Model{
                     'nama_vendor' => $nama,
                     'deskripsi_vendor' => $deskripsi,
                     'kota' => $kota,
-                    'alamat' => $alamat
+                    'alamat' => $alamat,
                 );
 
                 $this->db->insert('vendor_profile', $data);
             }
         }
         $this->session->set_userdata('level', '2');
-        
+
         $data = array(
-            'level' => 2
+            'level' => 2,
         );
         $this->db->where('id_user', $id_user);
         $this->db->update('user', $data);
 
         redirect('account/vendorBoard');
     }
-} 
+}

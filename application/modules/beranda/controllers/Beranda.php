@@ -27,7 +27,7 @@ class Beranda extends CI_Controller {
           $data['product'] = $this->mBeranda->getAllProduct();
           $this->load->view('themes/head');
           $this->load->view('themes/mainnav');
-          $this->load->view('etalase');
+          $this->load->view('etalase',$data);
           $this->load->view('themes/foot');
      }
      
@@ -53,7 +53,7 @@ class Beranda extends CI_Controller {
 
      public function atc()
      {
-          if ($this->simple_login->cek_login() == TRUE ) {
+          if ($this->simple_login->cek_login() ) {
                $this->load->view('account/beranda');
           } else {
                $this->form_validation->set_rules('durasi', 'Durasi', 'trim|required');
@@ -89,37 +89,50 @@ class Beranda extends CI_Controller {
 
      public function editatc()
      {
-          $this->form_validation->set_rules('durasi', 'Durasi', 'trim|required');
+          $this->form_validation->set_rules('tgl_awal', 'Tanggal Awal', 'trim|required');
+          $this->form_validation->set_rules('tgl_akhir', 'Tanggal Akhir', 'trim|required');
 
           if ($this->form_validation->run() == false) {
-               redirect('beranda/keranjang');
+               redirect('account/penyewaanRenter');
           } else {
                $id = $this->input->post('id', true);
-               $durasi = $this->input->post('durasi', true);
-               if ($durasi == 0) {
-                    $this->hapusatc($id);
-               } else {
+               $tgl_awal = $this->input->post('tgl_awal', true);
+               $tgl_akhir = $this->input->post('tgl_akhir', true);
+               $datetime1 = date_create($tgl_awal);
+               $datetime2 = date_create($tgl_akhir);
+               $durasi = date_diff($datetime1, $datetime2)->format('%a');
                     $data = array(
-                         'qty' => $durasi
+                         'tgl_sewa' => $tgl_awal,
+                         'tgl_kembali' => $tgl_akhir,
+                         'durasi' => $durasi
                     );
-                    $this->db->where('cart_id', $id);
+                    $this->db->where('id_cart', $id);
                     $this->db->update('cart', $data);
-                    redirect('beranda/keranjang');
-               }
-
+                    $this->session->set_flashdata('success', 'Berhasil mengubah tanggal sewa');
+                    redirect('account/penyewaanRenter');
           }
      }
 
      public function hapusatc($id)
      {
-          $this->db->where('cart_id', $id);
+          $this->db->where('id_cart', $id);
           $this->db->delete('cart');
-          redirect('beranda/keranjang');
+          $this->session->set_flashdata('success', 'Berhasil menghapus item'); 
+          redirect('account/penyewaanRenter');
      }
 
      public function co()
      {
-          $this->mBeranda->co();
+          $user_id = $this->session->userdata('id');
+          $this->form_validation->set_rules('pembayaran', 'Pembayaran', 'required');
+          $this->form_validation->set_rules('antar', 'Antar', 'required');
+  
+          if ($this->form_validation->run() == false) {
+               $this->session->set_flashdata('error', 'Checkout gagal. Pastikan telah memilih metode pengiriman dan pembayaran'); 
+               redirect('account/penyewaanRenter');
+          } else {
+              $this->mBeranda->co();
+          }
      }
 
      public function berhasil()
@@ -148,7 +161,7 @@ class Beranda extends CI_Controller {
      public function pembayaran()
      {
                $data['title'] = "Cara Pembayaran";
-          $data['kategori'] = $this->data;
+               $data['kategori'] = $this->data;
                $this->load->view('template/beranda_header', $data);
                $this->load->view('pembayaran');
                $this->load->view('template/beranda_footer');
