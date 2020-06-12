@@ -20,6 +20,7 @@
   <!-- MDB eCommerce core CSS -->
   <link rel="stylesheet" href="<?php echo base_url('assets/v.0.1/css/mdb-ecommerce.min.css')?>">
   <!-- Your custom styles (optional) -->
-  <link rel="stylesheet" href="<?php echo base_url('assets/v.0.1/css/style.css')?>">
+  <link rel="stylesheet" href="<?php echo base_url('assets/v.0.1/css/style.css')?>"> 
+  
 </head>
 <body>

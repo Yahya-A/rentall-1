@@ -45,6 +45,8 @@
                     </th>
                     <th class="th-sm">Antar
                     </th>
+                    <th class="th-sm">Aksi
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -79,9 +81,8 @@
                     }               
                     ?>
                   <tr>
-                    <td><center>
-                                        <img src="<?= base_url('assets/img/produk/'), $p['foto'] ?>" height="50px">
-                                    </center>
+                    <td>
+                      <center><img src="<?= base_url('assets/img/produk/'), $p['foto'] ?>" height="50px"></center>
                     </td>
                     <td><?= $p['nama'] ?></td>
                     <td>Rp. <?= number_format($p['harga'],0,",",".");?></td>
@@ -91,6 +92,16 @@
                     <td><?= $kondisi ?></td>
                     <td><?= $p['deskripsi'] ?></td>
                     <td><?= $antar ?></td>
+                    <td>
+                    <center>
+                      <a href="<?= base_url("products/edit/"). $p['id_item']; ?>" class="nav-link btn btn-sm btn-primary text-white" role="button">
+                          Ubah
+                      </a>
+                      <a href="<?= base_url("products/hapus/"). $p['id_item']; ?>" class="nav-link btn btn-sm btn-danger text-white mt-2" role="button">
+                          Hapus
+                      </a>
+                      </center>
+                    </td>
                   </tr>
                   <?php endforeach;?>
                 </tbody>
@@ -113,6 +124,8 @@
                     <th class="th-sm">Deskripsi
                     </th>
                     <th class="th-sm">Antar
+                    </th>
+                    <th class="th-sm">Aksi
                     </th>
                   </tr>
                 </tfoot>

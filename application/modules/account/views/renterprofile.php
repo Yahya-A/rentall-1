@@ -35,7 +35,7 @@
             </div>
             <div class="col-md-3 mb-5 border-right">
                 <p class="h3-responsive">Informasi Bank</p>
-                <a href="#" class="btn btn-sm btn-amber text-white" role="button" data-toggle="modal" data-target="!#">Mulai</a>
+                <a href="#" class="btn btn-sm btn-amber text-white" role="button" data-toggle="modal" data-target="#infoBank">Tambah</a>
             </div>
             <div class="col-md-3 mb-5">
                 <p class="h3-responsive">Identitas Diri</p>
@@ -53,7 +53,7 @@
                     </a>
                     <a href="#!" class="list-group-item list-group-item-action active"><i class="fas fa-user mr-3"></i>Profil</a>
                     <a href="#!" class="list-group-item list-group-item-action"><i class="fas fa-unlock-alt mr-3"></i>Ganti Password</a>
-                    <a href="#!" class="list-group-item list-group-item-action"><i class="far fa-credit-alt mr-3"></i>Informasi Bank</a>
+                    <a href="<?= base_url('account/bank'); ?>" class="list-group-item list-group-item-action"><i class="far fa-credit-alt mr-3"></i>Informasi Bank</a>
                     <a href="#!" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#modalHapus"><i class="far fa-unlock-card mr-3"></i>Nonaktifkan Akun</a>
                   </div>
             </div>
@@ -241,6 +241,44 @@
           <div class="modal-footer">
               <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
               <button type="submit" name="btnSubmit" class="btn btn-primary">Kirim Email</button>
+          </div>
+      </div>
+    </form>
+     <!--/.Content-->
+   </div>
+</div>
+
+
+<!-- Modal Informasi Bank -->
+<div class="modal fade" id="infoBank" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-notify modal-warning" role="document">
+     <!--Content-->
+    <form class="user" method="POST" action="<?= base_url('account/add_bank'); ?>">
+      <div class="modal-content">
+        <!--Header-->
+          <div class="modal-header">
+            <p class="heading lead">Informasi Bank</p>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" class="white-text">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+                <input type="text" name="nama" class="form-control form-control-user" placeholder="Bank">
+                <?= form_error('nama', '<small class="text-danger">', '<small>'); ?>
+            </div>
+            <div class="form-group">
+                <input type="text" name="an" class="form-control form-control-user" placeholder="Atas Nama">
+                <?= form_error('an', '<small class="text-danger">', '<small>'); ?>
+            </div>
+            <div class="form-group">
+                <input type="text" name="nomor" class="form-control form-control-user" placeholder="Nomor Rekening">
+                <?= form_error('nomor', '<small class="text-danger">', '<small>'); ?>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+              <button type="submit" name="btnSubmit" class="btn btn-primary">Tambah Akun Bank</button>
           </div>
       </div>
     </form>
