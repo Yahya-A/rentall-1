@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 17, 2020 at 06:19 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.1
+-- Waktu pembuatan: 12 Jun 2020 pada 06.40
+-- Versi server: 10.4.11-MariaDB
+-- Versi PHP: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bank_profile`
+-- Struktur dari tabel `bank_profile`
 --
 
 CREATE TABLE `bank_profile` (
@@ -36,23 +36,33 @@ CREATE TABLE `bank_profile` (
   `rekening` int(28) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `bank_profile`
+--
+
+INSERT INTO `bank_profile` (`id`, `id_user`, `bank`, `an`, `rekening`) VALUES
+(8, 15, 'BRI', 'Surya Saputra', 2147483647);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cart`
+-- Struktur dari tabel `cart`
 --
 
 CREATE TABLE `cart` (
   `id_cart` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
+  `tgl_sewa` date NOT NULL,
+  `tgl_kembali` date NOT NULL,
   `durasi` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
   `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `items`
+-- Struktur dari tabel `items`
 --
 
 CREATE TABLE `items` (
@@ -67,27 +77,22 @@ CREATE TABLE `items` (
   `kondisi` int(11) NOT NULL,
   `merk` varchar(128) NOT NULL,
   `antar` int(11) NOT NULL,
-  `foto` varchar(128) NOT NULL
+  `foto` varchar(128) NOT NULL,
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `items`
+-- Dumping data untuk tabel `items`
 --
 
-INSERT INTO `items` (`id_item`, `nama`, `deskripsi`, `harga`, `stock`, `id_kategori`, `status`, `deposit`, `kondisi`, `merk`, `antar`, `foto`) VALUES
-(1, 'Acer E5-475G', 'Laptop yang cocok untuk melakukan tugasnya', 50000, 2, 9, 1, 500000, 2, 'Acer', 1, '1.jpeg'),
-(20, 'Macbook Pro 2016', 'Laptop gahar dengan desain maksimal', 100000, 1, 9, 1, 1000000, 2, 'Apple', 2, '20.jpeg'),
-(21, 'Playstation 4', 'Playstation 4 cocok untuk bermain saat WFH', 40000, 5, 15, 1, 500000, 4, 'Playstation', 1, '21.jpeg'),
-(22, 'Playstation 3', 'Playstation 3 cocok untuk bermain saat WFH dengan 2 Stick', 20000, 10, 15, 1, 0, 1, 'Playstation', 2, '22.jpeg'),
-(23, 'Avanza Facelift', 'Cocok untuk berpergian dengan keluarga tersayang', 250000, 2, 6, 1, 1000000, 1, 'Toyota', 2, '23.jpeg'),
-(24, 'Agya Turbo', 'Mobil agya dengan turbo yang super ngebut sangat', 200000, 1, 6, 1, 1000000, 1, 'Toyota', 1, '24.jpeg'),
-(25, 'Sony A6000', 'Saatnya mengabadikan setiap momen berharga', 100000, 2, 17, 1, 500000, 2, 'Sony', 2, '25.jpeg'),
-(26, 'Canon DSLR 3D', 'Pemula akan merasa menjadi Profesional saat menggunakan ini', 200000, 2, 17, 1, 0, 2, 'Canon', 1, '26.jpeg');
+INSERT INTO `items` (`id_item`, `nama`, `deskripsi`, `harga`, `stock`, `id_kategori`, `status`, `deposit`, `kondisi`, `merk`, `antar`, `foto`, `id_user`) VALUES
+(28, 'Macbook Pro 2016', 'Laptop siap tempur', 120000, 1, 9, 1, 500000, 2, 'Apple', 0, '1_15.jpeg', 15),
+(29, 'Playstation 4', 'Console terepik', 50000, 5, 15, 1, 0, 3, 'Sony', 0, '29_15.jpeg', 15);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kategori`
+-- Struktur dari tabel `kategori`
 --
 
 CREATE TABLE `kategori` (
@@ -97,7 +102,7 @@ CREATE TABLE `kategori` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `kategori`
+-- Dumping data untuk tabel `kategori`
 --
 
 INSERT INTO `kategori` (`id_kategori`, `kategori`, `sub_kat`) VALUES
@@ -122,7 +127,7 @@ INSERT INTO `kategori` (`id_kategori`, `kategori`, `sub_kat`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `k_elektronik`
+-- Struktur dari tabel `k_elektronik`
 --
 
 CREATE TABLE `k_elektronik` (
@@ -136,17 +141,16 @@ CREATE TABLE `k_elektronik` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `k_elektronik`
+-- Dumping data untuk tabel `k_elektronik`
 --
 
 INSERT INTO `k_elektronik` (`id`, `os`, `layar`, `memori`, `harddisk`, `resolusi`, `id_item`) VALUES
-(5, 'Windows 10', '14 inch', '8 GB', '1 TB', '1360 x 768', 1),
-(6, 'macOS Catalina 10.14.6', '16 Inch', '8 GB', '1 TB', '1360 x 768', 20);
+(7, 'macOS Catalina 10.14.6', '14 inch', '8 GB', '1 TB', '1360 x 768', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `k_games`
+-- Struktur dari tabel `k_games`
 --
 
 CREATE TABLE `k_games` (
@@ -158,17 +162,16 @@ CREATE TABLE `k_games` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `k_games`
+-- Dumping data untuk tabel `k_games`
 --
 
 INSERT INTO `k_games` (`id`, `berat`, `ukuran`, `gender`, `id_item`) VALUES
-(2, '1 KG', '1 M2', 1, 21),
-(3, '1 KG', '1', 0, 22);
+(4, '1 KG', '1 M2', 1, 29);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `k_otomotif`
+-- Struktur dari tabel `k_otomotif`
 --
 
 CREATE TABLE `k_otomotif` (
@@ -185,18 +188,10 @@ CREATE TABLE `k_otomotif` (
   `id_item` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `k_otomotif`
---
-
-INSERT INTO `k_otomotif` (`id`, `bahan_bakar`, `tahun_terbit`, `kapasitas`, `warna`, `transmisi`, `mesin`, `km`, `ac`, `usb`, `id_item`) VALUES
-(2, 'Bensin', 2019, 1, 'Silver', 'Matic', '1500', 260, 1, 2, 23),
-(3, 'Bensin', 2019, 6, 'Silver', 'Matic', '1600', 12, 1, 4, 24);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `k_photography`
+-- Struktur dari tabel `k_photography`
 --
 
 CREATE TABLE `k_photography` (
@@ -207,46 +202,59 @@ CREATE TABLE `k_photography` (
   `id_item` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `k_photography`
---
-
-INSERT INTO `k_photography` (`id`, `berat`, `material`, `ukuran`, `id_item`) VALUES
-(2, 1, 'Kulit', 15, 25),
-(3, 2, 'Metal', 14, 26);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_detail`
+-- Struktur dari tabel `order_detail`
 --
 
 CREATE TABLE `order_detail` (
   `id_od` int(11) NOT NULL,
   `id_order` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
+  `tgl_sewa` date NOT NULL,
+  `tgl_kembali` date NOT NULL,
+  `qty` int(11) NOT NULL,
   `durasi_sewa` int(11) NOT NULL,
   `total_harga` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `order_detail`
+--
+
+INSERT INTO `order_detail` (`id_od`, `id_order`, `id_item`, `tgl_sewa`, `tgl_kembali`, `qty`, `durasi_sewa`, `total_harga`) VALUES
+(1, 1, 28, '2020-06-11', '2020-06-20', 2, 9, 0),
+(2, 1, 29, '2020-06-10', '2020-06-15', 1, 5, 0),
+(7, 2, 28, '2020-06-11', '2020-06-18', 2, 7, 0);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_item`
+-- Struktur dari tabel `order_item`
 --
 
 CREATE TABLE `order_item` (
   `id_order` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `tanggal_sewa` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `tanggal_order` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` int(11) NOT NULL,
+  `antar` int(11) NOT NULL,
   `id_pembayaran` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `order_item`
+--
+
+INSERT INTO `order_item` (`id_order`, `id_user`, `tanggal_order`, `status`, `antar`, `id_pembayaran`) VALUES
+(1, 15, '2020-06-11 17:57:25', 0, 2, 1),
+(2, 15, '2020-06-12 03:47:16', 0, 1, 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pembayaran`
+-- Struktur dari tabel `pembayaran`
 --
 
 CREATE TABLE `pembayaran` (
@@ -258,7 +266,7 @@ CREATE TABLE `pembayaran` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pengembalian`
+-- Struktur dari tabel `pengembalian`
 --
 
 CREATE TABLE `pengembalian` (
@@ -271,7 +279,7 @@ CREATE TABLE `pengembalian` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `renter_profile`
+-- Struktur dari tabel `renter_profile`
 --
 
 CREATE TABLE `renter_profile` (
@@ -284,17 +292,17 @@ CREATE TABLE `renter_profile` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `renter_profile`
+-- Dumping data untuk tabel `renter_profile`
 --
 
 INSERT INTO `renter_profile` (`id_user`, `nama`, `alamat`, `no_hp`, `foto`, `email`) VALUES
 (11, NULL, NULL, NULL, 'default.jpg', 'surya.saputra41@rocketmail.com'),
-(15, NULL, NULL, NULL, 'default.jpg', 'surya.saputra030090@gmail.com');
+(15, 'Surya Saputra', 'Lingkungan Sekaran', '082323939888', '15.jpeg', 'surya.saputra030090@gmail.com');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -309,15 +317,15 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`id_user`, `username`, `level`, `email`, `password`, `status`, `verif`, `token`) VALUES
 (11, 'google', 1, 'surya.saputra41@rocketmail.com', '3dbe00a167653a1aaee01d93e77e730e', 1, 0, 0),
-(15, 'abraham', 1, 'surya.saputra030090@gmail.com', '3dbe00a167653a1aaee01d93e77e730e', 1, 0, 1);
+(15, 'abraham', 2, 'surya.saputra030090@gmail.com', '3dbe00a167653a1aaee01d93e77e730e', 2, 0, 1);
 
 --
--- Triggers `user`
+-- Trigger `user`
 --
 DELIMITER $$
 CREATE TRIGGER `add_user` AFTER INSERT ON `user` FOR EACH ROW BEGIN
@@ -329,7 +337,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vendor_profile`
+-- Struktur dari tabel `vendor_profile`
 --
 
 CREATE TABLE `vendor_profile` (
@@ -338,13 +346,20 @@ CREATE TABLE `vendor_profile` (
   `deskripsi_vendor` varchar(128) DEFAULT NULL,
   `alamat` varchar(128) DEFAULT NULL,
   `foto` varchar(128) DEFAULT 'default.jpg',
-  `kota` varchar(128) NOT NULL
+  `kota` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `vendor_profile`
+--
+
+INSERT INTO `vendor_profile` (`id_user`, `nama_vendor`, `deskripsi_vendor`, `alamat`, `foto`, `kota`) VALUES
+(15, 'Lokalan PRIDE', 'Menyewakan barang-barang buatan INDONESIA', 'Semarang Selatan', 'default.jpg', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `verif_identity`
+-- Struktur dari tabel `verif_identity`
 --
 
 CREATE TABLE `verif_identity` (
@@ -360,180 +375,180 @@ CREATE TABLE `verif_identity` (
 --
 
 --
--- Indexes for table `bank_profile`
+-- Indeks untuk tabel `bank_profile`
 --
 ALTER TABLE `bank_profile`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_user` (`id_user`);
 
 --
--- Indexes for table `cart`
+-- Indeks untuk tabel `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id_cart`);
 
 --
--- Indexes for table `items`
+-- Indeks untuk tabel `items`
 --
 ALTER TABLE `items`
   ADD PRIMARY KEY (`id_item`);
 
 --
--- Indexes for table `kategori`
+-- Indeks untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
   ADD PRIMARY KEY (`id_kategori`);
 
 --
--- Indexes for table `k_elektronik`
+-- Indeks untuk tabel `k_elektronik`
 --
 ALTER TABLE `k_elektronik`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `k_games`
+-- Indeks untuk tabel `k_games`
 --
 ALTER TABLE `k_games`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `k_otomotif`
+-- Indeks untuk tabel `k_otomotif`
 --
 ALTER TABLE `k_otomotif`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `k_photography`
+-- Indeks untuk tabel `k_photography`
 --
 ALTER TABLE `k_photography`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `order_detail`
+-- Indeks untuk tabel `order_detail`
 --
 ALTER TABLE `order_detail`
   ADD PRIMARY KEY (`id_od`);
 
 --
--- Indexes for table `order_item`
+-- Indeks untuk tabel `order_item`
 --
 ALTER TABLE `order_item`
   ADD PRIMARY KEY (`id_order`);
 
 --
--- Indexes for table `pembayaran`
+-- Indeks untuk tabel `pembayaran`
 --
 ALTER TABLE `pembayaran`
   ADD PRIMARY KEY (`id_pembayaran`);
 
 --
--- Indexes for table `pengembalian`
+-- Indeks untuk tabel `pengembalian`
 --
 ALTER TABLE `pengembalian`
   ADD PRIMARY KEY (`id_pengembalian`);
 
 --
--- Indexes for table `renter_profile`
+-- Indeks untuk tabel `renter_profile`
 --
 ALTER TABLE `renter_profile`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- Indexes for table `vendor_profile`
+-- Indeks untuk tabel `vendor_profile`
 --
 ALTER TABLE `vendor_profile`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- Indexes for table `verif_identity`
+-- Indeks untuk tabel `verif_identity`
 --
 ALTER TABLE `verif_identity`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `bank_profile`
+-- AUTO_INCREMENT untuk tabel `bank_profile`
 --
 ALTER TABLE `bank_profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `cart`
+-- AUTO_INCREMENT untuk tabel `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `items`
+-- AUTO_INCREMENT untuk tabel `items`
 --
 ALTER TABLE `items`
-  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
--- AUTO_INCREMENT for table `kategori`
+-- AUTO_INCREMENT untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
   MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT for table `k_elektronik`
+-- AUTO_INCREMENT untuk tabel `k_elektronik`
 --
 ALTER TABLE `k_elektronik`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `k_games`
+-- AUTO_INCREMENT untuk tabel `k_games`
 --
 ALTER TABLE `k_games`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `k_otomotif`
+-- AUTO_INCREMENT untuk tabel `k_otomotif`
 --
 ALTER TABLE `k_otomotif`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `k_photography`
+-- AUTO_INCREMENT untuk tabel `k_photography`
 --
 ALTER TABLE `k_photography`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `order_detail`
+-- AUTO_INCREMENT untuk tabel `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id_od` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_od` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `order_item`
+-- AUTO_INCREMENT untuk tabel `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `pembayaran`
+-- AUTO_INCREMENT untuk tabel `pembayaran`
 --
 ALTER TABLE `pembayaran`
   MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `pengembalian`
+-- AUTO_INCREMENT untuk tabel `pengembalian`
 --
 ALTER TABLE `pengembalian`
   MODIFY `id_pengembalian` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
