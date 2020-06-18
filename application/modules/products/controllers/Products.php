@@ -130,7 +130,6 @@ class Products extends CI_Controller
                     redirect('products');
                 break;
             }
-            // redirect('products/add/');
         } else {
             $nama_produk = $this->input->post('nama_produk', true);
             $harga = $this->input->post('harga', true);

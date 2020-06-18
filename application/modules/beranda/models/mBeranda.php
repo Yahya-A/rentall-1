@@ -70,6 +70,50 @@ class mBeranda extends CI_Model{
         return $harga = $price->total;
     }
 
+    public function konfirPembayaran()
+    {
+        $id_user = $this->session->userdata('id');
+        $id_order = $this->input->post('id_order', true);
+
+        $config = array(
+            'upload_path' => "./assets/img/pembayaran/",
+            'allowed_types' => "gif|jpg|png|jpeg",
+            'overwrite' => TRUE,
+            'file_name' => $id_order ."_". $id_user . ".jpeg"
+        );
+
+        $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+        $this->upload->do_upload('upload_image');
+
+        $data['errors'] = $this->upload->display_errors('<p>', '</p>');
+        $data['result'] = print_r($this->upload->data(), true);
+        $data['files']  = print_r($_FILES, true);
+        $data['post']   = print_r($_POST, true);
+
+        if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
+            $this->session->set_flashdata('error', $this->upload->display_errors('<p>', '</p>'));
+            redirect('account/penyewaanRenter');
+        } else {
+            $data = array(
+                'id_order' => $id_order,
+                'rekening' => $this->input->post('nomor_rekening', true),
+                'an' => $this->input->post('nama', true),
+                'bank' => $this->input->post('bank', true),
+                'jumlah_bayar' => $this->input->post('jumlah_bayar', true),
+                'foto' => $config['file_name']
+
+            );
+            $this->db->insert('pembayaran', $data);
+
+            $this->db->set('id_pembayaran', 3);
+            $this->db->where('id_order', $id_order);
+            $this->db->update('order_item');  
+            redirect('account/penyewaanRenter');
+        }
+
+    }
+
     public function co()
     {
         $id_user = $this->session->userdata('id');
@@ -94,7 +138,7 @@ class mBeranda extends CI_Model{
         if ($this->input->post('antar', true) == "antar") {
             $antar = 1;
         } else {
-            $antar = 2;
+            $antar = 0;
         }
         
         $query = $this->db->query('select * from cart where id_user = "'.$id_user.'"')->result_array();

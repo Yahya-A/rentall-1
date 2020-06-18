@@ -15,9 +15,31 @@ class M_account extends CI_Model
     public function getTotal()
     {
         $id_user = $this->session->userdata('id');
-        $rows = $this->db->query('select sum(harga * durasi) as total from items, cart where items.id_item = cart.id_item and cart.id_user = "' . $id_user . '"');
+        $rows = $this->db->query('select sum(harga * durasi * qty) as total from items, cart where items.id_item = cart.id_item and cart.id_user = "' . $id_user . '"');
         $price = $rows->row();
         return $harga = $price->total;
+    }
+
+    public function getMenunggu()
+    {
+        $id_user = $this->session->userdata('id');
+        // if ($id == 1) {
+        $this->db->where('id_vendor', $id_user);
+        $this->db->where('order_item.status', 0);
+        $this->db->from('order_item');
+        return $this->db->get()->result_array();
+        // } else if ($id == 2){
+        // }
+    }
+
+    public function getSiap()
+    {
+        $id_user = $this->session->userdata('id');
+        $this->db->where('id_vendor', $id_user);
+        $this->db->where('order_item.status', 1);
+        $this->db->from('order_item');
+        return $this->db->get()->result_array();
+        
     }
 
     public function cart()

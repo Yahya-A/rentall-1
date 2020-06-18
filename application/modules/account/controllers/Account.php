@@ -114,6 +114,54 @@ class Account extends CI_Controller {
 
     // Manajemen Vendor Start
 
+    public function verifPembayaran($id_order, $desc)
+    {
+        if ($desc == 1) {
+            $id_vendor = $this->session->userdata('id');
+            $this->db->where('id_order', $id_order);
+            $this->db->where('id_vendor', $id_vendor);
+            $result = $this->db->get('order_item')->result();
+            if ($result) {
+                $data = array(
+                     'id_pembayaran' => 4
+                );
+                $this->db->where('id_order', $id_order);
+                $this->db->update('order_item', $data);
+                $this->session->set_flashdata('success', 'Berhasil melakukan konfirmasi transfer');
+            } else {
+                $this->session->set_flashdata('error', 'Data pesanan tidak ditemukan');
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Tidak ada perintah tersebut');
+        }
+        redirect('account/penyewaanVendor');
+    }
+
+    public function verifPersiapan($id_order, $desc)    
+    {
+        if ($desc == 1) {
+            $id_vendor = $this->session->userdata('id');
+            $this->db->where('id_order', $id_order);
+            $this->db->where('id_vendor', $id_vendor);
+            $result = $this->db->get('order_item')->result();
+            if ($result) {
+                $data = array(
+                     'status' => 1
+                );
+                $this->db->where('id_order', $id_order);
+                $this->db->update('order_item', $data);
+                $this->session->set_flashdata('success', 'Berhasil melakukan konfirmasi kesiapan barang');
+            } else {
+                $this->session->set_flashdata('error', 'Data pesanan tidak ditemukan');
+            }
+        }else if ($desc == 2){
+            
+        } else {
+            $this->session->set_flashdata('error', 'Tidak ada perintah tersebut');
+        }
+        redirect('account/penyewaanVendor');    
+    }
+
     public function vendorBoard()
     {
         // $data['active'] = array(
@@ -196,6 +244,8 @@ class Account extends CI_Controller {
             '2' => 'font-weight-bold',
             '3' => ''
         );
+        $data['menunggu'] = $this->M_account->getMenunggu();
+        $data['siap'] = $this->M_account->getSiap();
         $data['username'] = $this->session->userdata('username');
         $data['vendor'] = $this->db->get('vendor_profile')->result_array();
         $this->load->view('beranda/themes/head');

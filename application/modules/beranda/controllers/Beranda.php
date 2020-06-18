@@ -158,6 +158,22 @@ class Beranda extends CI_Controller {
           }
      }
 
+     public function konfirmasiPembayaran()
+     {
+          $this->form_validation->set_rules('id_order', 'id order', 'trim|required');
+          $this->form_validation->set_rules('nama', 'Nama Pengirim', 'trim|required');
+          $this->form_validation->set_rules('bank', 'Bank', 'trim|required');
+          $this->form_validation->set_rules('nomor_rekening', 'Nomor Rekening', 'trim|required|numeric');
+          $this->form_validation->set_rules('jumlah_bayar', 'Jumlah Bayar', 'trim|required|numeric');
+
+          if ($this->form_validation->run() == false) {
+               $this->session->set_flashdata('error', 'Upload bukti pembayaran gagal!'); 
+               redirect('account/penyewaanRenter');
+          } else {
+              $this->mBeranda->konfirPembayaran();
+          }
+     }
+
      public function pembayaran()
      {
                $data['title'] = "Cara Pembayaran";
