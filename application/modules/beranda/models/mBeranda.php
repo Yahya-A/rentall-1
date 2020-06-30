@@ -65,7 +65,7 @@ class mBeranda extends CI_Model{
     public function getTotal()
     {
         $id_user = $this->session->userdata('id');
-        $rows = $this->db->query('select sum(harga * durasi) as total from items, cart where items.id_item = cart.id_item and cart.id_user = "' . $id_user . '"');
+        $rows = $this->db->query('select sum( harga * durasi * qty) as total from items, cart where items.id_item = cart.id_item and cart.id_user = "' . $id_user . '"');
         $price = $rows->row();
         return $harga = $price->total;
     }
@@ -142,16 +142,6 @@ class mBeranda extends CI_Model{
         }
         
         $query = $this->db->query('select * from cart where id_user = "'.$id_user.'"')->result_array();
-        
-        $data = array(
-            'id_order' => $no_orderf, 
-            'id_user' => $id_user,
-            'status' => 0,
-            'id_pembayaran' => $pembayaran,
-            'antar' => $antar
-        );
-
-        $this->db->insert('order_item', $data);
 
         foreach ($query as $q ) {
             $datetime1 = date_create($q['tgl_sewa']);
@@ -159,12 +149,24 @@ class mBeranda extends CI_Model{
             $durasi = date_diff($datetime1, $datetime2)->format('%a');
             
             $id_item = $q['id_item'];
+            $row = $this->db->query("select id_user from items where id_item = $id_item")->row();
+            $data = array(
+                'id_order' => $no_orderf, 
+                'id_user' => $id_user,
+                'status' => 0,
+                'id_vendor' => $row->id_user,
+                'tgl_sewa' => $q['tgl_sewa'],
+                'tgl_kembali' => $q['tgl_kembali'],
+                'id_pembayaran' => $pembayaran,
+                'antar' => $antar
+            );
+
+            $this->db->insert('order_item', $data);
+            
             $data_d = array(
                 'id_order' => $no_orderf,
                 'id_item' => $id_item,
                 'qty' => $q['qty'],
-                'tgl_sewa' => $q['tgl_sewa'],
-                'tgl_kembali' => $q['tgl_kembali'],
                 'durasi_sewa' => $durasi
             );
             $this->db->insert('order_detail', $data_d);
@@ -172,7 +174,7 @@ class mBeranda extends CI_Model{
         $total_bayar = $this->getTotal(); 
         $this->db->where('id_user', $id_user);
         $this->db->delete('cart');
-        if ($pembayaran == 1) {
+        if ($pembayaran == 0) {
             $this->session->set_flashdata('success', 'Silahkan lakukan pembayaran saat pengambilan barang sebesar Rp. '.number_format($total_bayar,0,",",".").' ');
         } else {
             $this->session->set_flashdata('success', 'Silahkan lakukan pembayaran sebesar Rp. '.number_format($total_bayar,0,",",".").' ');

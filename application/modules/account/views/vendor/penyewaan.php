@@ -463,7 +463,7 @@
                                                                 if ($antar == 1) {
                                                                     echo 'Barang harus diantar';
                                                                 } else {
-                                                                    echo 'Barang Diambil';
+                                                                    echo 'Barang Akan Diambil';
                                                                 }
                                                             } else if ($status == 6) {
                                                                 echo 'Masa sewa selesai. Barang belum kembali';
