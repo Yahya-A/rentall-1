@@ -104,23 +104,23 @@
                                     endforeach;
                                 ?>
                             <div class="row">
-                        <?php
-                            if (!$product) {?>
-                                <div class="col-12 mt-5">
-                                    <center>
-                                        <h4>Keranjang belanja masih kosong, silahkan memilih produk</h4>
-                                        <a href="<?=base_url('');?>" class="h4 text-white mt-4">Kembali ke Beranda</a>
-                                    </center>
-                                </div>
-                            <?} else {?>
-                                <div class="col-md-4 offset-md-6 my-4">
-                                    <h4 class="mt-2">Total Belanja : Rp. <?=number_format($price, 0, ",", ".");?>  </h4>
-                                </div>
-                                <div class="col-md-2 mt-3">
-                                    <a href="#" class="btn btn-light h2 float-right mr-5" role="button" data-toggle="modal" data-target="#modalKonfirmasi" >Checkout</a>
-                                </div>
-                            <?}
-                        ?>
+                            <?php
+                                if (!$product) {?>
+                                    <div class="col-12 mt-5">
+                                        <center>
+                                            <h4>Keranjang belanja masih kosong, silahkan memilih produk</h4>
+                                            <a href="<?=base_url('');?>" class="h4 text-white mt-4">Kembali ke Beranda</a>
+                                        </center>
+                                    </div>
+                                <?} else {?>
+                                    <div class="col-md-4 offset-md-6 my-4">
+                                        <h4 class="mt-2">Total Belanja : Rp. <?=number_format($price, 0, ",", ".");?>  </h4>
+                                    </div>
+                                    <div class="col-md-2 mt-3">
+                                        <a href="#" class="btn btn-light h2 float-right mr-5" role="button" data-toggle="modal" data-target="#modalKonfirmasi" >Checkout</a>
+                                    </div>
+                                <?}
+                            ?>
                             </div>
                         </div>
                 </div>
@@ -139,7 +139,9 @@
                     $total_produk = count($produk);  //Penghitungan jumlah total barang
                     $id_pembayaran = $produk['0']['id_pembayaran'];
                     $status = $produk['0']['status'];
+                    $antar = $produk['0']['antar'];
                     $id_vendor = $produk['0']['id_vendor'];
+
                     $bank = $this->db->query("SELECT * FROM bank_profile bp, vendor_profile vp where bp.id_user = $id_vendor")->result_array();
                     $hitungTotal = $this->db->query("SELECT sum(harga * durasi_sewa * qty) as total from items i, order_detail od where od.id_order = $order_id and i.id_item = od.id_item")->result_array();
                     $buktiTF = $this->db->query("SELECT * from items i, order_detail od, pembayaran p where od.id_order = $order_id and i.id_item = od.id_item and p.id_order = $order_id")->result_array();
@@ -169,13 +171,21 @@
                                                                     echo 'Pengantaran';
                                                                 } else if ($status == 3) {
                                                                     echo 'Disewa';
+                                                                } else if ($status == 4){
+                                                                    if ($antar == 0) {
+                                                                        echo 'Barang Harus Diambil';
+                                                                    } else {
+                                                                        echo 'Barang Akan Diantar';
+                                                                    }
+                                                                } else if ($status == 6){
+                                                                    echo 'Barang Harus Dikembalikan';
                                                                 }
                                                             }
                                                         ?> 
                                                     </h4>
                                                     <h4>
                                                         <?php 
-                                                            if( $id_pembayaran == 1){
+                                                            if( $id_pembayaran == 1){ 
                                                                 echo 'Pembayaran ditempat';
                                                             } else if($id_pembayaran == 2) {
                                                                 echo 'Belum Bayar';
@@ -204,7 +214,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Modal Daftar Barang -->
+
+                        <!-- START MODAL DETAIL ORDER -->
                         <div class="modal fade" id="modalBarang<?= $produk['0']['id_order'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-notify modal-warning" role="document">
                                 <!--Content-->
@@ -257,6 +268,9 @@
                                 <!--/.Content-->
                             </div>
                         </div>
+                        <!-- END MODAL DETAIL ORDER -->
+
+                        <!-- START MODAL UPLOAD BUKTI PEMBAYARAN -->
                         <div class="modal fade" id="modalKonfirmasi<?= $produk['0']['id_order'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-notify modal-warning" role="document">
                                 <!--Content-->
@@ -313,6 +327,9 @@
                                 <!--/.Content-->
                             </div>
                         </div>
+                        <!-- END MODAL UPLOAD BUKTI PEMBAYARAN -->
+
+                        <!-- START MODAL DETAIL PEMBAYARAN -->
                         <div class="modal fade" id="modalBuktiTF<?= $produk['0']['id_order'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-notify modal-warning" role="document">
                                 <!--Content-->
@@ -335,10 +352,169 @@
                                 <!--/.Content-->
                             </div>
                         </div>
+                        <!-- END MODAL DETAIL PEMBAYARAN -->
                     </div>
                 <? endforeach; ?>
+                <div class="row">
+                    <?php if (!$order) {?>
+                        <div class="col-12 mt-5">
+                            <center>
+                                <h4>Tidak ada barang yang sedang disewa</h4>
+                                <a href="<?=base_url('');?>" class="h4 text-white mt-4">Kembali ke Beranda</a>
+                            </center>
+                        </div>
+                    <? } ?>
+                </div>
             </div>
             <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="contact-tab">
+                <?php
+                foreach ($riwayat as $p):
+                    $id_user = $this->session->userdata('id');
+                    $order_id = $p['id_order']; // Mendapatkan id_order
+                    $this->db->where('order_item.id_user', $id_user);
+                    $this->db->where('order_item.id_order', $order_id);
+                    $this->db->from('items');
+                    $this->db->join('order_detail', 'items.id_item = order_detail.id_item');
+                    $this->db->join('order_item',  'order_item.id_order = order_detail.id_order');
+                    $produk = $this->db->get()->result_array();
+                    $total_produk = count($produk);  //Penghitungan jumlah total barang
+                    $id_pembayaran = $produk['0']['id_pembayaran'];
+                    $status = $produk['0']['status'];
+                    $antar = $produk['0']['antar'];
+                    $id_vendor = $produk['0']['id_vendor'];
+
+                    $bank = $this->db->query("SELECT * FROM bank_profile bp, vendor_profile vp where bp.id_user = $id_vendor")->result_array();
+                    $hitungTotal = $this->db->query("SELECT sum(harga * durasi_sewa * qty) as total from items i, order_detail od where od.id_order = $order_id and i.id_item = od.id_item")->result_array();
+                    $buktiTF = $this->db->query("SELECT * from items i, order_detail od, pembayaran p where od.id_order = $order_id and i.id_item = od.id_item and p.id_order = $order_id")->result_array();
+                ?>
+                    <div class="row mt-4">
+                        <div class="container">
+                            <!-- About Section Heading -->
+                            <div class="card mb-3 mx-2">
+                                <div class="row no-gutters">
+                                    <div class="col-md-3">
+                                        <img src="<?=base_url('assets/img/produk/'), $produk['0']['foto']?>" class="card-img p-3"  style="max-width: 200px;">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="row container">
+                                            <div class="col-md-8"> 
+                                                <div class="card-body">
+                                                    <a class="card-title text-dark h3"><?=$produk['0']['nama']?></a>
+                                                    <h4> <?= $produk['0']['tanggal_order'] ?></h4>
+                                                    <h4 class="mt-4">    
+                                                        <?php 
+                                                            if($id_pembayaran != 2 && $id_pembayaran != 3){
+                                                                if($status == 0){
+                                                                    echo 'Diproses';
+                                                                } else if ($status == 1) {
+                                                                    echo 'Barang Siap';
+                                                                } else if ($status == 2) {
+                                                                    echo 'Pengantaran';
+                                                                } else if ($status == 3) {
+                                                                    echo 'Disewa';
+                                                                } else if ($status == 4){
+                                                                    if ($antar == 0) {
+                                                                        echo 'Barang Harus Diambil';
+                                                                    } else {
+                                                                        echo 'Barang Akan Diantar';
+                                                                    }
+                                                                } else if ($status == 6){
+                                                                    echo 'Barang Harus Dikembalikan';
+                                                                }
+                                                            }
+                                                        ?> 
+                                                    </h4>
+                                                    <h4>
+                                                        <?php 
+                                                            if( $id_pembayaran == 1){ 
+                                                                echo 'Pembayaran ditempat';
+                                                            } else if($id_pembayaran == 2) {
+                                                                echo 'Belum Bayar';
+                                                            } else if ($id_pembayaran == 3) {
+                                                                echo 'Proses Verifikasi Pembayaran';
+                                                            } else if ($id_pembayaran == 4){
+                                                                echo 'Pembayaran Berhasil';
+                                                            }
+                                                        ?> 
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card-body mt-2 row ">
+                                                    <h5 class="col-md-12">Total barang <?= $total_produk ?></h5>
+                                                        <a href="#" class="col-md-12 btn btn-light h2 float-right mr-5" role="button" data-toggle="modal" data-target="#modalBarang<?= $produk['0']['id_order'] ?>" >Detail pesanan</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
+                        </div>
+                        
+                        <!-- START MODAL DETAIL ORDER -->
+                        <div class="modal fade" id="modalBarang<?= $produk['0']['id_order'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-notify modal-warning" role="document">
+                                <!--Content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <p class="heading lead">Daftar Pesanan</p>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true" class="white-text">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php foreach($produk as $q): ?>
+                                            <div class="card mb-3">
+                                                <div class="row no-gutters">
+                                                    <div class="col-md-3">
+                                                        <img src="<?=base_url('assets/img/produk/'), $q['foto']?>" class="card-img p-3"  style="max-width: 200px;">
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <form action="<?= base_url('beranda/editatc'); ?>" method="POST">
+                                                            <div class="row container">
+                                                                <div class="col-md-12"> 
+                                                                    <div class="card-body">
+                                                                        <h3 class="card-title text-dark"><?=$q['nama']?></h3>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <h4 class="card-text text-dark mt-1 mb-4"> Rp. <?=number_format($q['harga'], 0, ",", ".");?></h4>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <h4 class="card-text text-dark mt-1 mb-4"> Jumlah <?= $q['qty'] ?></h4>
+                                                                            </div>
+                                                                        </div>
+                                                                        <?php
+                                                                            $datetime1 = date_create($q['tgl_sewa']);
+                                                                            $datetime2 = date_create($q['tgl_kembali']);
+                                                                            $durasi = date_diff($datetime1, $datetime2)->format('%a');
+                                                                            $totalHarga = $q['harga'] * $durasi;
+                                                                        ?>
+                                                                        <h4 class="card-text text-dark"><?= $q['tgl_sewa'] ?> - <?= $q['tgl_kembali'] ?></h4>
+                                                                        <h4 class="card-text text-dark">Durasi Penyewaan <?= $durasi ?> Hari</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <? endforeach; ?>
+                                    </div>
+                                </div>
+                                <!--/.Content-->
+                            </div>
+                        </div>
+                        <!-- END MODAL DETAIL ORDER -->
+                    </div>
+                <? endforeach; ?>
+                <div class="row">
+                    <?php if (!$riwayat) {?>
+                        <div class="col-12 mt-5">
+                            <center>
+                                <h4>Tidak ada riwayat sewa barang</h4>
+                                <a href="<?=base_url('');?>" class="h4 text-white mt-4">Kembali ke Beranda</a>
+                            </center>
+                        </div>
+                    <? } ?>
+                </div>
             </div>
         </div>
     </div>

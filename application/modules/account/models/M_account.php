@@ -8,6 +8,16 @@ class M_account extends CI_Model
     {
         $id_user = $this->session->userdata('id');
         
+        $this->db->where_not_in('status', 5);
+        $this->db->where('id_user', $id_user);
+        return $this->db->get('order_item')->result_array();
+    }
+
+    public function getRiwayat()
+    {
+        $id_user = $this->session->userdata('id');
+        
+        $this->db->where('status', 5);
         $this->db->where('id_user', $id_user);
         return $this->db->get('order_item')->result_array();
     }
@@ -28,8 +38,6 @@ class M_account extends CI_Model
         $this->db->where('order_item.status', 0);
         $this->db->from('order_item');
         return $this->db->get()->result_array();
-        // } else if ($id == 2){
-        // }
     }
 
     public function getSiap()
@@ -37,6 +45,29 @@ class M_account extends CI_Model
         $id_user = $this->session->userdata('id');
         $this->db->where('id_vendor', $id_user);
         $this->db->where('order_item.status', 1);
+        $this->db->from('order_item');
+        return $this->db->get()->result_array();
+        
+    }
+
+    public function getSewa()
+    {
+        $id_user = $this->session->userdata('id');
+        $where = "status='3' || status='4' || status='6'";
+
+        $this->db->where('id_vendor', $id_user);
+        $this->db->where($where);
+        $this->db->from('order_item');
+        return $this->db->get()->result_array();
+        
+    }
+
+    public function getHistory()
+    {
+        $id_user = $this->session->userdata('id');
+
+        $this->db->where('id_vendor', $id_user);
+        $this->db->where('order_item.status', 5);
         $this->db->from('order_item');
         return $this->db->get()->result_array();
         

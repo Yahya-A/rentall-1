@@ -104,6 +104,7 @@ class Account extends CI_Controller {
         $data['price'] = $this->M_account->getTotal();
         $data['username'] = $this->session->userdata('username');
         $data['order'] = $this->M_account->getOrder();
+        $data['riwayat'] = $this->M_account->getRiwayat();
         $this->load->view('beranda/themes/head');
         $this->load->view('beranda/themes/renternav', $data);
         $this->load->view('beranda/penyewaan', $data);
@@ -139,25 +140,61 @@ class Account extends CI_Controller {
 
     public function verifPersiapan($id_order, $desc)    
     {
-        if ($desc == 1) {
-            $id_vendor = $this->session->userdata('id');
-            $this->db->where('id_order', $id_order);
-            $this->db->where('id_vendor', $id_vendor);
-            $result = $this->db->get('order_item')->result();
-            if ($result) {
-                $data = array(
-                     'status' => 1
+        // Check apakah ada orderan dengan nomor orderan $id_order
+        $id_vendor = $this->session->userdata('id');
+        $this->db->where('id_order', $id_order);
+        $this->db->where('id_vendor', $id_vendor);
+        $result = $this->db->get('order_item')->result();
+        if ($result) {
+            if ($desc == 1 || $desc == 5) {
+                // Mengambil data id_item dan stok dari tabel items & order_details
+                $this->db->where('id_order', $id_order);
+                $this->db->from('items');
+                $updateStok = $this->db->get('order_detail')->row();
+                $stok = $updateStok->stock;
+                $qty = $updateStok->qty;
+                $id_item = $updateStok->id_item;
+
+                if ($desc == 1) {
+                    $data = array( 'status' => 1 );
+                    $data2 = array( 'stock' => $stok - $qty );
+                    $flashData = 'Berhasil melakukan konfirmasi kesiapan barang';
+                } else if ($desc == 5){
+                    $data = array( 'status' => 5 );
+                    $data2 = array( 'stock' => $stok + $qty );
+                    $flashData = 'Berhasil melakukan konfirmasi penerimaan barang';
+                }
+
+                // Update status order menjadi Barang Siap
+                $this->db->where('id_order', $id_order);
+                $this->db->update('order_item', $data);
+
+                // Mengurangi stok lama 
+                $this->db->where('id_item', $id_item);
+                $this->db->update('items', $data2);
+                
+                $this->session->set_flashdata('success', "$flashData");
+            }else if ($desc == 2){
+                // digunakan untuk barang belum siap
+            } else if ($desc == 3 || $desc == 4){
+                // digunakan untuk barang sudah diambil / sudah diantar
+                    $data = array(
+                        'status' => 3
                 );
                 $this->db->where('id_order', $id_order);
                 $this->db->update('order_item', $data);
-                $this->session->set_flashdata('success', 'Berhasil melakukan konfirmasi kesiapan barang');
+                if ($desc == 3) {
+                    $barang = 'Berhasil melakukan konfirmasi pengambilan barang';
+                } else {
+                        $barang = 'Berhasil melakukan konfirmasi pengambilan barang';
+                }
+                $this->session->set_flashdata('success', "$barang");
             } else {
-                $this->session->set_flashdata('error', 'Data pesanan tidak ditemukan');
+                $this->session->set_flashdata('error', 'Tidak ada perintah tersebut');
             }
-        }else if ($desc == 2){
-            
+
         } else {
-            $this->session->set_flashdata('error', 'Tidak ada perintah tersebut');
+            $this->session->set_flashdata('error', 'Data pesanan tidak ditemukan');
         }
         redirect('account/penyewaanVendor');    
     }
@@ -239,19 +276,24 @@ class Account extends CI_Controller {
 
     public function penyewaanVendor()
     {
-        $data['active'] = array(
-            '1' => '',
-            '2' => 'font-weight-bold',
-            '3' => ''
-        );
-        $data['menunggu'] = $this->M_account->getMenunggu();
-        $data['siap'] = $this->M_account->getSiap();
-        $data['username'] = $this->session->userdata('username');
-        $data['vendor'] = $this->db->get('vendor_profile')->result_array();
-        $this->load->view('beranda/themes/head');
-        $this->load->view('beranda/themes/vendornav', $data);
-        $this->load->view('vendor/penyewaan', $data);
-        $this->load->view('beranda/themes/foot');
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect('');
+        }
+            $data['active'] = array(
+                '1' => '',
+                '2' => 'font-weight-bold',
+                '3' => ''
+            );
+            $data['menunggu'] = $this->M_account->getMenunggu();
+            $data['siap'] = $this->M_account->getSiap();
+            $data['sewa'] = $this->M_account->getSewa();
+            $data['history'] = $this->M_account->getHistory();
+            $data['username'] = $this->session->userdata('username');
+            $data['vendor'] = $this->db->get('vendor_profile')->result_array();
+            $this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/vendornav', $data);
+            $this->load->view('vendor/penyewaan', $data);
+            $this->load->view('beranda/themes/foot');
     }
 
     public function vendorProfile()
