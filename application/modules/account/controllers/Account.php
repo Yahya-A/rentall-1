@@ -22,6 +22,25 @@ class Account extends CI_Controller {
 
     // Manajemen Renter Start
 
+    public function change_password()
+    {
+        $this->load->library(array('form_validation')); 
+        $this->load->helper(array('url','form')); 
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect(site_url(''));
+        } 
+        
+        $this->form_validation->set_rules('password_lama', 'Password Lama', 'trim|required');
+        $this->form_validation->set_rules('password_baru', 'Password Baru', 'trim|required');
+        $this->form_validation->set_rules('password_baru2', 'Password Baru', 'trim|required|matches[password_baru]');
+        if($this->form_validation->run() == FALSE) { 
+            $this->session->set_flashdata('error', "Format tidak sesuai");
+            redirect('account/renter');
+        }else{
+            $this->M_account->change_password();
+        }
+
+    }
     public function renterEtalase()
     {
         if ($this->simple_login->cek_login()== TRUE) {
@@ -43,6 +62,9 @@ class Account extends CI_Controller {
 
     public function renter()
     {
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect('');
+        }
         if($this->session->userdata('status') == 1) {
             $this->updateRenter();
         }  else if ($this->session->userdata('status') == 2){
@@ -57,6 +79,9 @@ class Account extends CI_Controller {
             '2' => '',
             '3' => ''
         );
+        $id = $this->session->userdata('id');
+        $row = $this->db->query("select * from verif_identity where id_user = $id");
+        $data['data'] = $row->result_array();
         $data['judul'] = "Update Data Diri";
         $data['daftar'] = $this->M_account->getUserData();
         $data['username'] = $this->session->userdata('username');
@@ -77,6 +102,8 @@ class Account extends CI_Controller {
                 '3' => ''
             );
             $id = $this->session->userdata('id');
+            $row = $this->db->query("select * from verif_identity where id_user = $id");
+            $data['data'] = $row->result_array();
             $query = $this->db->query("select verif from user where id_user = $id");
             $data['verif'] = $query->row()->verif;
             $data['daftar'] = $this->M_account->getUserData();
@@ -104,6 +131,7 @@ class Account extends CI_Controller {
         $data['price'] = $this->M_account->getTotal();
         $data['username'] = $this->session->userdata('username');
         $data['order'] = $this->M_account->getOrder();
+        $data['riwayat'] = $this->M_account->getRiwayat();
         $this->load->view('beranda/themes/head');
         $this->load->view('beranda/themes/renternav', $data);
         $this->load->view('beranda/penyewaan', $data);
@@ -113,6 +141,90 @@ class Account extends CI_Controller {
     // Manajemen Renter End
 
     // Manajemen Vendor Start
+
+    public function verifPembayaran($id_order, $desc)
+    {
+        if ($desc == 1) {
+            $id_vendor = $this->session->userdata('id');
+            $this->db->where('id_order', $id_order);
+            $this->db->where('id_vendor', $id_vendor);
+            $result = $this->db->get('order_item')->result();
+            if ($result) {
+                $data = array(
+                     'id_pembayaran' => 4
+                );
+                $this->db->where('id_order', $id_order);
+                $this->db->update('order_item', $data);
+                $this->session->set_flashdata('success', 'Berhasil melakukan konfirmasi transfer');
+            } else {
+                $this->session->set_flashdata('error', 'Data pesanan tidak ditemukan');
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Tidak ada perintah tersebut');
+        }
+        redirect('account/penyewaanVendor');
+    }
+
+    public function verifPersiapan($id_order, $desc)    
+    {
+        // Check apakah ada orderan dengan nomor orderan $id_order
+        $id_vendor = $this->session->userdata('id');
+        $this->db->where('id_order', $id_order);
+        $this->db->where('id_vendor', $id_vendor);
+        $result = $this->db->get('order_item')->result();
+        if ($result) {
+            if ($desc == 1 || $desc == 5) {
+                // Mengambil data id_item dan stok dari tabel items & order_details
+                $this->db->where('id_order', $id_order);
+                $this->db->from('items');
+                $updateStok = $this->db->get('order_detail')->row();
+                $stok = $updateStok->stock;
+                $qty = $updateStok->qty;
+                $id_item = $updateStok->id_item;
+
+                if ($desc == 1) {
+                    $data = array( 'status' => 1 );
+                    $data2 = array( 'stock' => $stok - $qty );
+                    $flashData = 'Berhasil melakukan konfirmasi kesiapan barang';
+                } else if ($desc == 5){
+                    $data = array( 'status' => 5 );
+                    $data2 = array( 'stock' => $stok + $qty );
+                    $flashData = 'Berhasil melakukan konfirmasi penerimaan barang';
+                }
+
+                // Update status order menjadi Barang Siap
+                $this->db->where('id_order', $id_order);
+                $this->db->update('order_item', $data);
+
+                // Mengurangi stok lama 
+                $this->db->where('id_item', $id_item);
+                $this->db->update('items', $data2);
+                
+                $this->session->set_flashdata('success', "$flashData");
+            }else if ($desc == 2){
+                // digunakan untuk barang belum siap
+            } else if ($desc == 3 || $desc == 4){
+                // digunakan untuk barang sudah diambil / sudah diantar
+                    $data = array(
+                        'status' => 3
+                );
+                $this->db->where('id_order', $id_order);
+                $this->db->update('order_item', $data);
+                if ($desc == 3) {
+                    $barang = 'Berhasil melakukan konfirmasi pengambilan barang';
+                } else {
+                        $barang = 'Berhasil melakukan konfirmasi pengambilan barang';
+                }
+                $this->session->set_flashdata('success', "$barang");
+            } else {
+                $this->session->set_flashdata('error', 'Tidak ada perintah tersebut');
+            }
+
+        } else {
+            $this->session->set_flashdata('error', 'Data pesanan tidak ditemukan');
+        }
+        redirect('account/penyewaanVendor');    
+    }
 
     public function vendorBoard()
     {
@@ -191,21 +303,32 @@ class Account extends CI_Controller {
 
     public function penyewaanVendor()
     {
-        $data['active'] = array(
-            '1' => '',
-            '2' => 'font-weight-bold',
-            '3' => ''
-        );
-        $data['username'] = $this->session->userdata('username');
-        $data['vendor'] = $this->db->get('vendor_profile')->result_array();
-        $this->load->view('beranda/themes/head');
-        $this->load->view('beranda/themes/vendornav', $data);
-        $this->load->view('vendor/penyewaan', $data);
-        $this->load->view('beranda/themes/foot');
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect('');
+        }
+            $data['active'] = array(
+                '1' => '',
+                '2' => 'font-weight-bold',
+                '3' => ''
+            );
+            $data['menunggu'] = $this->M_account->getMenunggu();
+            $data['siap'] = $this->M_account->getSiap();
+            $data['sewa'] = $this->M_account->getSewa();
+            $data['history'] = $this->M_account->getHistory();
+            $data['username'] = $this->session->userdata('username');
+            $data['vendor'] = $this->db->get('vendor_profile')->result_array();
+            $this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/vendornav', $data);
+            $this->load->view('vendor/penyewaan', $data);
+            $this->load->view('beranda/themes/foot');
     }
 
     public function vendorProfile()
     {
+    
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect('');
+        }
         $data['active'] = array(
             '1' => '',
             '2' => '',
@@ -412,7 +535,7 @@ class Account extends CI_Controller {
         $valid->set_rules('password','Password','required');
 
         if($valid->run()) { 
-            $query = $this->db->get_where('user',array('username'=>$username,'password' => md5($password), 'email' => $email));
+            $query = $this->db->get_where('user',array('username'=>$username,'password' => md5($password), 'email' => $email, 'token' => '3'));
             if($query->num_rows() == 1) {
                 $data['email'] = $email;
                 $data['username'] = $username;
@@ -502,14 +625,28 @@ class Account extends CI_Controller {
 
     public function bank()
     {
-        $data['judul'] = "Akun Bank";
-        $data['bank'] = $this->M_account->getBank();
-        $data['username'] = $this->session->userdata('username');
-        $this->load->view('template/account_header', $data);
-        $this->load->view('template/account_sidebar');
-        $this->load->view('template/account_topbar', $data);
-        $this->load->view('bank/bank', $data);
-        $this->load->view('template/account_footer');
+        if($this->session->userdata('status') == 1) {
+            redirect('account/update');
+        } else if ($this->session->userdata('status') == 2){
+            $data['active'] = array(
+                '1' => '',
+                '2' => '',
+                '3' => ''
+            );
+            $id = $this->session->userdata('id');
+            $row = $this->db->query("select * from verif_identity where id_user = $id");
+            $data['data'] = $row->result_array();
+            $query = $this->db->query("select verif from user where id_user = $id");
+            $data['verif'] = $query->row()->verif;
+            $data['daftar'] = $this->M_account->getUserData();
+            $data['judul'] = "Akun Bank";
+            $data['bank'] = $this->M_account->getBank();
+            $data['username'] = $this->session->userdata('username');
+            $this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/renternav', $data);
+            $this->load->view('bank/bank', $data);
+            $this->load->view('beranda/themes/foot');
+        }
     }
 
     public function add_bank()

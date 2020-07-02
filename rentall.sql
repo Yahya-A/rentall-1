@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 17, 2020 at 06:19 PM
+-- Generation Time: Jun 18, 2020 at 01:57 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -36,6 +36,13 @@ CREATE TABLE `bank_profile` (
   `rekening` int(28) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `bank_profile`
+--
+
+INSERT INTO `bank_profile` (`id`, `id_user`, `bank`, `an`, `rekening`) VALUES
+(8, 15, 'BRI', 'Surya Saputra', 2147483647);
+
 -- --------------------------------------------------------
 
 --
@@ -45,7 +52,10 @@ CREATE TABLE `bank_profile` (
 CREATE TABLE `cart` (
   `id_cart` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
+  `tgl_sewa` date NOT NULL,
+  `tgl_kembali` date NOT NULL,
   `durasi` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
   `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -67,22 +77,17 @@ CREATE TABLE `items` (
   `kondisi` int(11) NOT NULL,
   `merk` varchar(128) NOT NULL,
   `antar` int(11) NOT NULL,
-  `foto` varchar(128) NOT NULL
+  `foto` varchar(128) NOT NULL,
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `items`
 --
 
-INSERT INTO `items` (`id_item`, `nama`, `deskripsi`, `harga`, `stock`, `id_kategori`, `status`, `deposit`, `kondisi`, `merk`, `antar`, `foto`) VALUES
-(1, 'Acer E5-475G', 'Laptop yang cocok untuk melakukan tugasnya', 50000, 2, 9, 1, 500000, 2, 'Acer', 1, '1.jpeg'),
-(20, 'Macbook Pro 2016', 'Laptop gahar dengan desain maksimal', 100000, 1, 9, 1, 1000000, 2, 'Apple', 2, '20.jpeg'),
-(21, 'Playstation 4', 'Playstation 4 cocok untuk bermain saat WFH', 40000, 5, 15, 1, 500000, 4, 'Playstation', 1, '21.jpeg'),
-(22, 'Playstation 3', 'Playstation 3 cocok untuk bermain saat WFH dengan 2 Stick', 20000, 10, 15, 1, 0, 1, 'Playstation', 2, '22.jpeg'),
-(23, 'Avanza Facelift', 'Cocok untuk berpergian dengan keluarga tersayang', 250000, 2, 6, 1, 1000000, 1, 'Toyota', 2, '23.jpeg'),
-(24, 'Agya Turbo', 'Mobil agya dengan turbo yang super ngebut sangat', 200000, 1, 6, 1, 1000000, 1, 'Toyota', 1, '24.jpeg'),
-(25, 'Sony A6000', 'Saatnya mengabadikan setiap momen berharga', 100000, 2, 17, 1, 500000, 2, 'Sony', 2, '25.jpeg'),
-(26, 'Canon DSLR 3D', 'Pemula akan merasa menjadi Profesional saat menggunakan ini', 200000, 2, 17, 1, 0, 2, 'Canon', 1, '26.jpeg');
+INSERT INTO `items` (`id_item`, `nama`, `deskripsi`, `harga`, `stock`, `id_kategori`, `status`, `deposit`, `kondisi`, `merk`, `antar`, `foto`, `id_user`) VALUES
+(28, 'Macbook Pro 2016', 'Laptop siap tempur', 120000, 1, 9, 1, 500000, 2, 'Apple', 0, '1_15.jpeg', 15),
+(29, 'Playstation 4', 'Console terepik', 50000, 5, 15, 1, 0, 3, 'Sony', 0, '29_15.jpeg', 15);
 
 -- --------------------------------------------------------
 
@@ -140,8 +145,7 @@ CREATE TABLE `k_elektronik` (
 --
 
 INSERT INTO `k_elektronik` (`id`, `os`, `layar`, `memori`, `harddisk`, `resolusi`, `id_item`) VALUES
-(5, 'Windows 10', '14 inch', '8 GB', '1 TB', '1360 x 768', 1),
-(6, 'macOS Catalina 10.14.6', '16 Inch', '8 GB', '1 TB', '1360 x 768', 20);
+(7, 'macOS Catalina 10.14.6', '14 inch', '8 GB', '1 TB', '1360 x 768', 1);
 
 -- --------------------------------------------------------
 
@@ -162,8 +166,7 @@ CREATE TABLE `k_games` (
 --
 
 INSERT INTO `k_games` (`id`, `berat`, `ukuran`, `gender`, `id_item`) VALUES
-(2, '1 KG', '1 M2', 1, 21),
-(3, '1 KG', '1', 0, 22);
+(4, '1 KG', '1 M2', 1, 29);
 
 -- --------------------------------------------------------
 
@@ -185,14 +188,6 @@ CREATE TABLE `k_otomotif` (
   `id_item` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `k_otomotif`
---
-
-INSERT INTO `k_otomotif` (`id`, `bahan_bakar`, `tahun_terbit`, `kapasitas`, `warna`, `transmisi`, `mesin`, `km`, `ac`, `usb`, `id_item`) VALUES
-(2, 'Bensin', 2019, 1, 'Silver', 'Matic', '1500', 260, 1, 2, 23),
-(3, 'Bensin', 2019, 6, 'Silver', 'Matic', '1600', 12, 1, 4, 24);
-
 -- --------------------------------------------------------
 
 --
@@ -207,14 +202,6 @@ CREATE TABLE `k_photography` (
   `id_item` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `k_photography`
---
-
-INSERT INTO `k_photography` (`id`, `berat`, `material`, `ukuran`, `id_item`) VALUES
-(2, 1, 'Kulit', 15, 25),
-(3, 2, 'Metal', 14, 26);
-
 -- --------------------------------------------------------
 
 --
@@ -225,9 +212,21 @@ CREATE TABLE `order_detail` (
   `id_od` int(11) NOT NULL,
   `id_order` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
+  `tgl_sewa` date NOT NULL,
+  `tgl_kembali` date NOT NULL,
+  `qty` int(11) NOT NULL,
   `durasi_sewa` int(11) NOT NULL,
   `total_harga` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `order_detail`
+--
+
+INSERT INTO `order_detail` (`id_od`, `id_order`, `id_item`, `tgl_sewa`, `tgl_kembali`, `qty`, `durasi_sewa`, `total_harga`) VALUES
+(1, 1, 28, '2020-06-11', '2020-06-20', 2, 9, 0),
+(2, 1, 29, '2020-06-10', '2020-06-15', 1, 5, 0),
+(7, 2, 28, '2020-06-11', '2020-06-18', 2, 7, 0);
 
 -- --------------------------------------------------------
 
@@ -238,10 +237,20 @@ CREATE TABLE `order_detail` (
 CREATE TABLE `order_item` (
   `id_order` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `tanggal_sewa` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `id_vendor` int(11) NOT NULL,
+  `tanggal_order` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` int(11) NOT NULL,
+  `antar` int(11) NOT NULL,
   `id_pembayaran` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `order_item`
+--
+
+INSERT INTO `order_item` (`id_order`, `id_user`, `id_vendor`, `tanggal_order`, `status`, `antar`, `id_pembayaran`) VALUES
+(1, 15, 15, '2020-06-11 17:57:25', 1, 0, 1),
+(2, 15, 15, '2020-06-12 03:47:16', 1, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -251,9 +260,20 @@ CREATE TABLE `order_item` (
 
 CREATE TABLE `pembayaran` (
   `id_pembayaran` int(11) NOT NULL,
-  `jenis_pembayaran` varchar(128) NOT NULL,
-  `rekening` varchar(128) NOT NULL
+  `id_order` int(11) NOT NULL,
+  `rekening` varchar(128) NOT NULL,
+  `an` varchar(128) NOT NULL,
+  `bank` varchar(128) NOT NULL,
+  `jumlah_bayar` int(11) NOT NULL,
+  `foto` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pembayaran`
+--
+
+INSERT INTO `pembayaran` (`id_pembayaran`, `id_order`, `rekening`, `an`, `bank`, `jumlah_bayar`, `foto`) VALUES
+(5, 2, '01123123', 'Surya Saputra', 'BRI', 1680000, '2_15.jpeg');
 
 -- --------------------------------------------------------
 
@@ -289,7 +309,7 @@ CREATE TABLE `renter_profile` (
 
 INSERT INTO `renter_profile` (`id_user`, `nama`, `alamat`, `no_hp`, `foto`, `email`) VALUES
 (11, NULL, NULL, NULL, 'default.jpg', 'surya.saputra41@rocketmail.com'),
-(15, NULL, NULL, NULL, 'default.jpg', 'surya.saputra030090@gmail.com');
+(15, 'Surya Saputra', 'Lingkungan Sekaran', '082323939888', '15.jpeg', 'surya.saputra030090@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -314,7 +334,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `username`, `level`, `email`, `password`, `status`, `verif`, `token`) VALUES
 (11, 'google', 1, 'surya.saputra41@rocketmail.com', '3dbe00a167653a1aaee01d93e77e730e', 1, 0, 0),
-(15, 'abraham', 1, 'surya.saputra030090@gmail.com', '3dbe00a167653a1aaee01d93e77e730e', 1, 0, 1);
+(15, 'abraham', 2, 'surya.saputra030090@gmail.com', '3dbe00a167653a1aaee01d93e77e730e', 2, 0, 1);
 
 --
 -- Triggers `user`
@@ -338,8 +358,15 @@ CREATE TABLE `vendor_profile` (
   `deskripsi_vendor` varchar(128) DEFAULT NULL,
   `alamat` varchar(128) DEFAULT NULL,
   `foto` varchar(128) DEFAULT 'default.jpg',
-  `kota` varchar(128) NOT NULL
+  `kota` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `vendor_profile`
+--
+
+INSERT INTO `vendor_profile` (`id_user`, `nama_vendor`, `deskripsi_vendor`, `alamat`, `foto`, `kota`) VALUES
+(15, 'Lokalan PRIDE', 'Menyewakan barang-barang buatan INDONESIA', 'Semarang Selatan', 'default.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -464,19 +491,19 @@ ALTER TABLE `verif_identity`
 -- AUTO_INCREMENT for table `bank_profile`
 --
 ALTER TABLE `bank_profile`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `kategori`
@@ -488,19 +515,19 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `k_elektronik`
 --
 ALTER TABLE `k_elektronik`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `k_games`
 --
 ALTER TABLE `k_games`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `k_otomotif`
 --
 ALTER TABLE `k_otomotif`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `k_photography`
@@ -512,19 +539,19 @@ ALTER TABLE `k_photography`
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id_od` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_od` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_order` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `pengembalian`

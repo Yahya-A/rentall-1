@@ -10,12 +10,12 @@ $mail=new PHPMailer(true); // Passing `true` enables exceptions
 
 try {
     //settings
-    $mail->SMTPDebug=2; // Enable verbose debug output
+    $mail->SMTPDebug=1; // Enable verbose debug output
     $mail->isSMTP(); // Set mailer to use SMTP
     $mail->Host='smtp.gmail.com';
     $mail->SMTPAuth=true; // Enable SMTP authentication
     $mail->Username='super090hero030@gmail.com'; // SMTP username
-    $mail->Password='putra030090'; // SMTP password
+    $mail->Password='rentall002'; // SMTP password
     $mail->SMTPSecure='ssl';
     $mail->Port=465;
 

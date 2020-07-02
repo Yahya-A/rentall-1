@@ -6,7 +6,7 @@ class M_dashboard extends CI_Model{
         $this->db->select('user.id_user,username,no_identitas,nama_identitas,foto1,foto2');
         $this->db->from('user');
         $this->db->join('verif_identity', 'user.id_user = verif_identity.id_user');
-        $this->db->where('user.verif = ', 2);
+        $this->db->where('user.verif = ', 0);
         $query = $this->db->get();
         return $query->result_array();
     }
