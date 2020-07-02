@@ -4,6 +4,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class M_account extends CI_Model
 {
 
+    public function change_password()
+    {
+        $id = $this->session->userdata('id');
+        $password_lama = $this->input->post('password_lama', true);
+        $password_baru = $this->input->post('password_baru', true);
+        $query = $this->db->get_where('user',array('id_user'=>$id,'password' => md5($password_lama)));
+        if($query->num_rows() == 1) {
+            $data = array(
+                'password' => md5($password_baru)
+            );
+            $this->db->where('id_user', $id);
+            $this->db->update('user', $data);
+            $this->session->set_flashdata('sukses', "Password berhasil diubah");
+        } else {
+            $this->session->set_flashdata('error', "Password lama tidak sesuai");
+        }
+        redirect('account/renter');
+    }
     public function getOrder()
     {
         $id_user = $this->session->userdata('id');
@@ -117,7 +135,7 @@ class M_account extends CI_Model
             'id_user' => $id,
             'bank' => $nama,
             'an' => $an,
-            'rekening' => $nomor,
+            'rekening' => $nomor
         );
 
         $this->db->insert('bank_profile', $data);
@@ -245,7 +263,7 @@ class M_account extends CI_Model
             $data['post'] = print_r($_POST, true);
             if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
                 $this->session->set_flashdata('error', $this->upload->display_errors('<p>', '</p>'));
-                redirect('account/verif');
+                redirect('account/renter');
             } else {
                 if ($update == 1) {
                     $data = array(
@@ -256,6 +274,7 @@ class M_account extends CI_Model
                     );
                     $this->db->where('id_user', $id_user);
                     $this->db->update('verif_identity', $data);
+                    $this->session->set_flashdata('sukses', 'Berhasil mengubah data');
                 } else {
                     $data = array(
                         'id_user' => $id_user,
@@ -266,14 +285,15 @@ class M_account extends CI_Model
                     );
 
                     $this->db->insert('verif_identity', $data);
+                    $this->session->set_flashdata('sukses', 'Verifikasi akan ditinjau');
                 }
             }
         } else {
-            $this->session->set_flashdata('error', 'Foto KTP');
-            redirect('account/verif');
+            $this->session->set_flashdata('error', 'Foto Tidak Boleh Kosong');
+            redirect('account/renter');
         }
 
-        redirect('account/read');
+        redirect('account/renter');
     }
 
     public function updateVendor()

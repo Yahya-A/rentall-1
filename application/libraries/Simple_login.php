@@ -63,7 +63,7 @@ class Simple_login {
                     if ($level == 1 || $level == 2) {
                         redirect(site_url('account'));
                     } else if ($level == 3){
-                        redirect(site_url('admin'));
+                        redirect(site_url('dashboard'));
                     } else {
                         redirect(site_url('beranda'));
                     }

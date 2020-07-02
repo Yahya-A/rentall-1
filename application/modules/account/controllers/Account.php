@@ -22,6 +22,25 @@ class Account extends CI_Controller {
 
     // Manajemen Renter Start
 
+    public function change_password()
+    {
+        $this->load->library(array('form_validation')); 
+        $this->load->helper(array('url','form')); 
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect(site_url(''));
+        } 
+        
+        $this->form_validation->set_rules('password_lama', 'Password Lama', 'trim|required');
+        $this->form_validation->set_rules('password_baru', 'Password Baru', 'trim|required');
+        $this->form_validation->set_rules('password_baru2', 'Password Baru', 'trim|required|matches[password_baru]');
+        if($this->form_validation->run() == FALSE) { 
+            $this->session->set_flashdata('error', "Format tidak sesuai");
+            redirect('account/renter');
+        }else{
+            $this->M_account->change_password();
+        }
+
+    }
     public function renterEtalase()
     {
         if ($this->simple_login->cek_login()== TRUE) {
@@ -43,6 +62,9 @@ class Account extends CI_Controller {
 
     public function renter()
     {
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect('');
+        }
         if($this->session->userdata('status') == 1) {
             $this->updateRenter();
         }  else if ($this->session->userdata('status') == 2){
@@ -57,6 +79,9 @@ class Account extends CI_Controller {
             '2' => '',
             '3' => ''
         );
+        $id = $this->session->userdata('id');
+        $row = $this->db->query("select * from verif_identity where id_user = $id");
+        $data['data'] = $row->result_array();
         $data['judul'] = "Update Data Diri";
         $data['daftar'] = $this->M_account->getUserData();
         $data['username'] = $this->session->userdata('username');
@@ -77,6 +102,8 @@ class Account extends CI_Controller {
                 '3' => ''
             );
             $id = $this->session->userdata('id');
+            $row = $this->db->query("select * from verif_identity where id_user = $id");
+            $data['data'] = $row->result_array();
             $query = $this->db->query("select verif from user where id_user = $id");
             $data['verif'] = $query->row()->verif;
             $data['daftar'] = $this->M_account->getUserData();
@@ -298,6 +325,10 @@ class Account extends CI_Controller {
 
     public function vendorProfile()
     {
+    
+        if ($this->simple_login->cek_login()== TRUE) {
+            redirect('');
+        }
         $data['active'] = array(
             '1' => '',
             '2' => '',
@@ -504,7 +535,7 @@ class Account extends CI_Controller {
         $valid->set_rules('password','Password','required');
 
         if($valid->run()) { 
-            $query = $this->db->get_where('user',array('username'=>$username,'password' => md5($password), 'email' => $email));
+            $query = $this->db->get_where('user',array('username'=>$username,'password' => md5($password), 'email' => $email, 'token' => '3'));
             if($query->num_rows() == 1) {
                 $data['email'] = $email;
                 $data['username'] = $username;
@@ -594,14 +625,28 @@ class Account extends CI_Controller {
 
     public function bank()
     {
-        $data['judul'] = "Akun Bank";
-        $data['bank'] = $this->M_account->getBank();
-        $data['username'] = $this->session->userdata('username');
-        $this->load->view('template/account_header', $data);
-        $this->load->view('template/account_sidebar');
-        $this->load->view('template/account_topbar', $data);
-        $this->load->view('bank/bank', $data);
-        $this->load->view('template/account_footer');
+        if($this->session->userdata('status') == 1) {
+            redirect('account/update');
+        } else if ($this->session->userdata('status') == 2){
+            $data['active'] = array(
+                '1' => '',
+                '2' => '',
+                '3' => ''
+            );
+            $id = $this->session->userdata('id');
+            $row = $this->db->query("select * from verif_identity where id_user = $id");
+            $data['data'] = $row->result_array();
+            $query = $this->db->query("select verif from user where id_user = $id");
+            $data['verif'] = $query->row()->verif;
+            $data['daftar'] = $this->M_account->getUserData();
+            $data['judul'] = "Akun Bank";
+            $data['bank'] = $this->M_account->getBank();
+            $data['username'] = $this->session->userdata('username');
+            $this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/renternav', $data);
+            $this->load->view('bank/bank', $data);
+            $this->load->view('beranda/themes/foot');
+        }
     }
 
     public function add_bank()

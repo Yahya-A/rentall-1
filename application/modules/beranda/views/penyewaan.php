@@ -227,7 +227,22 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <?php foreach($produk as $q): ?>
+                                        <?php foreach($produk as $q):  
+                                            $this->db->select('nama_vendor, no_hp, vendor_profile.alamat, vendor_profile.id_user');
+                                            $this->db->where('vendor_profile.id_user', $q['id_vendor']);
+                                            $this->db->from('vendor_profile');
+                                            $this->db->join('renter_profile', 'id_user');
+                                            $vendor = $this->db->get()->row();
+                                            ?>
+                                            <div class="card no-gutters mb-3">
+                                                <div class="row container">
+                                                    <div class="card-body">
+                                                        <a class="h3 card-title text-dark" href=""><?=$vendor->nama_vendor?></a>
+                                                        <h5 class="text-dark mt-2"><?=$vendor->no_hp?></h5>
+                                                        <h5 class="text-dark">Lokasi : <?=$vendor->alamat?></h5>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="card mb-3">
                                                 <div class="row no-gutters">
                                                     <div class="col-md-3">
@@ -424,19 +439,7 @@
                                                             }
                                                         ?> 
                                                     </h4>
-                                                    <h4>
-                                                        <?php 
-                                                            if( $id_pembayaran == 1){ 
-                                                                echo 'Pembayaran ditempat';
-                                                            } else if($id_pembayaran == 2) {
-                                                                echo 'Belum Bayar';
-                                                            } else if ($id_pembayaran == 3) {
-                                                                echo 'Proses Verifikasi Pembayaran';
-                                                            } else if ($id_pembayaran == 4){
-                                                                echo 'Pembayaran Berhasil';
-                                                            }
-                                                        ?> 
-                                                    </h4>
+                                                    <h4>Pesanan Selesai</h4>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -461,7 +464,22 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <?php foreach($produk as $q): ?>
+                                        <?php foreach($produk as $q): 
+                                            $this->db->select('nama_vendor, no_hp, vendor_profile.alamat, vendor_profile.id_user');
+                                            $this->db->where('vendor_profile.id_user', $q['id_vendor']);
+                                            $this->db->from('vendor_profile');
+                                            $this->db->join('renter_profile', 'id_user');
+                                            $vendor = $this->db->get()->row();
+                                            ?>
+                                            <div class="card no-gutters mb-3">
+                                                <div class="row container">
+                                                    <div class="card-body">
+                                                        <a class="h3 card-title text-dark" href=""><?=$vendor->nama_vendor?></a>
+                                                        <h5 class="text-dark mt-2"><?=$vendor->no_hp?></h5>
+                                                        <h5 class="text-dark">Lokasi : <?=$vendor->alamat?></h5>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="card mb-3">
                                                 <div class="row no-gutters">
                                                     <div class="col-md-3">
