@@ -2,6 +2,17 @@
 
 class mBeranda extends CI_Model{
 
+    public function getKat(){
+        $this->db->select('kategori');
+        $this->db->group_by('kategori');
+        return $this->db->get('kategori')->result_array();
+    }
+
+    public function getSubKat(){
+        $this->db->select('sub_kat');
+        return $this->db->get('kategori')->result_array();
+    }
+
     public function getAllKategori()
     {   
         return $this->db->get('kategori')->result_array();
@@ -12,6 +23,18 @@ class mBeranda extends CI_Model{
         $this->db->where('id_kategori', $id);
         return $this->db->get('items')->result_array();
     }
+
+    public function getNewProduct()
+    {   
+        $this->db->select('*');
+        $this->db->from('items');
+        $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+        $this->db->order_by('id_item', 'DESC');
+        $this->db->limit(8);
+        $query = $this->db->get()->result_array();
+        return $query;
+    }
+
 
     public function getAllProduct()
     {   

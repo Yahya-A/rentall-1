@@ -18,14 +18,75 @@ class Products extends CI_Controller
             '2' => '',
             '3' => ''
         );
+        $id_user = $this->session->userdata('id');
         $data['judul'] = "Daftar Produk";
-        $data['items'] = $this->Items->getAllBarang();
+        $data['items'] = $this->Items->getAllBarang($id_user);
         $data['kategori'] = $this->Items->getAllKategori();
         $data['username'] = $this->session->userdata('username');
         $this->load->view('beranda/themes/head');
         $this->load->view('beranda/themes/vendornav', $data);
         $this->load->view('index', $data);
         $this->load->view('beranda/themes/foot');
+    }
+
+    public function AllProduct(){
+        $data['active'] = array(
+            '1' => 'font-weight-bold',
+            '2' => '',
+            '3' => ''
+        );
+        $config['base_url'] = base_url('products/allProduct/');
+		$config['total_rows'] = $this->db->count_all_results('items'); //total row
+        $config['per_page'] = 6;  //show record per halaman
+        $config["uri_segment"] = 3;  // uri parameter
+        $choice = $config["total_rows"] / $config["per_page"];
+        $config["num_links"] = floor($choice);
+
+		$config['first_link']       = 'First';
+        $config['last_link']        = 'Last';
+        $config['next_link']        = '&raquo;';
+        $config['prev_link']        = '&laquo;';
+        $config['full_tag_open']    = '<ul class="pagination pg-blue justify-content-center mt-5">';
+        $config['full_tag_close']   = '</ul>';
+        $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
+        $config['num_tag_close']    = '</span></li>';
+        $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
+        $config['cur_tag_close']    = '</span></li>';
+        $config['next_tag_open']    = '<li class="page-item"><span class="page-link" aria-label="Next"><span aria-hidden="true">';
+        $config['next_tagl_close']  = '</span><span class="sr-only">Next</span></span></li>';
+        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link" aria-label="Previous"><span aria-hidden="true">';
+        $config['prev_tagl_close']  = '</span><span class="sr-only">Previous</span></span></li>';
+        $config['first_tag_open']   = '<li class="page-item"><span class="page-link" aria-label="Previous"><span aria-hidden="true">';
+        $config['first_tagl_close'] = '</span><span class="sr-only">Previous</span></span></li>';
+        $config['last_tag_open']    = '<li class="page-item"><span class="page-link" aria-label="Next"><span aria-hidden="true">';
+        $config['last_tagl_close']  = '</span><span class="sr-only">Next</span></span></li>';
+
+		$this->pagination->initialize($config);
+		$data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		
+		$data['items'] = $this->Items->getAllProduct($config["per_page"], $data['page']);           
+        $data['username'] = $this->session->userdata('username');
+        $data['kategori'] = $this->Items->getallKategori();
+        $data['paging'] = $this->pagination->create_links();
+        if ($this->session->userdata('username') == "") {
+			$this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/renternav', $data);
+            $this->load->view('allProduct', $data);
+            $this->load->view('beranda/themes/foot');
+		}else{
+			$this->load->view('beranda/themes/head');
+            $this->load->view('beranda/themes/renternav', $data);
+            $this->load->view('allProduct', $data);
+            $this->load->view('beranda/themes/foot');
+		}
+        
+        // $data['items'] = $this->Items->getAllProduct();
+        
+        // $this->load->view('beranda/themes/head');
+        // $this->load->view('beranda/themes/renternav', $data);
+        // $this->load->view('allProduct', $data);
+        // $this->load->view('beranda/themes/foot');
+
     }
 
     public function read($id)
@@ -57,7 +118,6 @@ class Products extends CI_Controller
         $this->load->view('account/template/account_footer');
         
     }
-
 
     public function add($kategori)
     {
@@ -317,5 +377,25 @@ class Products extends CI_Controller
         $this->db->where('prod_id', $id);
         $this->db->delete('products');
         redirect('products');
+    }
+
+    public function detail($id_item){
+        $data['active'] = array(
+            '1' => 'font-weight-bold',
+            '2' => '',
+            '3' => ''
+        );
+        $data['items'] = $this->Items->getDetail($id_item);
+        $data['username'] = $this->session->userdata('username');
+        $data['id_user'] = $this->session->userdata('id');
+        $this->load->view('beranda/themes/head');
+        if ($this->session->userdata("username") == "") {
+        $this->load->view('beranda/themes/mainnav');
+        } else{
+
+        $this->load->view('beranda/themes/renternav', $data);
+        }
+        $this->load->view('detail', $data);
+        $this->load->view('beranda/themes/foot');
     }
 }

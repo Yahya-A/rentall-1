@@ -122,11 +122,27 @@ class Items extends CI_Model{
         }
     }
 
-    public function getAllBarang()
+
+    public function getAllProduct($limit, $start){
+        $this->db->select('*');
+        $this->db->from('items');
+        $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+        $this->db->limit( $limit, $start);
+        $query = $this->db->get()->result_array();
+        return $query;
+        // $this->db->select('*'); // <-- There is never any reason to write this line!
+        // $this->db->from('items');
+        // $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+        // $query=$this->db->get();
+        // return $query->result_array();
+    }
+
+    public function getAllBarang($id_user)
     {
         $this->db->select('*'); // <-- There is never any reason to write this line!
         $this->db->from('items');
         $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+        $this->db->where('id_vendor', $id_user);
         $query=$this->db->get();
         return $query->result_array();
     }
@@ -134,8 +150,8 @@ class Items extends CI_Model{
     public function getDetail($id)
     {
         $this->db->where('id_item', $id);
-        $this->db->from('kategori');
-        $this->db->join('items', 'items.id_kategori = kategori.id_kategori');
+        $this->db->from('items');
+        $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
         $kategori = $this->db->get()->row();
 
         switch ($kategori->kategori) {
@@ -145,6 +161,7 @@ class Items extends CI_Model{
                 $this->db->from('items');
                 $this->db->from('k_otomotif');
                 $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+                $this->db->join('vendor_profile', 'vendor_profile.id_vendor = items.id_vendor');
                 $query=$this->db->get();
                 return $query->result_array();
                 break;
@@ -155,6 +172,7 @@ class Items extends CI_Model{
                 $this->db->from('items');
                 $this->db->from('k_elektronik');
                 $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+                $this->db->join('vendor_profile', 'vendor_profile.id_vendor = items.id_vendor');
                 $query=$this->db->get();
                 return $query->result_array();
                 break;
@@ -165,6 +183,7 @@ class Items extends CI_Model{
                 $this->db->from('items');
                 $this->db->from('k_games');
                 $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+                $this->db->join('vendor_profile', 'vendor_profile.id_vendor = items.id_vendor');
                 $query=$this->db->get();
                 return $query->result_array();
                 break;
@@ -175,6 +194,7 @@ class Items extends CI_Model{
                 $this->db->from('items');
                 $this->db->from('k_photography');
                 $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+                $this->db->join('vendor_profile', 'vendor_profile.id_vendor = items.id_vendor');
                 $query=$this->db->get();
                 return $query->result_array();
                 break;

@@ -1,11 +1,6 @@
-<!-- <?php
-if ($username=='') {
-  echo $showmodal;  
-}
-?> -->
+
 <main>
     <div class="container text-center">
-
       <div class="row p-2 headline">
         <div class="col-lg-6 w-100 slider-headline">
             <div id="carousel-example-1z" class="carousel slide carousel-fade h-100" data-ride="carousel">
@@ -47,22 +42,16 @@ if ($username=='') {
           <div class="row">
             <div class="col-6">
               <select class="md-form custom-select custom-select-md text-left category-opt">
-                <option selected>Kategori</option>
-                  <optgroup label="Kategori 1">
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+              <option selected value="0">Pilih Kategori</option>
+              <?php foreach($kat as $k) :?>
+                  <optgroup label="<?= $k['kategori']?>">
+                  <?php foreach ($subkat as $sk):?>
+                    <?php if ($sk['kategori'] == $k['kategori']) :?>
+                    <option value="<?= $sk['id_kategori']?>"><?= $sk['sub_kat']?></option>
+                    <?php endif;?>
+                  <?php endforeach;?>
                   </optgroup>
-                  <optgroup label="Kategori 2">
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </optgroup>
-                  <optgroup label="Kategori 3">
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </optgroup>
+              <?php endforeach;?>
               </select>
             </div>
             <div class="col-6">
@@ -82,21 +71,29 @@ if ($username=='') {
       <p class="h3-responsive font-weight-bolder indigo-text mb-4 mt-5">Kategori</p>
       <div class="row category">
         
-        <div class="col-md-3 w-100 text-center">
-          <i class="fas fa-car fa-6x amber-text"></i>
-          <p class="h5 font-weight-bolder mt-4">Automotive</p>
+        <div class="col-md-3 w-100 my-auto text-center ico">
+          <a href="<?= base_url('category/index/1')?>">
+            <i class="fas fa-car fa-4x amber-text"></i>
+            <p class="h5 font-weight-bolder mt-2">Automotive</p>
+          </a>
         </div>
-        <div class="col-md-3 w-100 text-center">
-          <i class="fas fa-camera-retro fa-6x amber-text"></i>
-          <p class="h5 font-weight-bolder mt-4">Photograpy</p>
+        <div class="col-md-3 w-100 my-auto text-center ico">
+          <a href="<?= base_url('category/index/2')?>">
+            <i class="fas fa-camera-retro fa-4x amber-text"></i>
+            <p class="h5 font-weight-bolder mt-2">Photograpy</p>
+          </a>
         </div>
-        <div class="col-md-3 w-100 text-center">
-          <i class="fas fa-blender-phone fa-6x amber-text"></i>
-          <p class="h5 font-weight-bolder mt-4">Electronic</p>
+        <div class="col-md-3 w-100 my-auto text-center ico">
+          <a href="<?= base_url('category/index/3')?>">
+            <i class="fas fa-blender-phone fa-4x amber-text"></i>
+            <p class="h5 font-weight-bolder mt-2">Electronic</p>
+          </a>
         </div>
-        <div class="col-md-3 w-100 text-center">
-          <i class="fas fa-gamepad fa-6x amber-text"></i>
-          <p class="h5 font-weight-bolder mt-4">Games & Toys</p>
+        <div class="col-md-3 w-100 my-auto text-center ico">
+          <a href="<?= base_url('category/index/4')?>">
+            <i class="fas fa-gamepad fa-4x amber-text"></i>
+            <p class="h5 font-weight-bolder mt-2">Games & Toys</p>
+          </a>
         </div>
       </div>
       <hr>
@@ -105,127 +102,25 @@ if ($username=='') {
       <p class="h3 font-weight-bolder indigo-text mb-4 mt-5">Item Terbaru</p>
       
       <div class="row text-left mb-5 new-item">
+      <?php foreach ($newproduct as $p) :?>
         <div class="col-lg-3 mt-4">
           <div class="card">
             <div class="view overlay zoom">
-              <img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Item Image" class="card-img-top">
+              <img src="<?= base_url('assets/img/produk/').$p['item_img']?>" alt="Item Image" class="card-img-top mx-auto">
               <div class="card-body">
-                <p class="grey-text"><small>Kategori</small></p>
-                <h5 class="card-title text-wrap"><strong>Nama Item</strong></h5>
-                <p class="amber-text font-weight-light">Harga Item</p>
+                <p class="grey-text"><small><?= $p['kategori'];?></small></p>
+                <h5 class="card-title text-wrap"><strong><?= $p['nama'];?></strong></h5>
+                <hr>
+                <p class="text-primary font-weight-semilight primary-lighter-hover">Rp. <?= number_format($p['harga'],0,",",".");?>/hari</p>
               </div>
-              <a href="!#">
+              <a href="<?= base_url('products/detail/').$p['id_item']?>">
                 <div class="mask rgba-white-slight"></div>
               </a>
             </div>
           </div>
         </div>
-        <div class="col-lg-3 mt-4">
-          <div class="card">
-            <div class="view overlay zoom">
-              <img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Item Image" class="card-img-top">
-              <div class="card-body">
-                <p class="grey-text"><small>Kategori</small></p>
-                <h5 class="card-title text-wrap"><strong>Nama Item</strong></h5>
-                <p class="amber-text font-weight-light">Harga Item</p>
-              </div>
-              <a href="!#">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 mt-4">
-          <div class="card">
-            <div class="view overlay zoom">
-              <img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Item Image" class="card-img-top">
-              <div class="card-body">
-                <p class="grey-text"><small>Kategori</small></p>
-                <h5 class="card-title text-wrap"><strong>Nama Item</strong></h5>
-                <p class="amber-text font-weight-light">Harga Item</p>
-              </div>
-              <a href="!#">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 mt-4">
-          <div class="card">
-            <div class="view overlay zoom">
-              <img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Item Image" class="card-img-top">
-              <div class="card-body">
-                <p class="grey-text"><small>Kategori</small></p>
-                <h5 class="card-title text-wrap"><strong>Nama Item</strong></h5>
-                <p class="amber-text font-weight-light">Harga Item</p>
-              </div>
-              <a href="!#">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 mt-4">
-          <div class="card">
-            <div class="view overlay zoom">
-              <img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Item Image" class="card-img-top">
-              <div class="card-body">
-                <p class="grey-text"><small>Kategori</small></p>
-                <h5 class="card-title text-wrap"><strong>Nama Item</strong></h5>
-                <p class="amber-text font-weight-light">Harga Item</p>
-              </div>
-              <a href="!#">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 mt-4">
-          <div class="card">
-            <div class="view overlay zoom">
-              <img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Item Image" class="card-img-top">
-              <div class="card-body">
-                <p class="grey-text"><small>Kategori</small></p>
-                <h5 class="card-title text-wrap"><strong>Nama Item</strong></h5>
-                <p class="amber-text font-weight-light">Harga Item</p>
-              </div>
-              <a href="!#">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 mt-4">
-          <div class="card">
-            <div class="view overlay zoom">
-              <img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Item Image" class="card-img-top">
-              <div class="card-body">
-                <p class="grey-text"><small>Kategori</small></p>
-                <h5 class="card-title text-wrap"><strong>Nama Item</strong></h5>
-                <p class="amber-text font-weight-light">Harga Item</p>
-              </div>
-              <a href="!#">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 mt-4">
-          <div class="card">
-            <div class="view overlay zoom">
-              <img src="https://mdbootstrap.com/img/Mockups/Lightbox/Thumbnail/img%20(67).jpg" alt="Item Image" class="card-img-top">
-              <div class="card-body">
-                <p class="grey-text"><small>Kategori</small></p>
-                <h5 class="card-title text-wrap"><strong>Nama Item</strong></h5>
-                <p class="amber-text font-weight-light">Harga Item</p>
-              </div>
-              <a href="!#">
-                <div class="mask rgba-white-slight"></div>
-              </a>
-            </div>
-          </div>
-        </div>
-        <a type="button" class="btn btn-outline-primary waves-effect mx-auto mt-4">Lihat Semua</a>
+      <? endforeach;?>
+        <a type="button" href="<?= base_url('products/allProduct')?>" class="btn btn-outline-primary waves-effect mx-auto mt-4">Lihat Semua</a>
       </div>
 
   </main>
@@ -358,55 +253,3 @@ if ($username=='') {
   </div>
 </div>
 
-<!-- Modal Form Aktivasi -->
-<div class="modal fade" id="ModalAktivasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-notify modal-info" role="document">
-    <!--Content-->
-    <div class="modal-content m-form">
-      <!--Header-->
-      <div class="modal-header text-center indigo accent-4">
-        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Aktivasi Ulang</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" class="white-text">&times;</span>
-        </button>
-      </div>
-
-      <!--Body-->
-      <div class="modal-body">
-        <?php echo form_open('account/aktivasi');?>
-          <div class="modal-body mx-3">
-            <div class="md-form mb-5">
-              <i class="fas fa-envelope prefix grey-text"></i>
-              <input type="text" id="defaultForm-email" class="form-control validate" name="username" value="<?php echo set_value('username'); ?>">
-              <label data-error="wrong" data-success="right" for="defaultForm-email">Username</label>
-            </div>
-            <p> <?php echo form_error('username'); ?> </p> 
-            
-            <div class="md-form mb-5">
-              <i class="fas fa-envelope prefix grey-text"></i>
-              <input type="text" id="defaultForm-email" class="form-control validate" name="email" value="<?php echo set_value('email'); ?>">
-              <label data-error="wrong" data-success="right" for="defaultForm-email">Email</label>
-            </div>
-            <p> <?php echo form_error('email'); ?> </p> 
-
-            <div class="md-form mb-4">
-              <i class="fas fa-lock prefix grey-text"></i>
-              <input type="password" id="defaultForm-pass" class="form-control validate" name="password" value="<?php echo set_value('password'); ?>">
-              <label data-error="wrong" data-success="right" for="defaultForm-pass">Your password</label>
-            </div>
-            <p> <?php echo form_error('password'); ?> </p>
-
-          </div>
-
-          <!--Footer-->
-          <div class="modal-footer justify-content-center">
-            <button type="submit" class="btn btn-outline-warning waves-effect" name="btnSubmit" value="Login">Aktivasi<i class="fas fa-paper-plane-o ml-1"></i></button>
-          </div>
-        <?php echo form_close();?>
-  
-      </div>
-    </div>
-    <!--/.Content-->
-  </div>
-</div>

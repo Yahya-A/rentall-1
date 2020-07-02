@@ -9,7 +9,6 @@
         </div>
       </div>
       <hr>
-      <p class="h3 font-weight-bolder indigo-text mb-4 mt-5">Hasil Pencarian "<?= $PerKategori[0]['kategori'] ?>"</p>
       
       <div class="row text-left mb-5 new-item">
         <div class="col-3" >
@@ -32,15 +31,12 @@
                     <div class="divider-small mb-3"></div>
                     
                     <div class="form-check pl-0 mb-2 ml-4">
-                      <input type="radio" class="form-check-input" id="materialGroupExample1" name="groupOfMaterialRadios">
+                      <input type="radio" class="form-check-input" id="materialGroupExample1" name="groupOfMaterialRadios" checked>
                       <label class="form-check-label" for="materialGroupExample1">All</label>
                     </div>
                     <?php foreach ($kategori as $p) :?>
                     <div class="form-check pl-0 mb-2 ml-4">
                       <input type="radio" class="form-check-input" id="Kategori" name="groupOfMaterialRadios"
-                      <?if ($PerKategori[0]['kategori'] == $p['kategori']) {
-                        echo 'checked';
-                      }?>
                       >
                       <label class="form-check-label" for="Kategori"><?= $p['kategori']?></label>
                     </div>
@@ -60,7 +56,7 @@
         </div>
         <div class="col-9">
           <div class="row">
-          <?php foreach ($PerKategori as $p) :?>
+          <?php foreach ($items as $p) :?>
             <div class="col-lg-4 mt-4">
               <div class="card">
                   <div class="view overlay zoom">
@@ -104,4 +100,4 @@
         </div>
         
 
-  </main>
+  </main> 
