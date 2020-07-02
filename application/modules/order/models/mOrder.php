@@ -43,6 +43,7 @@ class mOrder extends CI_Model{
         $this->db->join('order_detail', 'order_item.id_order = order_detail.id_order');
         $this->db->join('items', 'items.id_item = order_detail.id_item', 'inner');
         $this->db->where('id_user', $id_user);
+        // $this->db->where('status_sewa', 4);
         $this->db->where('status_sewa', 0);
         $this->db->group_by('order_item.id_order');
         $query=$this->db->get();
@@ -54,9 +55,9 @@ class mOrder extends CI_Model{
         $this->db->from('order_item');
         $this->db->join('order_detail', 'order_item.id_order = order_detail.id_order');
         $this->db->join('items', 'items.id_item = order_detail.id_item', 'inner');
+        $this->db->where('status_sewa', 1);
         $this->db->where('id_user', $id_user);
-        $this->db->where('status_sewa !=', 0);
-        $this->db->or_where('status_sewa', 1);
+        // $this->db->or_where('status_sewa !=', 0);
         $this->db->or_where('status_sewa', 2);
         $this->db->group_by('order_item.id_order');
         $query=$this->db->get();
@@ -81,6 +82,18 @@ class mOrder extends CI_Model{
     }
 
     public function OrderReady($id){
+        $this->db->select('*'); // <-- There is never any reason to write this line!
+        $this->db->from('order_item');
+        $this->db->join('order_detail', 'order_item.id_order = order_detail.id_order');
+        $this->db->join('items', 'items.id_item = order_detail.id_item');
+        $this->db->where('order_item.id_order', $id);
+        $this->db->group_by('order_item.id_order');
+        $query =$this->db->get()->row();
+        $qty = $query->stock - $query->qty;
+
+        $this->db->where('id_item', $query->id_item);
+        $this->db->update('items', array('stock'=>$qty));
+
         $this->db->where('id_order', $id);
         $this->db->update('order_item', array('status_sewa'=>'1'));
     }
@@ -91,6 +104,18 @@ class mOrder extends CI_Model{
     }
 
     public function OrderReturn($id){
+        $this->db->select('*'); // <-- There is never any reason to write this line!
+        $this->db->from('order_item');
+        $this->db->join('order_detail', 'order_item.id_order = order_detail.id_order');
+        $this->db->join('items', 'items.id_item = order_detail.id_item');
+        $this->db->where('order_item.id_order', $id);
+        $this->db->group_by('order_item.id_order');
+        $query =$this->db->get()->row();
+        $qty = $query->stock + $query->qty;
+
+        $this->db->where('id_item', $query->id_item);
+        $this->db->update('items', array('stock'=>$qty));
+
         $this->db->where('id_order', $id);
         $this->db->update('order_item', array('status_sewa'=>'3'));
     }

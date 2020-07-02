@@ -1,5 +1,4 @@
 <main>
-<!-- <?= var_dump($dipesan)?> -->
 
     <div class="container z-depth-1-half tabmenu">
     
@@ -303,52 +302,49 @@
                         <!-- Grid column -->
 
                         <!-- Grid column -->
-                        <div class="col-12 col-sm-8 col-md-12 col-lg-8 pl-sm-0 px-md-3 pl-lg-0">
-
-                          <div class="card z-depth-0">
-                            <div class="card-body">
-                              <a data-toggle="tooltip" data-html="true"
-                                title="Pesanan anda sedang menunggu konfirmasi dari Vendor"><span
-                                  class="h6-responsive badge badge-pill badge-info float-right p-2 ml-2">Menunggu
-                                  Konfirmasi</span></a>
-                              <h5 class="card-title mb-1"><strong><a href="" class="dark-grey-text"><?= $p['nama']?></a></strong></h5>
-                              <h6 class="mb-1 dark-grey-text"><strong>Rp. <?= number_format($p['harga'],0,",",".");?>/ hari</strong></h6>
-                              <table class="text-left mt-4">
+                    <div class="col-12 col-sm-8 col-md-12 col-lg-8 pl-sm-0 px-md-3 pl-lg-0">
+                      <div class="card z-depth-0">
+                        <div class="card-body">
+                          <a data-toggle="tooltip" data-html="true"
+                            title="Pesanan anda sedang menunggu konfirmasi dari Vendor"><span
+                              class="h6-responsive badge badge-pill badge-success float-right p-2 ml-2">Selesai disewa</span></a>
+                          <h5 class="card-title mb-1"><strong><a href="" class="dark-grey-text"><?= $p['nama']?></a></strong></h5>
+                          <h6 class="mb-1 dark-grey-text"><strong>Rp. <?= number_format($p['harga'],0,",",".");?>/ hari</strong></h6>
+                          <table class="text-left mt-4">
+                            <tr>
+                              <td><span class="text-small">Jumlah Item</span></td>
+                              <td><span class="p-2">:</span></td>
+                              <td><strong><?= $p['qty'];?></strong></td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <span class="text-small">Total Bayar</span>
+                              </td>
+                              <td><span class="p-2">:</span></td>
+                              <td><strong>Rp. <?= number_format($p['total_harga'],0,",",".");?></strong></td>
+                            </tr>
+                          </table>
+                          <a href="<?= base_url('products/detail/').$p['id_item']?>" type="button" class="btn btn-sm btn-outline-info waves-effect">Detail</a>
+                          <div class="card-footer pb-0 bg-white">
+                            <div class="row mb-0">
+                              <table class="w-100 text-center">
                                 <tr>
-                                  <td><span class="text-small">Jumlah Item</span></td>
-                                  <td><span class="p-2">:</span></td>
-                                  <td><strong><?= $p['qty'];?></strong></td>
+                                  <td><span class="badge badge-danger mb-2 p-2 dtlsewa">Mulai Sewa</span></td>
+                                  <td><span class="badge badge-success mb-2 p-2 dtlsewa">Selesai Sewa</span></td>
+                                  <td><span class="badge badge-info mb-2 p-2 dtlsewa">Lama Sewa</span></td>
                                 </tr>
                                 <tr>
-                                  <td>
-                                    <span class="text-small">Total Bayar</span>
-                                  </td>
-                                  <td><span class="p-2">:</span></td>
-                                  <td><strong>Rp. <?= number_format($p['total_harga'],0,",",".");?></strong></td>
+                                  <td><span><strong><?= $p['tgl_sewa'];?></strong></span></td>
+                                  <td><span><strong><?= $p['tgl_kembali'];?></strong></span></td>
+                                  <td><span><strong><?= $p['durasi_sewa'];?> hari</strong></span></td>
                                 </tr>
                               </table>
-                              <a href="<?= base_url('products/detail/').$p['id_item']?>" type="button" class="btn btn-sm btn-outline-info waves-effect">Detail</a>
-                              <a href="" type="button" class="btn btn-sm btn-outline-danger waves-effect" data-toggle="modal" data-target="#modalConfirmDelete">Batalkan</a>
-                              <div class="card-footer pb-0 bg-white">
-                                <div class="row mb-0">
-                                  <table class="w-100 text-center">
-                                    <tr>
-                                      <td><span class="badge badge-danger mb-2 p-2 dtlsewa">Mulai Sewa</span></td>
-                                      <td><span class="badge badge-success mb-2 p-2 dtlsewa">Selesai Sewa</span></td>
-                                      <td><span class="badge badge-info mb-2 p-2 dtlsewa">Lama Sewa</span></td>
-                                    </tr>
-                                    <tr>
-                                      <td><span><strong><?= $p['tgl_sewa'];?></strong></span></td>
-                                      <td><span><strong><?= $p['tgl_kembali'];?></strong></span></td>
-                                      <td><span><strong><?= $p['durasi_sewa'];?> hari</strong></span></td>
-                                    </tr>
-                                  </table>
-                                </div>
-                              </div>
                             </div>
                           </div>
-
                         </div>
+                      </div>
+
+                      </div>
                         <!-- Grid column -->
 
                       </div>

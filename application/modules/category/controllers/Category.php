@@ -8,6 +8,7 @@ class Category extends CI_Controller {
         parent::__construct();
         // $this->simple_login->cek_admin(); 
         $this->load->model('Kategori');
+        $this->load->library('pagination');
 	}
 	
 	public function index($id)

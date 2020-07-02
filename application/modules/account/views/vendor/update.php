@@ -1,5 +1,5 @@
 <main>
-    <div class="container z-depth-1 mb-3 amber lighten-5 rounded-lg">
+    <!-- <div class="container z-depth-1 mb-3 amber lighten-5 rounded-lg">
         <p class="h1-responsive text-center amber-text darken-3"><strong> Verifikasi Identitasmu </strong></p>
         <div class="row mx-auto text-center">
             <div class="col-md-3 mb-5 border-right">
@@ -19,7 +19,7 @@
                 <a href="#" class="btn btn-sm btn-amber text-white" role="button" data-toggle="modal" data-target="!#">Mulai</a>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="container">
         <div class="row">
@@ -28,10 +28,10 @@
                     <a href="#!" class="list-group-item list-group-item-action t_acc_setting">
                         <i class="fas fa-cogs mr-3"></i>Pengaturan Akun
                     </a>
-                    <a href="#!" class="list-group-item list-group-item-action"><i class="fas fa-user mr-3"></i>Profil</a>
-                    <a href="#!" class="list-group-item list-group-item-action"><i class="fas fa-question-circle mr-3"></i>Ganti Password</a>
+                    <a href="<?= base_url('account/dataVendor/'. $this->session->userdata('id'))?>" class="list-group-item list-group-item-action"><i class="fas fa-user mr-3"></i>Profil</a>
+                    <a href="<?= base_url('account/renter')?>" class="list-group-item list-group-item-action"><i class="fas fa-question-circle mr-3"></i>Ganti Password</a>
                     <a href="#!" class="list-group-item list-group-item-action active"><i class="fas fa-store-alt mr-3"></i>Vendor Profile</a>
-                    <a href="#!" class="list-group-item list-group-item-action"><i class="fas fa-question-circle mr-3"></i>Informasi Bank</a>
+                    <a href="<?= base_url('account/bank/')?>" class="list-group-item list-group-item-action"><i class="fas fa-question-circle mr-3"></i>Informasi Bank</a>
                   </div>
             </div>
             <div class="col-md-8">

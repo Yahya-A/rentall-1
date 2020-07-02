@@ -53,10 +53,11 @@
                       <div class="row">
                         <div class="col-4">
                         <input type="hidden" class="vendor_id" value="<?= $p['id_vendor']?>">
-                          <img src="<?= base_url('assets/img/vendor_logo/').$p['foto']?>" alt="..." class="rounded-circle v-photo">
+                          <img src="<?= base_url('assets/img/vendor_logo/').$p['foto']?>" alt="..." class="rounded-circle v-photo" height="60px">
                         </div>
                         <div class="col-8">
                           <h5><strong><?= $p['nama_vendor']?></strong></h5>
+                          <p class="h6-responsive text-justify text-muted"><?= $p['alamat']?></p>
                           <p class="h6-responsive text-justify text-muted"><?= $p['deskripsi_vendor']?></p>
                         </div>
                       </div>
@@ -111,14 +112,6 @@
                       <input type="text" class="form-control pl-2 ml-2 mr-2 rounded-0" id="daterange"
                         placeholder="Pilih Tanggal" data-range="true" data-multiple-dates-separator=" - "
                         data-language="in" disabled>
-                      <!-- <input type="text" class="form-control pl-2 ml-2 mr-2 rounded-0" id="date_arr"
-                        placeholder="Pilih Tanggal" data-range="true" data-multiple-dates-separator=" - "
-                        data-language="in" data-date-format="dd mm yyyy" disabled>
-                      <input type="text" class="form-control pl-2 ml-2 mr-2 rounded-0" id="date_dep"
-                        placeholder="Pilih Tanggal" data-range="true" data-multiple-dates-separator=" - "
-                        data-language="in" data-date-format="dd mm yyyy" disabled>
-                      <input type="text" class="form-control pl-2 ml-2 mr-2 rounded-0" id="date_dif"
-                        placeholder="Lama Sewa" disabled> -->
                       <div class="input-group-append">
                         <span class="input-group-text md-addon pickdate" id="pick">
                           <i class="far fa-calendar-plus fa-2x"></i>

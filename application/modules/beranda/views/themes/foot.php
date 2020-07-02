@@ -70,6 +70,7 @@
   
     <!-- jQuery -->
     <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/jquery.min.js')?>"></script>
+    <!-- <script type="text/javascript" src="<?php echo base_url('assets/jquery_ui/jquery-ui.min.js')?>"></script> -->
     <!-- Bootstrap tooltips -->
     <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/popper.min.js')?>"></script>
     <!-- Bootstrap core JavaScript -->
@@ -82,6 +83,7 @@
     <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/dist/js/i18n/datepicker.in.js')?>"></script>
       <!-- MDB eCommerce core JavaScript -->
       <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/mdb-ecommerce.min.js')?>"></script>
+  <script src="<?= base_url('assets/'); ?>js/search.js"></script>
     <!-- Your custom scripts (optional) -->
     <script type="text/javascript">
       function readURL(input) {
@@ -94,28 +96,28 @@
             
             reader.readAsDataURL(input.files[0]);
         }
-    }
-    
-    $("#upload_image").change(function(){
-        readURL(this);
-    });
+      }
+      
+      $("#upload_image").change(function(){
+          readURL(this);
+      });
 
-    $(document).ready(function () {
-      $('#dt-vertical-scroll').dataTable({
-        "paging": false,
-        "fnInitComplete": function () {
-          var myCustomScrollbar = document.querySelector('#dt-vertical-scroll_wrapper .dataTables_scrollBody');
-          var ps = new PerfectScrollbar(myCustomScrollbar);
-        },
-        "scrollY": 450,
+      $(document).ready(function () {
+        $('#dt-vertical-scroll').dataTable({
+          "paging": false,
+          "fnInitComplete": function () {
+            var myCustomScrollbar = document.querySelector('#dt-vertical-scroll_wrapper .dataTables_scrollBody');
+            var ps = new PerfectScrollbar(myCustomScrollbar);
+          },
+          "scrollY": 450,
+        });
       });
-    });
-    $(document).ready(function () {
-      //Pagination First/Last Numbers
-      $('#paginationFirstLast').DataTable({
-        "pagingType": "first_last_numbers"
+      $(document).ready(function () {
+        //Pagination First/Last Numbers
+        $('#paginationFirstLast').DataTable({
+          "pagingType": "first_last_numbers"
+        });
       });
-    });
 
     
 
@@ -271,7 +273,7 @@
         });
       });
     //Ajax Sewa
-        new WOW().init();
+    new WOW().init();
     </script>
   
   </body>

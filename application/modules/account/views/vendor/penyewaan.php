@@ -1,4 +1,22 @@
 <main>
+    <div class="container">
+        <?php if($this->session->flashdata('error') == TRUE): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= $this->session->flashdata('error'); ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php endif; ?>
+        <?php if($this->session->flashdata('success') == TRUE): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= $this->session->flashdata('success'); ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php endif; ?>
+    </div>
     <div class="container z-depth-1-half tabmenu">
         <ul class="nav nav-tabs w-100">
             <li class="nav-item mt-4 text-center tabmenu-item">

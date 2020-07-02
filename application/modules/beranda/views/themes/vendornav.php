@@ -33,7 +33,7 @@
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
               
-                <a href="<?= base_url('account/vendorProfile/')?>" class="dropdown-item">Profile</a>
+                <a href="<?= base_url('account/dataVendor/'. $this->session->userdata('id'))?>" class="dropdown-item">Profile</a>
                 <a href="#" class="dropdown-item">Transaksi</a>
                 <a href="<?= base_url('account')?>" class="dropdown-item peach-gradient text-center text-white highlight">Etalase</a>
                 <div class="dropdown-divider"></div>

@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>Rent All - Sewa Barang Jadi Gampang</title>
+
+  <script>
+    var baseurl = "<?php echo base_url(""); ?>"; // Buat variabel baseurl untuk nanti di akses pada file config.js
+  </script>
   <!-- MDB icon -->
   <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon">
   <!-- Font Awesome -->

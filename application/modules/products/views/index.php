@@ -45,6 +45,8 @@
                     </th>
                     <th class="th-sm">Antar
                     </th>
+                    <th class="th-sm">Aksi
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -92,6 +94,16 @@
                     <td><?= $kondisi ?></td>
                     <td><?= $p['deskripsi'] ?></td>
                     <td><?= $antar ?></td>
+                    <td>
+                    <center>
+                      <a href="<?= base_url("products/read/"). $p['id_item']; ?>" class="nav-link btn btn-sm btn-primary text-white" role="button">
+                          Ubah
+                      </a>
+                      <a href="<?= base_url("products/hapus/"). $p['id_item']; ?>" class="nav-link btn btn-sm btn-danger text-white mt-2" role="button">
+                          Hapus
+                      </a>
+                      </center>
+                    </td>
                   </tr>
                   <?php endforeach;?>
                 </tbody>
@@ -114,6 +126,8 @@
                     <th class="th-sm">Deskripsi
                     </th>
                     <th class="th-sm">Antar
+                    </th>
+                    <th class="th-sm">Aksi
                     </th>
                   </tr>
                 </tfoot>
