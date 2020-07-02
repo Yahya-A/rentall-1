@@ -3,6 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_account extends CI_Model{
 
+        public function getKat(){
+            $this->db->select('kategori');
+            $this->db->group_by('kategori');
+            return $this->db->get('kategori')->result_array();
+        }
+
+    public function getSubKat(){
+        return $this->db->get('kategori')->result_array();
+    }
+
     function daftar()
     {
         $data['username'] = $this->input->post('username');
@@ -12,6 +22,17 @@ class M_account extends CI_Model{
         $data['status'] = "1";
         $data['verif'] = "0";
         $this->db->insert('user', $data); 
+    }
+
+    public function getNewProduct()
+    {   
+        $this->db->select('*');
+        $this->db->from('items');
+        $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+        $this->db->order_by('id_item', 'DESC');
+        $this->db->limit(8);
+        $query = $this->db->get()->result_array();
+        return $query;
     }
 
     public function getUserData()
@@ -204,7 +225,6 @@ class M_account extends CI_Model{
         $nama = $this->input->post('nama', true);
         $deskripsi = $this->input->post('deskripsi', true);
         $alamat = $this->input->post('alamat', true);
-        $kota = $this->input->post('kota', true);
         $image = $this->input->post('upload_image', true);
         $id_user = $this->session->userdata('id');
         $update = $this->input->post('id', true);
@@ -238,7 +258,6 @@ class M_account extends CI_Model{
                         'nama_vendor' => $nama,
                         'deskripsi_vendor' => $deskripsi,
                         'alamat' => $alamat,
-                        'kota' => $kota,
                         'foto' => $config['file_name']
                     );
                     $this->db->where('id_user', $id_user);
@@ -249,7 +268,6 @@ class M_account extends CI_Model{
                         'nama_vendor' => $nama,
                         'deskripsi_vendor' => $deskripsi,
                         'alamat' => $alamat,
-                        'kota' => $kota,
                         'foto' => $config['file_name']
                     );
     
@@ -261,7 +279,6 @@ class M_account extends CI_Model{
                 $data = array(
                     'nama_vendor' => $nama,
                     'deskripsi_vendor' => $deskripsi,
-                    'kota' => $kota,
                     'alamat' => $alamat
                 );
                 $this->db->where('id_user', $id_user);
@@ -271,7 +288,6 @@ class M_account extends CI_Model{
                     'id_user' => $id_user,
                     'nama_vendor' => $nama,
                     'deskripsi_vendor' => $deskripsi,
-                    'kota' => $kota,
                     'alamat' => $alamat
                 );
 
@@ -281,11 +297,59 @@ class M_account extends CI_Model{
         $this->session->set_userdata('level', '2');
         
         $data = array(
-            'level' => 2
+            'level' => "2"
         );
-        $this->db->where('id_user', $id_user);
+        $this->db->where('id_user', $id);
         $this->db->update('user', $data);
 
         redirect('account/vendorBoard');
+    }
+
+    public function getMenunggu($id_vendor){
+        $this->db->select('*'); // <-- There is never any reason to write this line!
+        $this->db->from('order_item');
+        $this->db->join('order_detail', 'order_item.id_order = order_detail.id_order');
+        $this->db->join('items', 'items.id_item = order_detail.id_item', 'inner');
+        $this->db->where('order_item.id_vendor', $id_vendor);
+        $this->db->where('status_sewa', 0);
+        $this->db->group_by('order_item.id_order');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
+
+    public function getSiap($id_vendor){
+        $this->db->select('*'); // <-- There is never any reason to write this line!
+        $this->db->from('order_item');
+        $this->db->join('order_detail', 'order_item.id_order = order_detail.id_order');
+        $this->db->join('items', 'items.id_item = order_detail.id_item', 'inner');
+        $this->db->where('order_item.id_vendor', $id_vendor);
+        $this->db->where('status_sewa', 1);
+        $this->db->group_by('order_item.id_order');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
+
+    public function getSewa($id_vendor){
+        $this->db->select('*'); // <-- There is never any reason to write this line!
+        $this->db->from('order_item');
+        $this->db->join('order_detail', 'order_item.id_order = order_detail.id_order');
+        $this->db->join('items', 'items.id_item = order_detail.id_item', 'inner');
+        $this->db->where('order_item.id_vendor', $id_vendor);
+        $this->db->where('status_sewa', 2);
+        $this->db->group_by('order_item.id_order');
+        $query=$this->db->get();
+        return $query->result_array();
+    }
+
+    public function getKembali($id_vendor){
+        $this->db->select('*'); // <-- There is never any reason to write this line!
+        $this->db->from('order_item');
+        $this->db->join('order_detail', 'order_item.id_order = order_detail.id_order');
+        $this->db->join('items', 'items.id_item = order_detail.id_item', 'inner');
+        $this->db->where('order_item.id_vendor', $id_vendor);
+        $this->db->where('status_sewa', 3);
+        $this->db->group_by('order_item.id_order');
+        $query=$this->db->get();
+        return $query->result_array();
     }
 } 

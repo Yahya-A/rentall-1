@@ -79,9 +79,10 @@
                     }               
                     ?>
                   <tr>
-                    <td><center>
-                                        <img src="<?= base_url('assets/img/produk/'), $p['foto'] ?>" height="50px">
-                                    </center>
+                    <td>
+                      <center>
+                        <img src="<?= base_url('assets/img/produk/'), $p['item_img'] ?>" height="50px">
+                      </center>
                     </td>
                     <td><?= $p['nama'] ?></td>
                     <td>Rp. <?= number_format($p['harga'],0,",",".");?></td>
