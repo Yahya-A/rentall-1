@@ -234,7 +234,7 @@ class Account extends CI_Controller {
         $data['judul'] = "Data Vendor";
         $data['username'] = $this->session->userdata('username');
         $id = $this->session->userdata('id');
-        if($this->session->userdata('level') == 1 ){
+        if($this->session->userdata('level') == 1  || $this->session->userdata('level') == 3 ){
             redirect("account/dataVendor/$id");
         } else {
             $this->vendorProfile();
@@ -323,7 +323,7 @@ class Account extends CI_Controller {
         $data['judul'] = "Data Vendor";
         $data['username'] = $this->session->userdata('username');
         $id = $this->session->userdata('id');
-        $this->db->where('id_user', $id);
+        $this->db->where('id_vendor', $id);
         $data['vendor'] = $this->db->get('vendor_profile')->result_array();
         $this->load->view('beranda/themes/head');
         $this->load->view('beranda/themes/vendornav', $data);

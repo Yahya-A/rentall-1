@@ -1,25 +1,4 @@
 <main>
-    <div class="container z-depth-1 mb-3 amber lighten-5 rounded-lg">
-        <p class="h1-responsive text-center amber-text darken-3"><strong> Verifikasi Identitasmu </strong></p>
-        <div class="row mx-auto text-center">
-            <div class="col-md-3 mb-5 border-right">
-                <p class="h3-responsive">Verif 1</p>
-                <a href="#" class="btn btn-sm btn-amber text-white" role="button" data-toggle="modal" data-target="!#">Mulai</a>
-            </div>
-            <div class="col-md-3 mb-5 border-right">
-                <p class="h3-responsive">Verif 1</p>
-                <a href="#" class="btn btn-sm btn-amber text-white" role="button" data-toggle="modal" data-target="!#">Mulai</a>
-            </div>
-            <div class="col-md-3 mb-5 border-right">
-                <p class="h3-responsive">Verif 1</p>
-                <a href="#" class="btn btn-sm btn-amber text-white" role="button" data-toggle="modal" data-target="!#">Mulai</a>
-            </div>
-            <div class="col-md-3 mb-5">
-                <p class="h3-responsive">Verif 1</p>
-                <a href="#" class="btn btn-sm btn-amber text-white" role="button" data-toggle="modal" data-target="!#">Mulai</a>
-            </div>
-        </div>
-    </div>
 
     <div class="container">
         <div class="row">

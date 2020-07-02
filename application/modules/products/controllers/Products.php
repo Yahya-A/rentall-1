@@ -254,11 +254,11 @@ class Products extends CI_Controller
                     'id_kategori' => $kategori_produk,
                     'kondisi' => $kondisi,
                     'antar' => $antar,
-                    'foto' => $config['file_name'], 
+                    'item_img' => $config['file_name'], 
                     'deskripsi' => $deskripsi,
                     'stock' => $stock,
                     'deposit' => $deposit,
-                    'id_user' => $id_user,
+                    'id_vendor' => $id_user,
                     'status' => 1
                 );
                 $this->Items->insertBarang($items, $id_items);

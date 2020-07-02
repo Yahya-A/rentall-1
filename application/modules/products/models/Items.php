@@ -7,11 +7,11 @@ class Items extends CI_Model{
 
         switch ($this->input->post('id_kat', true)) {
             case 'elektronik':
-                $this->form_validation->set_rules('os', 'Sistem Operasi', 'trim|required');
-                $this->form_validation->set_rules('layar', 'Layar', 'trim|required');
-                $this->form_validation->set_rules('memori', 'Memori', 'trim|required');
-                $this->form_validation->set_rules('harddisk', 'Penyimpanan', 'trim|required');
-                $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
+                $this->form_validation->set_rules('os', 'Sistem Operasi', 'trim');
+                $this->form_validation->set_rules('layar', 'Layar', 'trim');
+                $this->form_validation->set_rules('memori', 'Memori', 'trim');
+                $this->form_validation->set_rules('harddisk', 'Penyimpanan', 'trim');
+                $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -30,9 +30,9 @@ class Items extends CI_Model{
                 break;
 
             case 'games':
-                $this->form_validation->set_rules('berat', 'Berat', 'trim|required');
-                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim|required');
-                $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
+                $this->form_validation->set_rules('berat', 'Berat', 'trim');
+                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim');
+                $this->form_validation->set_rules('gender', 'Gender', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -49,15 +49,15 @@ class Items extends CI_Model{
                 break;
 
             case 'otomotif':
-                $this->form_validation->set_rules('bahan_bakar', 'Bahan Bakar', 'trim|required');
-                $this->form_validation->set_rules('mesin', 'Kapasitas Mesin', 'trim|required');
-                $this->form_validation->set_rules('km', 'KM', 'trim|required');
-                $this->form_validation->set_rules('tahun_terbit', 'Tahun Terbit', 'trim|required');
-                $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'trim|required');
-                $this->form_validation->set_rules('transmisi', 'Transmisi', 'trim|required');
-                $this->form_validation->set_rules('ac', 'AC', 'trim|required');
-                $this->form_validation->set_rules('warna', 'Warna', 'trim|required');
-                $this->form_validation->set_rules('usb', 'USB', 'trim|required');
+                $this->form_validation->set_rules('bahan_bakar', 'Bahan Bakar', 'trim');
+                $this->form_validation->set_rules('mesin', 'Kapasitas Mesin', 'trim');
+                $this->form_validation->set_rules('km', 'KM', 'trim');
+                $this->form_validation->set_rules('tahun_terbit', 'Tahun Terbit', 'trim');
+                $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'trim');
+                $this->form_validation->set_rules('transmisi', 'Transmisi', 'trim');
+                $this->form_validation->set_rules('ac', 'AC', 'trim');
+                $this->form_validation->set_rules('warna', 'Warna', 'trim');
+                $this->form_validation->set_rules('usb', 'USB', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -80,9 +80,9 @@ class Items extends CI_Model{
                 break;
                     
             case 'photography':
-                $this->form_validation->set_rules('berat', 'Bahan Bakar', 'trim|required');
-                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim|required');
-                $this->form_validation->set_rules('material', 'Material', 'trim|required');
+                $this->form_validation->set_rules('berat', 'Bahan Bakar', 'trim');
+                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim');
+                $this->form_validation->set_rules('material', 'Material', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -109,11 +109,11 @@ class Items extends CI_Model{
 
         switch ($this->input->post('id_kat', true)) {
             case 'elektronik':
-                $this->form_validation->set_rules('os', 'Sistem Operasi', 'trim|required');
-                $this->form_validation->set_rules('layar', 'Layar', 'trim|required');
-                $this->form_validation->set_rules('memori', 'Memori', 'trim|required');
-                $this->form_validation->set_rules('harddisk', 'Penyimpanan', 'trim|required');
-                $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
+                $this->form_validation->set_rules('os', 'Sistem Operasi', 'trim');
+                $this->form_validation->set_rules('layar', 'Layar', 'trim');
+                $this->form_validation->set_rules('memori', 'Memori', 'trim');
+                $this->form_validation->set_rules('harddisk', 'Penyimpanan', 'trim');
+                $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -133,9 +133,9 @@ class Items extends CI_Model{
                 break;
 
             case 'games':
-                $this->form_validation->set_rules('berat', 'Berat', 'trim|required');
-                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim|required');
-                $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
+                $this->form_validation->set_rules('berat', 'Berat', 'trim');
+                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim');
+                $this->form_validation->set_rules('gender', 'Gender', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -153,15 +153,15 @@ class Items extends CI_Model{
                 break;
 
             case 'otomotif':
-                $this->form_validation->set_rules('bahan_bakar', 'Bahan Bakar', 'trim|required');
-                $this->form_validation->set_rules('mesin', 'Kapasitas Mesin', 'trim|required');
-                $this->form_validation->set_rules('km', 'KM', 'trim|required');
-                $this->form_validation->set_rules('tahun_terbit', 'Tahun Terbit', 'trim|required');
-                $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'trim|required');
-                $this->form_validation->set_rules('transmisi', 'Transmisi', 'trim|required');
-                $this->form_validation->set_rules('ac', 'AC', 'trim|required');
-                $this->form_validation->set_rules('warna', 'Warna', 'trim|required');
-                $this->form_validation->set_rules('usb', 'USB', 'trim|required');
+                $this->form_validation->set_rules('bahan_bakar', 'Bahan Bakar', 'trim');
+                $this->form_validation->set_rules('mesin', 'Kapasitas Mesin', 'trim');
+                $this->form_validation->set_rules('km', 'KM', 'trim');
+                $this->form_validation->set_rules('tahun_terbit', 'Tahun Terbit', 'trim');
+                $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'trim');
+                $this->form_validation->set_rules('transmisi', 'Transmisi', 'trim');
+                $this->form_validation->set_rules('ac', 'AC', 'trim');
+                $this->form_validation->set_rules('warna', 'Warna', 'trim');
+                $this->form_validation->set_rules('usb', 'USB', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -185,9 +185,9 @@ class Items extends CI_Model{
                 break;
                     
             case 'photography':
-                $this->form_validation->set_rules('berat', 'Bahan Bakar', 'trim|required');
-                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim|required');
-                $this->form_validation->set_rules('material', 'Material', 'trim|required');
+                $this->form_validation->set_rules('berat', 'Bahan Bakar', 'trim');
+                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim');
+                $this->form_validation->set_rules('material', 'Material', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
