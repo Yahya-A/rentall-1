@@ -27,7 +27,7 @@
 
 <body>
 <?php
-header('Refresh:5; url= ' . base_url());
+header('Refresh:5; url= ' . base_url() . 'account');
 ?>
 <div class="limiter">
     <div class="container-login100">

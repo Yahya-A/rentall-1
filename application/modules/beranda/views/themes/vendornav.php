@@ -1,7 +1,7 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
   <div class="container">
     <!-- Brand -->
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="<?= base_url('account');?>">
       <strong>Rent All</strong>
     </a>
 
@@ -33,7 +33,7 @@
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
               
-                <a href="<?= base_url('account/vendorProfile/')?>" class="dropdown-item">Profile</a>
+                <a href="<?= base_url('account/dataVendor/'. $this->session->userdata('id'))?>" class="dropdown-item">Profile</a>
                 <a href="#" class="dropdown-item">Transaksi</a>
                 <a href="<?= base_url('account')?>" class="dropdown-item peach-gradient text-center text-white highlight">Etalase</a>
                 <div class="dropdown-divider"></div>

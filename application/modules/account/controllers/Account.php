@@ -8,7 +8,6 @@ class Account extends CI_Controller {
         parent::__construct();
         $this->load->model('M_account'); 
     }
-
     public function index()
     {
         if($this->session->userdata('status') == 1) {
@@ -52,7 +51,11 @@ class Account extends CI_Controller {
                 '3' => ''
             );
             $data['judul'] = "Dashboard";
+            $data['kat'] = $this->M_account->getKat();
+            $data['subkat'] = $this->M_account->getSubKat();
+            $data['newproduct'] = $this->M_account->getNewProduct();
             $data['username'] = $this->session->userdata('username');
+            $data['id'] = $this->session->userdata('id_user');
             $this->load->view('beranda/themes/head');
             $this->load->view('beranda/themes/renternav', $data);
             $this->load->view('beranda/etalase');
@@ -228,29 +231,13 @@ class Account extends CI_Controller {
 
     public function vendorBoard()
     {
-        // $data['active'] = array(
-        //     '1' => '',
-        //     '2' => '',
-        //     '3' => ''
-        // );
         $data['judul'] = "Data Vendor";
         $data['username'] = $this->session->userdata('username');
         $id = $this->session->userdata('id');
-        if($this->session->userdata('level') == 1 ){
+        if($this->session->userdata('level') == 1  || $this->session->userdata('level') == 3 ){
             redirect("account/dataVendor/$id");
         } else {
             $this->vendorProfile();
-            // $data['active'] = array(
-            //     '1' => 'font-weight-bold',
-            //     '2' => '',
-            //     '3' => ''
-            // );
-            // $this->db->where('id_user', $id);
-            // $data['vendor'] = $this->db->get('vendor_profile')->result_array();
-            // $this->load->view('beranda/themes/head');
-            // $this->load->view('beranda/themes/vendornav', $data);
-            // $this->load->view('products/index', $data);
-            // $this->load->view('beranda/themes/foot');
         }
     }
 
@@ -264,7 +251,7 @@ class Account extends CI_Controller {
         $data['judul'] = "Data Vendor";
         $data['username'] = $this->session->userdata('username');
         $data['id'] = $id;
-        $this->db->where('id_user', $id);
+        $this->db->where('id_vendor', $id);
         $data['vendor'] = $this->db->get('vendor_profile')->result_array();
         $this->load->view('beranda/themes/head');
         $this->load->view('beranda/themes/vendornav', $data);
@@ -303,24 +290,22 @@ class Account extends CI_Controller {
 
     public function penyewaanVendor()
     {
-        if ($this->simple_login->cek_login()== TRUE) {
-            redirect('');
-        }
-            $data['active'] = array(
-                '1' => '',
-                '2' => 'font-weight-bold',
-                '3' => ''
-            );
-            $data['menunggu'] = $this->M_account->getMenunggu();
-            $data['siap'] = $this->M_account->getSiap();
-            $data['sewa'] = $this->M_account->getSewa();
-            $data['history'] = $this->M_account->getHistory();
-            $data['username'] = $this->session->userdata('username');
-            $data['vendor'] = $this->db->get('vendor_profile')->result_array();
-            $this->load->view('beranda/themes/head');
-            $this->load->view('beranda/themes/vendornav', $data);
-            $this->load->view('vendor/penyewaan', $data);
-            $this->load->view('beranda/themes/foot');
+        $data['active'] = array(
+            '1' => '',
+            '2' => 'font-weight-bold',
+            '3' => ''
+        );
+        $data['username'] = $this->session->userdata('username');
+        $id_vendor = $this->session->userdata('id');
+        $data['siap'] = $this->M_account->getSiap($id_vendor);
+        $data['tunggu'] = $this->M_account->getMenunggu($id_vendor);
+        $data['sewa'] = $this->M_account->getSewa($id_vendor);
+        $data['kembali'] = $this->M_account->getKembali($id_vendor);
+        $data['vendor'] = $this->db->get('vendor_profile')->result_array();
+        $this->load->view('beranda/themes/head');
+        $this->load->view('beranda/themes/vendornav', $data);
+        $this->load->view('vendor/penyewaan', $data);
+        $this->load->view('beranda/themes/foot');
     }
 
     public function vendorProfile()
@@ -330,6 +315,7 @@ class Account extends CI_Controller {
             redirect('');
         }
         $data['active'] = array(
+            
             '1' => '',
             '2' => '',
             '3' => ''
@@ -337,13 +323,14 @@ class Account extends CI_Controller {
         $data['judul'] = "Data Vendor";
         $data['username'] = $this->session->userdata('username');
         $id = $this->session->userdata('id');
-        $this->db->where('id_user', $id);
+        $this->db->where('id_vendor', $id);
         $data['vendor'] = $this->db->get('vendor_profile')->result_array();
         $this->load->view('beranda/themes/head');
         $this->load->view('beranda/themes/vendornav', $data);
         $this->load->view('vendor/vendorprofile', $data);
         $this->load->view('beranda/themes/foot');
     }
+
 
     // Manajemen Vendor End
 
@@ -592,36 +579,18 @@ class Account extends CI_Controller {
         }
     }
 
-    public function read()
-    {
-        if($this->session->userdata('status') == 1) {
-            redirect('account/update');
-        } else if ($this->session->userdata('status') == 2){
-            $id = $this->session->userdata('id');
-            $query = $this->db->query("select verif from user where id_user = $id");
-            $data['verif'] = $query->row()->verif;
-            $data['daftar'] = $this->M_account->getUserData();
-            $data['judul'] = "Biodata Diri";
-            $data['username'] = $this->session->userdata('username');
-            $this->load->view('beranda/themes/head');
-            $this->load->view('beranda/themes/renternav', $data);
-            $this->load->view('renterprofile', $data);
-            $this->load->view('beranda/themes/foot');
-        }
-    }
-
-    public function log()
-    {
-        $this->simple_login->cek_admin(); 
-        $data['judul'] = "Daftar Log";
-        $data['log'] = $this->db->get('log')->result_array();
-        $data['username'] = $this->session->userdata('username');
-		$this->load->view('template/account_header', $data);
-		$this->load->view('template/account_sidebar');
-		$this->load->view('template/account_topbar', $data);
-		$this->load->view('index', $data);
-		$this->load->view('template/account_footer');
-    }
+    // public function log()
+    // {
+    //     $this->simple_login->cek_admin(); 
+    //     $data['judul'] = "Daftar Log";
+    //     $data['log'] = $this->db->get('log')->result_array();
+    //     $data['username'] = $this->session->userdata('username');
+	// 	$this->load->view('template/account_header', $data);
+	// 	$this->load->view('template/account_sidebar');
+	// 	$this->load->view('template/account_topbar', $data);
+	// 	$this->load->view('index', $data);
+	// 	$this->load->view('template/account_footer');
+    // }
 
     public function bank()
     {

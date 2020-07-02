@@ -14,20 +14,15 @@ class Beranda extends CI_Controller {
      
      public function index()
      {
-          if ($this->session->userdata('username') != '') {
-               $data['showmodal'] = "<script type='text/javascript'>
-                                   $(document).ready(function(){
-                                   $('#Modal').modal('show');
-                                   });
-                                   </script>";
-               
-          }
           $data['kategori'] = $this->data;
           $data['title'] = "RentALL";
+          $data['kat'] = $this->mBeranda->getKat();
+          $data['sub_kat'] = $this->mBeranda->getSubKat();
+          $data['newproduct'] = $this->mBeranda->getNewProduct();
           $data['product'] = $this->mBeranda->getAllProduct();
           $this->load->view('themes/head');
           $this->load->view('themes/mainnav');
-          $this->load->view('etalase',$data);
+          $this->load->view('etalase', $data);
           $this->load->view('themes/foot');
      }
      

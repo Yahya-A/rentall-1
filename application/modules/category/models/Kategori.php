@@ -7,10 +7,30 @@ class Kategori extends CI_Model{
         return $this->db->get('category')->result_array();
     }
 
-    public function getKategori($id)
+    public function getPerKategori($cat, $limit, $start)
     {   
-        $this->db->where('cat_id', $id);
-        return $this->db->get('category')->result_array();
+        $this->db->select('*');
+        $this->db->from('items');
+        $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+        $this->db->where('kategori.kategori', $cat);
+        $this->db->limit( $limit, $start);
+        $query = $this->db->get()->result_array();
+        return $query;
+    }
+
+    public function getRow($cat)
+    {   
+        $this->db->select('*');
+        $this->db->from('items');
+        $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+        $this->db->where('kategori.kategori', $cat);
+        $query = $this->db->count_all_results();
+        return $query;
+    }
+
+    public function getKategori(){
+        $this->db->group_by('kategori');
+        return $this->db->get('kategori')->result_array();
     }
 
     public function editKategori()

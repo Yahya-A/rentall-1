@@ -7,11 +7,11 @@ class Items extends CI_Model{
 
         switch ($this->input->post('id_kat', true)) {
             case 'elektronik':
-                $this->form_validation->set_rules('os', 'Sistem Operasi', 'trim|required');
-                $this->form_validation->set_rules('layar', 'Layar', 'trim|required');
-                $this->form_validation->set_rules('memori', 'Memori', 'trim|required');
-                $this->form_validation->set_rules('harddisk', 'Penyimpanan', 'trim|required');
-                $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
+                $this->form_validation->set_rules('os', 'Sistem Operasi', 'trim');
+                $this->form_validation->set_rules('layar', 'Layar', 'trim');
+                $this->form_validation->set_rules('memori', 'Memori', 'trim');
+                $this->form_validation->set_rules('harddisk', 'Penyimpanan', 'trim');
+                $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -30,9 +30,9 @@ class Items extends CI_Model{
                 break;
 
             case 'games':
-                $this->form_validation->set_rules('berat', 'Berat', 'trim|required');
-                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim|required');
-                $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
+                $this->form_validation->set_rules('berat', 'Berat', 'trim');
+                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim');
+                $this->form_validation->set_rules('gender', 'Gender', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -49,15 +49,15 @@ class Items extends CI_Model{
                 break;
 
             case 'otomotif':
-                $this->form_validation->set_rules('bahan_bakar', 'Bahan Bakar', 'trim|required');
-                $this->form_validation->set_rules('mesin', 'Kapasitas Mesin', 'trim|required');
-                $this->form_validation->set_rules('km', 'KM', 'trim|required');
-                $this->form_validation->set_rules('tahun_terbit', 'Tahun Terbit', 'trim|required');
-                $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'trim|required');
-                $this->form_validation->set_rules('transmisi', 'Transmisi', 'trim|required');
-                $this->form_validation->set_rules('ac', 'AC', 'trim|required');
-                $this->form_validation->set_rules('warna', 'Warna', 'trim|required');
-                $this->form_validation->set_rules('usb', 'USB', 'trim|required');
+                $this->form_validation->set_rules('bahan_bakar', 'Bahan Bakar', 'trim');
+                $this->form_validation->set_rules('mesin', 'Kapasitas Mesin', 'trim');
+                $this->form_validation->set_rules('km', 'KM', 'trim');
+                $this->form_validation->set_rules('tahun_terbit', 'Tahun Terbit', 'trim');
+                $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'trim');
+                $this->form_validation->set_rules('transmisi', 'Transmisi', 'trim');
+                $this->form_validation->set_rules('ac', 'AC', 'trim');
+                $this->form_validation->set_rules('warna', 'Warna', 'trim');
+                $this->form_validation->set_rules('usb', 'USB', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -80,9 +80,9 @@ class Items extends CI_Model{
                 break;
                     
             case 'photography':
-                $this->form_validation->set_rules('berat', 'Bahan Bakar', 'trim|required');
-                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim|required');
-                $this->form_validation->set_rules('material', 'Material', 'trim|required');
+                $this->form_validation->set_rules('berat', 'Bahan Bakar', 'trim');
+                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim');
+                $this->form_validation->set_rules('material', 'Material', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -109,11 +109,11 @@ class Items extends CI_Model{
 
         switch ($this->input->post('id_kat', true)) {
             case 'elektronik':
-                $this->form_validation->set_rules('os', 'Sistem Operasi', 'trim|required');
-                $this->form_validation->set_rules('layar', 'Layar', 'trim|required');
-                $this->form_validation->set_rules('memori', 'Memori', 'trim|required');
-                $this->form_validation->set_rules('harddisk', 'Penyimpanan', 'trim|required');
-                $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim|required');
+                $this->form_validation->set_rules('os', 'Sistem Operasi', 'trim');
+                $this->form_validation->set_rules('layar', 'Layar', 'trim');
+                $this->form_validation->set_rules('memori', 'Memori', 'trim');
+                $this->form_validation->set_rules('harddisk', 'Penyimpanan', 'trim');
+                $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -133,9 +133,9 @@ class Items extends CI_Model{
                 break;
 
             case 'games':
-                $this->form_validation->set_rules('berat', 'Berat', 'trim|required');
-                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim|required');
-                $this->form_validation->set_rules('gender', 'Gender', 'trim|required');
+                $this->form_validation->set_rules('berat', 'Berat', 'trim');
+                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim');
+                $this->form_validation->set_rules('gender', 'Gender', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -153,15 +153,15 @@ class Items extends CI_Model{
                 break;
 
             case 'otomotif':
-                $this->form_validation->set_rules('bahan_bakar', 'Bahan Bakar', 'trim|required');
-                $this->form_validation->set_rules('mesin', 'Kapasitas Mesin', 'trim|required');
-                $this->form_validation->set_rules('km', 'KM', 'trim|required');
-                $this->form_validation->set_rules('tahun_terbit', 'Tahun Terbit', 'trim|required');
-                $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'trim|required');
-                $this->form_validation->set_rules('transmisi', 'Transmisi', 'trim|required');
-                $this->form_validation->set_rules('ac', 'AC', 'trim|required');
-                $this->form_validation->set_rules('warna', 'Warna', 'trim|required');
-                $this->form_validation->set_rules('usb', 'USB', 'trim|required');
+                $this->form_validation->set_rules('bahan_bakar', 'Bahan Bakar', 'trim');
+                $this->form_validation->set_rules('mesin', 'Kapasitas Mesin', 'trim');
+                $this->form_validation->set_rules('km', 'KM', 'trim');
+                $this->form_validation->set_rules('tahun_terbit', 'Tahun Terbit', 'trim');
+                $this->form_validation->set_rules('kapasitas', 'Kapasitas', 'trim');
+                $this->form_validation->set_rules('transmisi', 'Transmisi', 'trim');
+                $this->form_validation->set_rules('ac', 'AC', 'trim');
+                $this->form_validation->set_rules('warna', 'Warna', 'trim');
+                $this->form_validation->set_rules('usb', 'USB', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -185,9 +185,9 @@ class Items extends CI_Model{
                 break;
                     
             case 'photography':
-                $this->form_validation->set_rules('berat', 'Bahan Bakar', 'trim|required');
-                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim|required');
-                $this->form_validation->set_rules('material', 'Material', 'trim|required');
+                $this->form_validation->set_rules('berat', 'Bahan Bakar', 'trim');
+                $this->form_validation->set_rules('ukuran', 'Ukuran', 'trim');
+                $this->form_validation->set_rules('material', 'Material', 'trim');
         
                 if ($this->form_validation->run() == false) {
                     redirect('products');
@@ -208,6 +208,17 @@ class Items extends CI_Model{
                 redirect('products');
                 break;
         }
+    }
+
+
+    public function getAllProduct($limit, $start){
+        $this->db->select('*');
+        $this->db->from('items');
+        $this->db->where('stock >',  0);
+        $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+        $this->db->limit( $limit, $start);
+        $query = $this->db->get()->result_array();
+        return $query;
     }
 
     public function deleteBarang($id)
@@ -268,15 +279,13 @@ class Items extends CI_Model{
         }
     }
 
-
-
-
-
     public function getAllBarang()
     {
+        $id_user = $this->session->userdata('id');
         $this->db->select('*'); // <-- There is never any reason to write this line!
         $this->db->from('items');
         $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+        $this->db->where('id_vendor', $id_user);
         $query=$this->db->get();
         return $query->result_array();
     }
@@ -296,8 +305,8 @@ class Items extends CI_Model{
     public function getDetail($id)
     {
         $this->db->where('id_item', $id);
-        $this->db->from('kategori');
-        $this->db->join('items', 'items.id_kategori = kategori.id_kategori');
+        $this->db->from('items');
+        $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
         $kategori = $this->db->get()->row();
 
         switch ($kategori->kategori) {
@@ -307,6 +316,7 @@ class Items extends CI_Model{
                 $this->db->from('items');
                 $this->db->from('k_otomotif');
                 $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+                $this->db->join('vendor_profile', 'vendor_profile.id_vendor = items.id_vendor');
                 $query=$this->db->get();
                 return $query->result_array();
                 break;
@@ -317,6 +327,7 @@ class Items extends CI_Model{
                 $this->db->from('items');
                 $this->db->from('k_elektronik');
                 $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+                $this->db->join('vendor_profile', 'vendor_profile.id_vendor = items.id_vendor');
                 $query=$this->db->get();
                 return $query->result_array();
                 break;
@@ -327,6 +338,7 @@ class Items extends CI_Model{
                 $this->db->from('items');
                 $this->db->from('k_games');
                 $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+                $this->db->join('vendor_profile', 'vendor_profile.id_vendor = items.id_vendor');
                 $query=$this->db->get();
                 return $query->result_array();
                 break;
@@ -337,6 +349,7 @@ class Items extends CI_Model{
                 $this->db->from('items');
                 $this->db->from('k_photography');
                 $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');
+                $this->db->join('vendor_profile', 'vendor_profile.id_vendor = items.id_vendor');
                 $query=$this->db->get();
                 return $query->result_array();
                 break;
@@ -360,4 +373,14 @@ class Items extends CI_Model{
         return $this->db->get('kategori')->result_array();
     }
 
+    public function search($keyword){
+        $this->db->select('*');
+        $this->db->like('nama', $keyword);
+        $this->db->or_like('deskripsi', $keyword);
+        $this->db->from('items');
+        $this->db->where('stock >',  0);
+        $this->db->join('kategori', 'items.id_kategori = kategori.id_kategori');   
+        $result = $this->db->get(); // Tampilkan data siswa berdasarkan keyword
+        return $result;
+   }
 }

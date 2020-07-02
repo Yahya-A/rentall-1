@@ -79,8 +79,11 @@
     <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/mdb.min.js')?>"></script>
     <!-- MDBootstrap Datatables  -->
     <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/addons/datatables2.min.js')?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/dist/js/datepicker.js')?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/dist/js/i18n/datepicker.in.js')?>"></script>
       <!-- MDB eCommerce core JavaScript -->
       <script type="text/javascript" src="<?php echo base_url('assets/v.0.1/js/mdb-ecommerce.min.js')?>"></script>
+  <script src="<?= base_url('assets/'); ?>js/search.js"></script>
     <!-- Your custom scripts (optional) -->
     <script type="text/javascript">
       function readURL(input) {
@@ -115,7 +118,162 @@
           "pagingType": "first_last_numbers"
         });
       });
-          new WOW().init();
+
+    
+
+    //datepicker script
+    let $pick = $('#pick'),
+        $input = $('#daterange'),
+        dp = $input.datepicker({
+          changeMonth: true,
+          showEvent: 'none'
+        }).data('datepicker');
+
+      $pick.on('click', function () {
+        dp.show();
+        $input.focus();
+      });
+
+      function parseDate(str) {
+        var dmy = str.split('/');
+        return new Date(dmy[1], dmy[0] - 1, dmy[2]);
+      }
+
+      function datediff(first, second) {
+        return (second - first) / (1000 * 60 * 60 * 24);
+      }
+
+      $(function () {
+        var myDatepicker = $('#daterange').datepicker({
+          onSelect: function onSelect(selectedDates) {
+            console.log(selectedDates);
+            
+            if (selectedDates !== undefined && selectedDates != '' &&
+              selectedDates.indexOf('-') > -1) {
+                var dmy = selectedDates.split('-');
+                  var dif = datediff(parseDate(dmy[0]), parseDate(
+                    dmy[1]));
+                  var harga = $("#harga").val();
+                  var qty = $(".quantity").val();
+                  var total = dif * harga * qty;
+                  var	number_string = total.toString(),
+                      sisa 	= number_string.length % 3,
+                      rupiah 	= number_string.substr(0, sisa),
+                      ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+                  if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                  }
+                  console.log(total);
+              $("#date_arr").val(dmy[0]);
+              $("#date_dep").val(dmy[1]);
+              $("#date_dif").val(dif);
+              $("#total_hrg").val(total);
+              $("#show_sewa").removeClass("hide");
+              $("#show_total").removeClass("hide");
+              $("#payment").removeClass("hide");
+              $(".mulai_sewa").prop("disabled", false);
+              $("#sewa").text(dif);
+              $("#total").text("Rp. "+rupiah);
+
+                if ($(".plus").on("click", function(){
+                  var dmy = selectedDates.split('-');
+                  var dif = datediff(parseDate(dmy[0]), parseDate(
+                    dmy[1]));
+                  var harga = $("#harga").val();
+                  var qty = $(".quantity").val();
+                  var total = dif * harga * qty;
+                  var	number_string = total.toString(),
+                      sisa 	= number_string.length % 3,
+                      rupiah 	= number_string.substr(0, sisa),
+                      ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+                  if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                  }
+                  console.log(total);
+              $("#date_arr").val(dmy[0]);
+              $("#date_dep").val(dmy[1]);
+              $("#date_dif").val(dif);
+              $("#total_hrg").val(total);
+              $("#show_sewa").removeClass("hide");
+              $("#show_total").removeClass("hide");
+              $("#payment").removeClass("hide");
+              $(".mulai_sewa").prop("disabled", false);
+              $("#sewa").text(dif);
+              $("#total").text("Rp. "+rupiah);
+                }));
+                if ($(".minus").on("click", function(){
+                  var dmy = selectedDates.split('-');
+              var dif = datediff(parseDate(dmy[0]), parseDate(
+                dmy[1]));
+              var harga = $("#harga").val();
+              var qty = $(".quantity").val();
+              var total = dif * harga * qty;
+              var	number_string = total.toString(),
+                  sisa 	= number_string.length % 3,
+                  rupiah 	= number_string.substr(0, sisa),
+                  ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+                  if (ribuan) {
+                    separator = sisa ? '.' : '';
+                    rupiah += separator + ribuan.join('.');
+                  }
+                  console.log(total);
+              $("#date_arr").val(dmy[0]);
+              $("#date_dep").val(dmy[1]);
+              $("#date_dif").val(dif);
+              $("#total_hrg").val(total);
+              $("#show_sewa").removeClass("hide");
+              $("#show_total").removeClass("hide");
+              $("#sewa").text(dif);
+              $("#notif").removeClass("hide");
+              $("#total").text("Rp. "+rupiah);
+                }));
+              // var lama = $("date_dif").val();
+              // $("lama").text(lama);
+              
+            }
+          },
+          onHide: function (dp, animationCompleted) {
+            if (animationCompleted) {
+              var lama = $("date_dif").val();
+              console.log(lama);
+              // 
+            }
+          }
+        });
+      });
+    //datepicker script
+
+    //Ajax Sewa
+      $(document).ready(function(){
+        $('.mulai_sewa').click(function(){
+          var id_user = $('.user_id').val();
+          var id_vendor = $('.vendor_id').val();
+          var id_item = $('.item_id').val();
+          var antar = $(this).data("antar");
+          var tgl_sewa = $("#date_arr").val();
+          var tgl_kembali = $("#date_dep").val();
+          var qty = $('.quantity').val();
+          var durasi = $("#date_dif").val();
+          var total_harga = $("#total_hrg").val();
+          var bayar = $('.bayar').val();
+          console.log(id_item);
+          $.ajax({
+            url : "<?php echo base_url('order/RentNow');?>",
+            method : "POST",
+            data : {id_user: id_user, id_vendor: id_vendor, id_item: id_item, antar: antar, tgl_sewa: tgl_sewa, tgl_kembali: tgl_kembali, qty: qty, durasi: durasi, total_harga: total_harga, pembayaran: bayar},
+            success: function(response){
+              if(response){
+                console.log(response);
+                $("#notif").html(response);
+              }
+            }
+          });
+        });
+      });
+    //Ajax Sewa
+    new WOW().init();
     </script>
   
   </body>

@@ -55,8 +55,8 @@
                     <a href="#!" class="list-group-item list-group-item-action t_acc_setting">
                         <i class="fas fa-cogs mr-3"></i>Pengaturan Akun
                     </a>
-                    <a href="#!" class="list-group-item list-group-item-action active"><i class="fas fa-user mr-3"></i>Profil</a>
-                    <a href="#!" class="list-group-item list-group-item-action"><i class="fas fa-unlock-alt mr-3"></i>Ganti Password</a>
+                    <a href="<?= base_url('account')?>" class="list-group-item list-group-item-action"><i class="fas fa-user mr-3"></i>Profil</a>
+                    <a href="<?= base_url('account/renter')?>" class="list-group-item list-group-item-action"><i class="fas fa-question-circle mr-3"></i>Ganti Password</a>
                     <a href="<?= base_url('account/bank'); ?>" class="list-group-item list-group-item-action"><i class="far fa-credit-alt mr-3"></i>Informasi Bank</a>
                     <a href="#!" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#modalHapus"><i class="far fa-unlock-card mr-3"></i>Nonaktifkan Akun</a>
                   </div>

@@ -1,7 +1,7 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
   <div class="container">
     <!-- Brand -->
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="<?= base_url('account');?>">
       <strong>Rent All</strong>
     </a>
 
@@ -20,10 +20,10 @@
           <a class="nav-link <?= $active['1']?>" href="<?= base_url('account/renterEtalase')?>">Etalase</a>
         </li>
         <li class="nav-item mr-2">
-            <a class="nav-link <?= $active['2']?>" href="<?= base_url('account/penyewaanRenter')?>">Penyewaan</a>
+            <a class="nav-link <?= $active['2']?>" href="<?= base_url('order/penyewaanRenter')?>">Penyewaan</a>
         </li>
         <li class="nav-item mr-2">
-            <a class="nav-link <?= $active['3']?>" href="#">Aktivitas</a>
+            <a class="nav-link <?= $active['3']?>" href="#">Cart<i class="fas fa-luggage-cart fa-lg"></i></a>
         </li>
         <li class="nav-item dropdown ml-2 mr-2">
             <a href="#" class="nav-link d-flex align-items-center" d="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
