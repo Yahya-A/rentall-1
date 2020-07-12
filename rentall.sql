@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 02, 2020 at 10:48 PM
+-- Generation Time: Jul 12, 2020 at 04:30 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -246,8 +246,15 @@ CREATE TABLE `order_detail` (
 INSERT INTO `order_detail` (`id_order`, `id_item`, `tgl_sewa`, `tgl_kembali`, `qty`, `durasi_sewa`, `total_harga`) VALUES
 ('RN02976KAOK10', 25, '2020-07-04', '2020-07-08', 1, 4, 400000),
 ('RN02157ROIM5', 24, '2020-07-08', '2020-07-16', 1, 8, 1600000),
-('RN02793LAQN6', 23, '2020-07-09', '2020-07-17', 2, 8, 4000000),
-('RN02863EHJC7', 25, '2020-07-09', '2020-07-17', 2, 8, 1600000);
+('RN02863EHJC7', 25, '2020-07-09', '2020-07-17', 2, 8, 1600000),
+('RN03619ZJUB8', 26, '2020-07-08', '2020-07-17', 1, 9, 1800000),
+('RN03251KKOB9', 26, '2020-07-08', '2020-07-17', 1, 9, 1800000),
+('RN03518MEFX10', 26, '2020-07-08', '2020-07-17', 1, 9, 1800000),
+('RN11568HMWU10', 25, '2020-07-17', '2020-07-31', 2, 14, 2800000),
+('RN11913UFWS10', 25, '2020-07-17', '2020-07-31', 2, 14, 2800000),
+('RN11428ELZP10', 25, '2020-07-16', '2020-07-24', 2, 8, 1600000),
+('RN11978PBEM8', 25, '2020-07-18', '2020-07-25', 2, 7, 1400000),
+('RN11819ENRD9', 20, '2020-07-17', '2020-07-24', 1, 7, 700000);
 
 -- --------------------------------------------------------
 
@@ -271,9 +278,10 @@ CREATE TABLE `order_item` (
 
 INSERT INTO `order_item` (`id_order`, `id_user`, `id_vendor`, `tanggal_order`, `status_sewa`, `antar`, `id_pembayaran`) VALUES
 ('RN02157ROIM5', 11, 11, '2020-07-02 13:38:08', 3, 1, 1),
-('RN02793LAQN6', 11, 13, '2020-07-02 14:54:31', 0, 1, 2),
 ('RN02863EHJC7', 10, 11, '2020-07-02 15:13:23', 3, 0, 1),
-('RN02976KAOK10', 11, 11, '2020-07-02 13:00:23', 3, 0, 1);
+('RN02976KAOK10', 11, 11, '2020-07-02 13:00:23', 3, 0, 1),
+('RN11819ENRD9', 10, 10, '2020-07-11 08:29:30', 3, 0, 4),
+('RN11978PBEM8', 0, 11, '2020-07-11 07:45:40', 0, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -282,10 +290,20 @@ INSERT INTO `order_item` (`id_order`, `id_user`, `id_vendor`, `tanggal_order`, `
 --
 
 CREATE TABLE `pembayaran` (
-  `id_pembayaran` int(11) NOT NULL,
-  `jenis_pembayaran` varchar(128) NOT NULL,
-  `rekening` varchar(128) NOT NULL
+  `id_order` varchar(20) NOT NULL,
+  `rekening` varchar(128) NOT NULL,
+  `an` varchar(128) NOT NULL,
+  `bank` varchar(20) NOT NULL,
+  `jumlah_bayar` varchar(20) NOT NULL,
+  `foto` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pembayaran`
+--
+
+INSERT INTO `pembayaran` (`id_order`, `rekening`, `an`, `bank`, `jumlah_bayar`, `foto`) VALUES
+('RN11819ENRD9', '0918273818273', 'Surya Saputra', 'BRI', '700000', 'RN11819ENRD9_10.jpeg');
 
 -- --------------------------------------------------------
 
@@ -348,7 +366,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `username`, `level`, `email`, `password`, `status`, `verif`, `token`) VALUES
-(10, 'abraham', 3, 'surya.saputra030090@gmail.com', '3dbe00a167653a1aaee01d93e77e730e', 2, 1, 0),
+(10, 'abraham', 1, 'surya.saputra030090@gmail.com', '3dbe00a167653a1aaee01d93e77e730e', 2, 1, 0),
 (11, 'Yahya', 3, 'yahya@gmail.com', 'c41e401185692add66fb9fc2292e5965', 2, 0, 1),
 (12, 'nisha', 1, 'nisha@gmail.com', '54c9ed0c893e9f5ff3cf8ddf90c4fb9f', 2, 0, 0),
 (13, 'Pintas', 1, 'pintas@gmail.com', '38f364caced40fdc9c36dc68daf10fbe', 2, 0, 0),
@@ -472,7 +490,7 @@ ALTER TABLE `order_item`
 -- Indexes for table `pembayaran`
 --
 ALTER TABLE `pembayaran`
-  ADD PRIMARY KEY (`id_pembayaran`);
+  ADD PRIMARY KEY (`id_order`);
 
 --
 -- Indexes for table `pengembalian`
@@ -531,12 +549,6 @@ ALTER TABLE `items`
 --
 ALTER TABLE `k_elektronik`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `pembayaran`
---
-ALTER TABLE `pembayaran`
-  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pengembalian`
