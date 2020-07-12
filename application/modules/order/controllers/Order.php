@@ -45,58 +45,125 @@ class Order extends CI_Controller {
 	}
 
 	public function RentNow(){
-		$row = $this->mOrder->uID();
-		$randnum = random_string('nozero', 3);
-		$randcode = strtoupper(random_string('alpha', 4));
-		$tgl_order = date("Y-m-d H:i:s");
-		$dd = date("d");
-		$status = "0";
-		foreach($row as $uid){
-			if ($uid['id'] == null) {
-				$final = 1;
-			}else{
-				$final = $uid['id']+1;
+		if($this->session->userdata('id')) {
+
+			if ($this->input->post('pembayaran') == 2) {
+				$id_vendor = $this->input->post('id_vendor');
+				$this->db->where('id_user', $id_vendor);
+				$query = $this->db->get('bank_profile');
+				
+				if($query->num_rows() == 1) { 
+					$row = $this->mOrder->uID();
+					$randnum = random_string('nozero', 3);
+					$randcode = strtoupper(random_string('alpha', 4));
+					$tgl_order = date("Y-m-d H:i:s");
+					$dd = date("d");
+					$status = "0";
+					foreach($row as $uid){
+						if ($uid['id'] == null) {
+							$final = 1;
+						}else{
+							$final = $uid['id']+1;
+						}
+					}
+					$id_order = "RN".$dd.$randnum.$randcode.$final;
+					$data['order'] = array(
+						'id_order' => $id_order,
+						'id_user'=> $this->input->post('id_user'),
+						'id_vendor'=> $this->input->post('id_vendor'),
+						'tanggal_order'=> $tgl_order,
+						'status_sewa'=> $status,
+						'antar'=> $this->input->post('antar'),
+						'id_pembayaran'=> $this->input->post('pembayaran')
+					);
+					$this->mOrder->insertRent($data['order']);
+					$data['detail'] = array(
+						'id_order' => $id_order,
+						'id_item'=> $this->input->post('id_item'),
+						'tgl_sewa'=> $this->input->post('tgl_sewa'),
+						'tgl_kembali'=> $this->input->post('tgl_kembali'),
+						'qty'=> $this->input->post('qty'),
+						'durasi_sewa'=> $this->input->post('durasi'),
+						'total_harga'=> $this->input->post('total_harga')
+					);
+					$this->mOrder->insertDetail($data['detail']);
+					$response = array('notif' => '<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<strong>Pemesanan berhasil - </strong> Tunggu sampai Vendor mengkonfimasi pesanan Anda
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+					</div>');
+					echo $response['notif'];
+				} else {
+					$response = array('notif' => '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<strong>Pemesanan gagal - </strong> Vendor ini hanya melayani pembayaran melalui COD
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				  </div>');
+				  echo $response['notif'];
+				}
+				
+			} else { 
+				$row = $this->mOrder->uID();
+				$randnum = random_string('nozero', 3);
+				$randcode = strtoupper(random_string('alpha', 4));
+				$tgl_order = date("Y-m-d H:i:s");
+				$dd = date("d");
+				$status = "0";
+				foreach($row as $uid){
+					if ($uid['id'] == null) {
+						$final = 1;
+					}else{
+						$final = $uid['id']+1;
+					}
+				}
+				$id_order = "RN".$dd.$randnum.$randcode.$final;
+				$data['order'] = array(
+					'id_order' => $id_order,
+					'id_user'=> $this->input->post('id_user'),
+					'id_vendor'=> $this->input->post('id_vendor'),
+					'tanggal_order'=> $tgl_order,
+					'status_sewa'=> $status,
+					'antar'=> $this->input->post('antar'),
+					'id_pembayaran'=> $this->input->post('pembayaran')
+				);
+				$this->mOrder->insertRent($data['order']);
+				$data['detail'] = array(
+					'id_order' => $id_order,
+					'id_item'=> $this->input->post('id_item'),
+					'tgl_sewa'=> $this->input->post('tgl_sewa'),
+					'tgl_kembali'=> $this->input->post('tgl_kembali'),
+					'qty'=> $this->input->post('qty'),
+					'durasi_sewa'=> $this->input->post('durasi'),
+					'total_harga'=> $this->input->post('total_harga')
+				);
+				$this->mOrder->insertDetail($data['detail']);
+				$response = array('notif' => '<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<strong>Pemesanan berhasil - </strong> Tunggu sampai Vendor mengkonfimasi pesanan Anda
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+				</div>');
+				echo $response['notif'];
 			}
+			
+		} else {
+			$response = array('notif' => '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<strong>Pemesanan gagal - </strong> Sebelum melakukan pemesanan, silahkan login terlebih dahulu
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>');
+		  echo $response['notif'];
 		}
-		$id_order = "RN".$dd.$randnum.$randcode.$final;
-		$data['order'] = array(
-			'id_order' => $id_order,
-			'id_user'=> $this->input->post('id_user'),
-			'id_vendor'=> $this->input->post('id_vendor'),
-			'tanggal_order'=> $tgl_order,
-			'status_sewa'=> $status,
-			'antar'=> $this->input->post('antar'),
-			'id_pembayaran'=> $this->input->post('pembayaran')
-		);
-		$this->mOrder->insertRent($data['order']);
-		$data['detail'] = array(
-			'id_order' => $id_order,
-			'id_item'=> $this->input->post('id_item'),
-			'tgl_sewa'=> $this->input->post('tgl_sewa'),
-			'tgl_kembali'=> $this->input->post('tgl_kembali'),
-			'qty'=> $this->input->post('qty'),
-			'durasi_sewa'=> $this->input->post('durasi'),
-			'total_harga'=> $this->input->post('total_harga')
-		);
-		$this->mOrder->insertDetail($data['detail']);
-		$response = array('notif' => '<div class="alert alert-success alert-dismissible fade show" role="alert">
-		<strong>Pemesanan berhasil - </strong> Tunggu sampai Vendor mengkonfimasi pesanan Anda
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		  <span aria-hidden="true">&times;</span>
-		</button>
-	  </div>');
-		echo $response['notif'];
-		// echo $final;
-		// echo $randcode;
-		// echo $dd;
-		// echo $id_order;
-		// // echo $mm;
-		// // echo $yy;
-		// echo $response;
 	}
 
 	public function penyewaanRenter()
     {
+		if ($this->simple_login->cek_login() == TRUE) {
+			redirect('');
+		}
             $data['active'] = array(
                 '1' => '',
                 '2' => 'font-weight-bold',

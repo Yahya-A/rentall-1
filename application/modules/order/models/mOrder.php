@@ -1,6 +1,6 @@
 <?php
 
-class mOrder extends CI_Model{
+class MOrder extends CI_Model{
 
     public function getStatus($id)
     {
