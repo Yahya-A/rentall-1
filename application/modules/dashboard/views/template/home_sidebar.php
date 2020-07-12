@@ -3,7 +3,7 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url(''); ?>">
-        <div class="sidebar-brand-text ml-2">E-Commerce</div>
+        <div class="sidebar-brand-text ml-2">RentAll</div>
     </a>
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
@@ -23,21 +23,24 @@
         Menu
     </div>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <!-- <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-        aria-expanded="true" aria-controls="collapseUtilities">
-        <i class="fas fa-grip-horizontal"></i>
-        <span>Produk</span>
-    </a> -->
-    <!-- <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="<?= base_url('products'); ?>">Semua Produk</a>
-        <a class="collapse-item" href="<?= base_url('category/barang'); ?>">Berdasarkan Kategori</a>
-        </div>
-    </div>
-    </li> -->
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('dashboard/transaksi'); ?>">
+            <i class="fas fa-folder"></i>
+            <span>Daftar Transaksi</span></a>
+    </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('dashboard/vendor'); ?>">
+            <i class="fas fa-folder"></i>
+            <span>Daftar Vendor</span></a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('dashboard/pengguna'); ?>">
+            <i class="fas fa-folder"></i>
+            <span>Daftar Pengguna</span></a>
+    </li>
+    
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('dashboard/verifRequest'); ?>">
             <i class="fas fa-folder"></i>

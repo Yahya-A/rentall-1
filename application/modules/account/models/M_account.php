@@ -53,9 +53,16 @@ class M_account extends CI_Model
     public function getTotal()
     {
         $id_user = $this->session->userdata('id');
-        $rows = $this->db->query('select sum(harga * durasi * qty) as total from items, cart where items.id_item = cart.id_item and cart.id_user = "' . $id_user . '"');
-        $price = $rows->row();
-        return $harga = $price->total;
+        $this->db->select('total_harga'); // <-- There is never any reason to write this line!
+        $this->db->from('order_item');
+        $this->db->join('order_detail', 'order_item.id_order = order_detail.id_order');
+        $this->db->join('items', 'items.id_item = order_detail.id_item', 'inner');
+        $this->db->where('id_user', $id_user);
+        // $this->db->where('status_sewa', 4);
+        $this->db->where('status_sewa', 0);
+        $this->db->group_by('order_item.id_order');
+        $query=$this->db->get();
+        return $query->result_array();
     }
 
     public function cart()

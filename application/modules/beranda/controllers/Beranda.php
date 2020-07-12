@@ -14,6 +14,9 @@ class Beranda extends CI_Controller {
      
      public function index()
      {
+          if ($this->session->userdata('id') != null){
+               redirect('account');
+          }
           $data['kategori'] = $this->data;
           $data['title'] = "RentALL";
           $data['kat'] = $this->mBeranda->getKat();
@@ -28,6 +31,9 @@ class Beranda extends CI_Controller {
      
      public function daftar($id)
      {
+          if ($this->session->userdata('id') != null){
+               redirect('account');
+          }
           $data['kategori'] = $this->data;
           $data['product'] = $this->mBeranda->getProduct($id);
           $data['title'] = "Daftar Produk";
@@ -38,6 +44,9 @@ class Beranda extends CI_Controller {
 
      public function product($id)
      {
+          if ($this->session->userdata('id') != null){
+               redirect('account');
+          }
           $data['kategori'] = $this->data;
           $data['product'] = $this->mBeranda->getDetail($id);
           $data['title'] = "Detail Produk";

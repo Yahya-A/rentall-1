@@ -67,9 +67,19 @@
 
                       <div class="card z-depth-0">
                         <div class="card-body">
-                          <a data-toggle="tooltip" data-html="true"
-                            title="Pesanan anda sedang menunggu konfirmasi dari Vendor"><span
-                              class="h6-responsive badge badge-pill badge-info float-right p-2 ml-2">Barang dipesan</span></a>
+                          <a data-toggle="tooltip" data-html="true" title="Pesanan anda sedang menunggu konfirmasi dari Vendor">
+                            <span class="h6-responsive badge badge-pill badge-info float-right p-2 ml-2">
+                              <?php 
+                                if ($p['id_pembayaran'] == 1 || $p['id_pembayaran'] == 4) { 
+                                  echo 'Barang Dipesan';
+                                } else if($p['id_pembayaran'] == 2){
+                                  echo 'Barang belum dibayar';
+                                } else if($p['id_pembayaran'] == 3){
+                                  echo 'Cek bukti pembayaran';
+                                }
+                              ?>
+                            </span>
+                          </a>
                           <h5 class="card-title mb-1"><strong><a href="" class="dark-grey-text"><?= $p['nama']?></a></strong></h5>
                           <h6 class="mb-1 dark-grey-text"><strong>Rp. <?= number_format($p['harga'],0,",",".");?>/ hari</strong></h6>
                           <table class="text-left mt-4">
@@ -86,8 +96,12 @@
                               <td><strong>Rp. <?= number_format($p['total_harga'],0,",",".");?></strong></td>
                             </tr>
                           </table>
+                          <?php if ($p['id_pembayaran'] == 3) { ?>
+                            <a href="" type="button" class="btn btn-sm btn-outline-success waves-effect" data-toggle="modal" data-target="#modalBuktiTF<?= $p['id_order'] ?>">Cek Bukti Pembayaran</a>
+                          <?php } else if($p['id_pembayaran'] == 4 || $p['id_pembayaran'] == 1) {?>
+                            <a href="" type="button" class="btn btn-sm btn-success waves-effect" data-toggle="modal" data-target="#modalConfirmDelete">Konfimasi</a>
+                          <?php } ?>
                           <a href="<?= base_url('products/detail/').$p['id_item']?>" type="button" class="btn btn-sm btn-outline-info waves-effect">Detail</a>
-                          <a href="" type="button" class="btn btn-sm btn-success waves-effect" data-toggle="modal" data-target="#modalConfirmDelete">Konfimasi</a>
                           <div class="card-footer pb-0 bg-white">
                             <div class="row mb-0">
                               <table class="w-100 text-center">
@@ -118,34 +132,67 @@
 
               </div>
               <!-- Grid column -->
+                            
+              <!-- Modal: modalBuktiTF -->
+                <?php
+                  $id_order = $p['id_order'];
+                  $buktiTF = $this->db->query("SELECT * from items i, order_detail od, pembayaran p where od.id_order = '$id_order' and i.id_item = od.id_item and p.id_order = '$id_order'")->result_array();
+                ?>
+                <div class="modal fade" id="modalBuktiTF<?= $p['id_order'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-notify modal-warning" role="document">
+                        <!--Content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <p class="heading lead">Bukti Pembayaran</p>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true" class="white-text">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <center>
+                                    <h5> Atas Nama <?= $buktiTF['0']['an']?> </h5>
+                                    <h5> Sumber Rekening <?= $buktiTF['0']['bank']?> <?= $buktiTF['0']['rekening']?> </h5>
+                                    <h5> Jumlah Bayar <?= $buktiTF['0']['jumlah_bayar']?> </h5>
+                                    <img src="<?=base_url('assets/img/pembayaran/'), $buktiTF['0']['foto']?>" class="card-img p-3"  style="max-width: 300px;">
+                                </center>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <a href="<?= base_url('account/verifPembayaran/') . $id_order?>/1" class="btn btn-light" role="button">Transfer Sesuai</a>
+                                <a href="<?= base_url('account/verifPembayaran/') . $id_order?>/2" class="btn btn-light" role="button">Transfer Tidak Sesuai</a>
+                            </div>
+                        </div>
+                        <!--/.Content-->
+                    </div>
+                </div>
+              <!-- Modal: modalBuktiTF -->
 
               <!--Modal: modalConfirmDelete-->
                 <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-sm modal-notify modal-success" role="document">
-                  <!--Content-->
-                  <div class="modal-content text-center">
-                    <!--Header-->
-                    <div class="modal-header d-flex justify-content-center">
-                      <p class="heading">Konfirmasi Pemesanan </p>
-                    </div>
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-sm modal-notify modal-success" role="document">
+                    <!--Content-->
+                    <div class="modal-content text-center">
+                      <!--Header-->
+                      <div class="modal-header d-flex justify-content-center">
+                        <p class="heading">Konfirmasi Pemesanan </p>
+                      </div>
 
-                    <!--Body-->
-                    <div class="modal-body">
+                      <!--Body-->
+                      <div class="modal-body">
 
-                      <i class="fas fa-check fa-4x animated rotateIn"></i>
-                      <p>Pastikan barang yang akan disewa dalam kondisi siap sebelum melakukan Konfimasi ini</p>
-                    </div>
+                        <i class="fas fa-check fa-4x animated rotateIn"></i>
+                        <p>Pastikan barang yang akan disewa dalam kondisi siap sebelum melakukan Konfimasi ini</p>
+                      </div>
 
-                    <!--Footer-->
-                    <div class="modal-footer flex-center">
-                      <a href="<?= base_url('order/Ready/').$p['id_order']?>" class="btn  btn-outline-success">Konfirmasi</a>
-                      <a type="button" class="btn  btn-success waves-effect" data-dismiss="modal">No</a>
+                      <!--Footer-->
+                      <div class="modal-footer flex-center">
+                        <a href="<?= base_url('order/Ready/').$p['id_order']?>" class="btn  btn-outline-success">Konfirmasi</a>
+                        <a type="button" class="btn  btn-success waves-effect" data-dismiss="modal">No</a>
+                      </div>
                     </div>
+                    <!--/.Content-->
                   </div>
-                  <!--/.Content-->
                 </div>
-              </div>
               <!--Modal: modalConfirmDelete-->
 
 

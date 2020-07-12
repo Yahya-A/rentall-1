@@ -1,6 +1,6 @@
 <?php
 
-class mBeranda extends CI_Model{
+class MBeranda extends CI_Model{
 
     public function getKat(){
         $this->db->select('kategori');
@@ -116,7 +116,7 @@ class mBeranda extends CI_Model{
 
         if ($data['errors'] = $this->upload->display_errors('<p>', '</p>')) {
             $this->session->set_flashdata('error', $this->upload->display_errors('<p>', '</p>'));
-            redirect('account/penyewaanRenter');
+            redirect('order/penyewaanRenter');
         } else {
             $data = array(
                 'id_order' => $id_order,
@@ -132,7 +132,7 @@ class mBeranda extends CI_Model{
             $this->db->set('id_pembayaran', 3);
             $this->db->where('id_order', $id_order);
             $this->db->update('order_item');  
-            redirect('account/penyewaanRenter');
+            redirect('order/penyewaanRenter');
         }
 
     }
@@ -202,7 +202,7 @@ class mBeranda extends CI_Model{
         } else {
             $this->session->set_flashdata('success', 'Silahkan lakukan pembayaran sebesar Rp. '.number_format($total_bayar,0,",",".").' ');
         }
-        redirect('account/penyewaanRenter');
+        redirect('order/penyewaanRenter');
     }
 
     public function getOrder()
